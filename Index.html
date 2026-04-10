@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CEO Dashboard — MAW Vriddhi Commercial Vehicles</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f4f6f9;color:#1a1a2e;min-height:100vh}
+.dash{max-width:1140px;margin:auto;padding:2rem 1.5rem}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #dde1ea;flex-wrap:wrap;gap:8px}
+.header h1{font-size:18px;font-weight:700;color:#1a1a2e}
+.header-right{display:flex;align-items:center;gap:10px}
+.date-badge{font-size:12px;color:#888;background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:4px 12px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:#1D9E75;display:inline-block;margin-right:5px;vertical-align:middle}
+.refresh-btn{font-size:12px;padding:5px 14px;border:1px solid #dde1ea;border-radius:20px;background:#fff;color:#185FA5;cursor:pointer;font-weight:600}
+.refresh-btn:hover{background:#e6f1fb}
+
+.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:1.5rem}
+.kpi{background:#fff;border-radius:10px;padding:1.1rem 1.2rem;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.kpi .label{font-size:11px;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em}
+.kpi .value{font-size:24px;font-weight:700}
+.kpi .sub{font-size:11px;color:#aaa;margin-top:4px}
+.kpi.warn .value{color:#BA7517}
+.kpi.good .value{color:#1D9E75}
+.kpi.info .value{color:#185FA5}
+
+.section-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem;margin-bottom:1.25rem}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.25rem;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.card-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#aaa;margin-bottom:4px}
+.card h3{font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:1rem}
+.full-card{grid-column:1/-1}
+.chart-wrap{position:relative;width:100%}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;font-size:11px;color:#666}
+.leg-dot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle}
+
+.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
+.mstat{background:#f8fafc;border-radius:8px;padding:10px 12px;border:1px solid #e2e8f0}
+.mstat .ml{font-size:10px;color:#888;margin-bottom:2px}
+.mstat .mv{font-size:17px;font-weight:700;color:#1a1a2e}
+.mstat .ms{font-size:10px;color:#bbb;margin-top:1px}
+
+.table-wrap{overflow-x:auto}
+table{width:100%;font-size:12px;border-collapse:collapse}
+th{text-align:left;padding:8px 10px;color:#888;font-weight:700;border-bottom:1px solid #e2e8f0;font-size:10px;text-transform:uppercase;letter-spacing:0.04em;white-space:nowrap}
+td{padding:7px 10px;color:#1a1a2e;border-bottom:1px solid #f0f2f5;white-space:nowrap}
+.trow-total td{border-bottom:none;font-weight:700;background:#f8fafc}
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700}
+.badge.green{background:#EAF3DE;color:#3B6D11}
+.badge.amber{background:#FAEEDA;color:#854F0B}
+.badge.red{background:#FCEBEB;color:#A32D2D}
+.badge.blue{background:#e6f1fb;color:#185FA5}
+
+.psf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.psf-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid}
+.psf-ev{color:#185FA5;border-color:#378ADD}
+.psf-ice{color:#993C1D;border-color:#D85A30}
+
+.footer{text-align:center;font-size:11px;color:#bbb;margin-top:2rem;padding-top:1rem;border-top:1px solid #e2e8f0}
+
+@media(max-width:720px){
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .section-grid{grid-template-columns:1fr}
+  .full-card{grid-column:1}
+  .header{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div class="dash">
+
+  <div class="header">
+    <h1>CEO Dashboard — MAW Vriddhi Commercial Vehicles (Foton)</h1>
+    <div class="header-right">
+      <span class="date-badge"><span class="live-dot"></span>BS 2082 Chaitra 23 &nbsp;·&nbsp; Apr 10, 2026</span>
+      <button class="refresh-btn" onclick="location.reload()">↻ Refresh</button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi warn">
+      <div class="label">MTD Net Sales</div>
+      <div class="value">68 / 104</div>
+      <div class="sub">65.4% of ABP target</div>
+    </div>
+    <div class="kpi good">
+      <div class="label">Collection MTD</div>
+      <div class="value">Rs 18.44 Cr</div>
+      <div class="sub">50.2% of Rs 36.74 Cr target</div>
+    </div>
+    <div class="kpi warn">
+      <div class="label">ISF Satisfaction</div>
+      <div class="value">53.4%</div>
+      <div class="sub">155 satisfied / 290 ISF taken</div>
+    </div>
+    <div class="kpi info">
+      <div class="label">Total Leads</div>
+      <div class="value">32</div>
+      <div class="sub">23 telecalled · 12 connected</div>
+    </div>
+  </div>
+
+  <!-- Section 1: Sales Charts -->
+  <div class="section-grid">
+    <div class="card">
+      <div class="card-label">1. Sales</div>
+      <h3>ABP Target vs MTD Net Sale</h3>
+      <div class="legend">
+        <span><span class="leg-dot" style="background:#378ADD"></span>ABP Target</span>
+        <span><span class="leg-dot" style="background:#1D9E75"></span>MTD Net Sale</span>
+      </div>
+      <div class="chart-wrap" style="height:230px">
+        <canvas id="c1" role="img" aria-label="Sales target vs net sale by segment">Sales chart</canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">1. Sales</div>
+      <h3>Achievement % by Segment</h3>
+      <div class="legend">
+        <span><span class="leg-dot" style="background:#1D9E75"></span>&gt;100%</span>
+        <span><span class="leg-dot" style="background:#BA7517"></span>50–100%</span>
+        <span><span class="leg-dot" style="background:#E24B4A"></span>&lt;50%</span>
+      </div>
+      <div class="chart-wrap" style="height:230px">
+        <canvas id="c2" role="img" aria-label="Achievement % per segment">Achievement chart</canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 1: Sales Table -->
+  <div class="section-grid">
+    <div class="card full-card">
+      <div class="card-label">1. Sales — Full Detail</div>
+      <h3>MTD Sales Achievement by Segment</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Segment</th>
+              <th>ABP Target</th>
+              <th>Actual Target Taken</th>
+              <th>MTD Plan Till Date</th>
+              <th>MTD Bill Till Date</th>
+              <th>MTD Net Sale</th>
+              <th>Achievement %</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="salesTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: Service -->
+  <div class="section-grid">
+    <div class="card">
+      <div class="card-label">2. Service — ISF (EV)</div>
+      <h3>In-Service Flow Metrics MTD</h3>
+      <div class="mini-grid">
+        <div class="mstat"><div class="ml">Inflow</div><div class="mv">342</div><div class="ms">Today: 0</div></div>
+        <div class="mstat"><div class="ml">Outflow</div><div class="mv">325</div><div class="ms">Today: 0</div></div>
+        <div class="mstat"><div class="ml">ISF Taken</div><div class="mv">290</div><div class="ms">Today: 0</div></div>
+        <div class="mstat"><div class="ml">Satisfied</div><div class="mv" style="color:#1D9E75">155</div><div class="ms">Today: 0</div></div>
+        <div class="mstat"><div class="ml">Dissatisfied</div><div class="mv" style="color:#E24B4A">135</div><div class="ms">Today: 0</div></div>
+        <div class="mstat"><div class="ml">Satisfaction %</div><div class="mv" style="color:#BA7517">53.4%</div><div class="ms">MTD</div></div>
+      </div>
+      <div class="chart-wrap" style="height:140px">
+        <canvas id="c3" role="img" aria-label="ISF service flow bar chart">ISF chart</canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">2. Service — PSF</div>
+      <h3>PSF EV & PSF ICE Metrics MTD</h3>
+      <div class="psf-grid">
+        <div>
+          <div class="psf-head psf-ev">PSF EV</div>
+          <div class="mstat" style="margin-bottom:6px"><div class="ml">PSF Taken</div><div class="mv">275</div></div>
+          <div class="mstat" style="margin-bottom:6px"><div class="ml">Satisfied</div><div class="mv" style="color:#1D9E75">275</div></div>
+          <div class="mstat" style="margin-bottom:6px"><div class="ml">Dissatisfied</div><div class="mv">0</div></div>
+          <div class="mstat"><div class="ml">Satisfaction %</div><div class="mv" style="color:#1D9E75">100%</div></div>
+        </div>
+        <div>
+          <div class="psf-head psf-ice">PSF ICE</div>
+          <div class="mstat" style="margin-bottom:6px"><div class="ml">Inflow</div><div class="mv">15</div></div>
+          <div class="mstat" style="margin-bottom:6px"><div class="ml">Outflow</div><div class="mv">13</div></div>
+          <div class="mstat" style="margin-bottom:6px"><div class="ml">ISF Taken</div><div class="mv">13</div></div>
+          <div class="mstat"><div class="ml">Satisfaction %</div><div class="mv" style="color:#1D9E75">92.3%</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Marketing -->
+  <div class="section-grid">
+    <div class="card">
+      <div class="card-label">3. Marketing</div>
+      <h3>Leads Pipeline by Segment</h3>
+      <div class="legend">
+        <span><span class="leg-dot" style="background:#7F77DD"></span>Received</span>
+        <span><span class="leg-dot" style="background:#378ADD"></span>Telecalled</span>
+        <span><span class="leg-dot" style="background:#1D9E75"></span>Connected</span>
+      </div>
+      <div class="chart-wrap" style="height:220px">
+        <canvas id="c4" role="img" aria-label="Marketing leads pipeline">Marketing chart</canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-label">3. Marketing — Customer Segmentation</div>
+      <h3>Connected Lead Status</h3>
+      <div class="chart-wrap" style="height:220px">
+        <canvas id="c5" role="img" aria-label="Customer segmentation doughnut">Segmentation chart</canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Collection -->
+  <div class="section-grid">
+    <div class="card full-card">
+      <div class="card-label">4. Collection — MAW Daily Report (Rs in Crore)</div>
+      <h3>MTD Collection Summary &nbsp;·&nbsp; BS 2082 Chaitra Day 23</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Sales Tgt (ABP)</th>
+              <th>Actual Sales Tgt</th>
+              <th>Collection Tgt</th>
+              <th>MTD Sales Ach</th>
+              <th>MTD Collection</th>
+              <th>Sales Ach %</th>
+              <th>Collection Ach %</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Retail Sales Collection</td>
+              <td>—</td><td>—</td><td>5.62</td><td>—</td><td>6.81</td><td>—</td><td>121.2%</td>
+              <td><span class="badge green">Above target</span></td>
+            </tr>
+            <tr>
+              <td>DO/DP Dealer &amp; Tender</td>
+              <td>—</td><td>—</td><td>31.12</td><td>—</td><td>11.63</td><td>—</td><td>37.4%</td>
+              <td><span class="badge red">Below target</span></td>
+            </tr>
+            <tr>
+              <td>Difficult Collection</td>
+              <td>—</td><td>—</td><td>0.00</td><td>—</td><td>0.00</td><td>—</td><td>—</td>
+              <td><span class="badge amber">N/A</span></td>
+            </tr>
+            <tr>
+              <td>Spares &amp; Service</td>
+              <td>1.82</td><td>—</td><td>1.38</td><td>1.42</td><td>0.30</td><td>78.0%</td><td>21.8%</td>
+              <td><span class="badge red">Below target</span></td>
+            </tr>
+            <tr class="trow-total">
+              <td>Total — Foton</td>
+              <td>104</td><td>87</td><td>36.74</td><td>68</td><td>18.44</td><td>78.2%</td><td>50.2%</td>
+              <td><span class="badge amber">In progress</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">MAW Vriddhi Commercial Vehicles Pvt. Ltd. &nbsp;·&nbsp; CEO Dashboard &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; BS 2082 Chaitra 23</div>
+</div>
+
+<script>
+const SALES = [
+  { seg:'Foton EV Vans',          abp:45,  act:51,  plan:40, bill:23, net:23, pct:51.1  },
+  { seg:'Sokon Van',              abp:28,  act:20,  plan:18, bill:17, net:17, pct:60.7  },
+  { seg:'TM1',                    abp:11,  act:23,  plan:22, bill:26, net:26, pct:236.4 },
+  { seg:'Pickups',                abp:11,  act:3,   plan:3,  bill:0,  net:0,  pct:0     },
+  { seg:'Sokon DFSK Cargo Van',   abp:2,   act:2,   plan:2,  bill:1,  net:1,  pct:50.0  },
+  { seg:'eMiller + Aumark',       abp:6,   act:3,   plan:2,  bill:1,  net:1,  pct:16.7  },
+  { seg:'Others',                 abp:1,   act:0,   plan:0,  bill:0,  net:0,  pct:0     },
+  { seg:'Total',                  abp:104, act:102, plan:87, bill:68, net:68, pct:65.4  },
+];
+
+const MKT = [
+  { seg:'EV Passenger', recv:9,  tc:3,  conn:3  },
+  { seg:'Mini Truck',   recv:5,  tc:2,  conn:2  },
+  { seg:'Pickup',       recv:0,  tc:0,  conn:0  },
+  { seg:'Sokon',        recv:18, tc:18, conn:7  },
+  { seg:'Emiller',      recv:0,  tc:0,  conn:0  },
+  { seg:'Eaumark',      recv:0,  tc:0,  conn:0  },
+];
+
+const gc='rgba(0,0,0,0.06)', tc='#888';
+const base={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+  scales:{x:{grid:{color:gc},ticks:{color:tc,font:{size:11}}},y:{grid:{color:gc},ticks:{color:tc,font:{size:11}}}}};
+
+const segs = SALES.slice(0,-1).map(r=>r.seg.replace(' Cargo Van','').replace('eMiller + Aumark','eMiller+Aumark').replace(' (Ambulance+Ice Vans)',''));
+
+// C1 - Target vs Net
+new Chart(document.getElementById('c1'),{type:'bar',
+  data:{labels:segs,datasets:[
+    {label:'ABP Target', data:SALES.slice(0,-1).map(r=>r.abp), backgroundColor:'#378ADD'},
+    {label:'MTD Net Sale',data:SALES.slice(0,-1).map(r=>r.net), backgroundColor:'#1D9E75'}
+  ]},
+  options:{...base,scales:{...base.scales,x:{...base.scales.x,ticks:{...base.scales.x.ticks,maxRotation:35}}}}
+});
+
+// C2 - Achievement %
+const pcts=SALES.slice(0,-1).map(r=>r.pct);
+new Chart(document.getElementById('c2'),{type:'bar',
+  data:{labels:segs,datasets:[{label:'Ach %',data:pcts,
+    backgroundColor:pcts.map(v=>v>100?'#1D9E75':v>=50?'#BA7517':'#E24B4A')}]},
+  options:{...base,indexAxis:'y',
+    scales:{x:{...base.scales.x,ticks:{...base.scales.x.ticks,callback:v=>v+'%'}},y:{...base.scales.y}}}
+});
+
+// C3 - ISF bar
+new Chart(document.getElementById('c3'),{type:'bar',
+  data:{labels:['Inflow','Outflow','ISF Taken','Satisfied','Dissatisfied'],
+    datasets:[{data:[342,325,290,155,135],
+      backgroundColor:['#378ADD','#0096C7','#7F77DD','#1D9E75','#E24B4A']}]},
+  options:{...base,plugins:{legend:{display:false}}}
+});
+
+// C4 - Marketing pipeline
+new Chart(document.getElementById('c4'),{type:'bar',
+  data:{labels:MKT.map(r=>r.seg),datasets:[
+    {label:'Received', data:MKT.map(r=>r.recv),backgroundColor:'#7F77DD'},
+    {label:'Telecalled',data:MKT.map(r=>r.tc), backgroundColor:'#378ADD'},
+    {label:'Connected', data:MKT.map(r=>r.conn),backgroundColor:'#1D9E75'}
+  ]},
+  options:{...base,scales:{...base.scales,x:{...base.scales.x,ticks:{...base.scales.x.ticks,maxRotation:30}}}}
+});
+
+// C5 - Doughnut
+new Chart(document.getElementById('c5'),{type:'doughnut',
+  data:{labels:['Not Interested','No Answer','Switch Off','Hot','Warm','Cold'],
+    datasets:[{data:[10,9,1,1,1,10],
+      backgroundColor:['#E24B4A','#BA7517','#888','#1D9E75','#0096C7','#378ADD'],
+      borderWidth:2,borderColor:'#fff'}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,position:'right',
+      labels:{font:{size:10},color:'#666',boxWidth:10,padding:6}}}}
+});
+
+// Sales table
+document.getElementById('salesTbody').innerHTML = SALES.map((r,i)=>{
+  const tot = i===SALES.length-1;
+  const bc = r.pct>100?'green':r.pct>=50?'amber':'red';
+  const bt = r.pct>100?'Above':r.pct>=50?'Partial':'Below';
+  return `<tr${tot?' class="trow-total"':''}>
+    <td>${r.seg}</td><td>${r.abp}</td><td>${r.act}</td><td>${r.plan}</td><td>${r.bill}</td>
+    <td><strong>${r.net}</strong></td>
+    <td>${r.pct.toFixed(1)}%</td>
+    <td>${tot?'<span class="badge blue">Overall</span>':`<span class="badge ${bc}">${bt}</span>`}</td>
+  </tr>`;
+}).join('');
+</script>
+</body>
+</html>
