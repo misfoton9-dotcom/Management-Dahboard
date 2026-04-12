@@ -4,245 +4,319 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CEO Dashboard — MAW Vriddhi Commercial Vehicles</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f4f6f9;color:#1a1a2e;min-height:100vh}
-.dash{max-width:1140px;margin:auto;padding:2rem 1.5rem}
-.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #dde1ea;flex-wrap:wrap;gap:8px}
-.header h1{font-size:18px;font-weight:700;color:#1a1a2e}
-.header-right{display:flex;align-items:center;gap:10px}
-.date-badge{font-size:12px;color:#888;background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:4px 12px}
-.live-dot{width:8px;height:8px;border-radius:50%;background:#1D9E75;display:inline-block;margin-right:5px;vertical-align:middle}
-.refresh-btn{font-size:12px;padding:5px 14px;border:1px solid #dde1ea;border-radius:20px;background:#fff;color:#185FA5;cursor:pointer;font-weight:600}
-.refresh-btn:hover{background:#e6f1fb}
-.status-bar{font-size:11px;padding:6px 14px;border-radius:8px;margin-bottom:1rem;display:none}
-.status-bar.loading{background:#e6f1fb;color:#185FA5;display:block}
-.status-bar.error{background:#FCEBEB;color:#A32D2D;display:block}
-.status-bar.success{background:#EAF3DE;color:#3B6D11;display:block}
+:root {
+  --bg: #f0f2f5;
+  --surface: #ffffff;
+  --border: #e4e8ef;
+  --text-primary: #0f1623;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+  --green: #16a34a;
+  --green-light: #dcfce7;
+  --amber: #b45309;
+  --amber-light: #fef3c7;
+  --red: #dc2626;
+  --red-light: #fee2e2;
+  --blue: #1d4ed8;
+  --blue-light: #dbeafe;
+  --radius: 12px;
+  --shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; font-size: 14px; }
 
-.kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:1.5rem}
-.kpi{background:#fff;border-radius:10px;padding:1.1rem 1.2rem;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
-.kpi .label{font-size:11px;color:#888;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.04em}
-.kpi .value{font-size:24px;font-weight:700}
-.kpi .sub{font-size:11px;color:#aaa;margin-top:4px}
-.kpi.warn .value{color:#BA7517}
-.kpi.good .value{color:#1D9E75}
-.kpi.info .value{color:#185FA5}
+/* HEADER */
+.header {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0 2rem; display: flex; align-items: center;
+  justify-content: space-between; height: 58px;
+  position: sticky; top: 0; z-index: 100; gap: 12px;
+}
+.header-left { display: flex; align-items: center; gap: 14px; }
+.logo-mark {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.header h1 { font-size: 15px; font-weight: 600; }
+.header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.live-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: #f0fdf4; border: 1px solid #bbf7d0;
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 11px; font-weight: 500; color: var(--green);
+}
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+.date-text { font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+.refresh-btn {
+  font-size: 12px; font-weight: 600; padding: 5px 14px;
+  border: 1px solid var(--border); border-radius: 20px;
+  background: var(--surface); color: var(--blue); cursor: pointer; transition: background .15s;
+}
+.refresh-btn:hover { background: var(--blue-light); }
 
-.section-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.25rem;margin-bottom:1.25rem}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.25rem;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
-.card-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#aaa;margin-bottom:4px}
-.card h3{font-size:14px;font-weight:600;color:#1a1a2e;margin-bottom:1rem}
-.full-card{grid-column:1/-1}
-.chart-wrap{position:relative;width:100%}
-.legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;font-size:11px;color:#666}
-.leg-dot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:4px;vertical-align:middle}
+/* STATUS */
+.status-bar { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 500; display: none; margin-bottom: 14px; }
+.status-bar.loading { background: #eff6ff; color: #2563eb; display: block; }
+.status-bar.error   { background: var(--red-light); color: var(--red); display: block; }
+.status-bar.success { background: var(--green-light); color: var(--green); display: block; }
 
-.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
-.mstat{background:#f8fafc;border-radius:8px;padding:10px 12px;border:1px solid #e2e8f0}
-.mstat .ml{font-size:10px;color:#888;margin-bottom:2px}
-.mstat .mv{font-size:17px;font-weight:700;color:#1a1a2e}
-.mstat .ms{font-size:10px;color:#bbb;margin-top:1px}
+/* LAYOUT */
+.dash { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
 
-.table-wrap{overflow-x:auto}
-table{width:100%;font-size:12px;border-collapse:collapse}
-th{text-align:left;padding:8px 10px;color:#888;font-weight:700;border-bottom:1px solid #e2e8f0;font-size:10px;text-transform:uppercase;letter-spacing:0.04em;white-space:nowrap}
-td{padding:7px 10px;color:#1a1a2e;border-bottom:1px solid #f0f2f5;white-space:nowrap}
-.trow-total td{border-bottom:none;font-weight:700;background:#f8fafc}
-.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:10px;font-weight:700}
-.badge.green{background:#EAF3DE;color:#3B6D11}
-.badge.amber{background:#FAEEDA;color:#854F0B}
-.badge.red{background:#FCEBEB;color:#A32D2D}
-.badge.blue{background:#e6f1fb;color:#185FA5}
+/* KPI STRIP */
+.kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 1.5rem; }
+.kpi-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.2rem 1.4rem;
+  box-shadow: var(--shadow); position: relative; overflow: hidden;
+}
+.kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+.kpi-card.k-blue::before  { background: linear-gradient(90deg,#0ea5e9,#6366f1); }
+.kpi-card.k-green::before { background: linear-gradient(90deg,#16a34a,#22d3ee); }
+.kpi-card.k-amber::before { background: linear-gradient(90deg,#f59e0b,#ef4444); }
+.kpi-card.k-purple::before{ background: linear-gradient(90deg,#6366f1,#a855f7); }
+.kpi-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 8px; }
+.kpi-value { font-size: 24px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
+.kpi-card.k-blue   .kpi-value { color: #0284c7; }
+.kpi-card.k-green  .kpi-value { color: var(--green); }
+.kpi-card.k-amber  .kpi-value { color: var(--amber); }
+.kpi-card.k-purple .kpi-value { color: #6366f1; }
+.kpi-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
+.prog-wrap { background: #f3f4f6; border-radius: 4px; height: 4px; overflow: hidden; }
+.prog-bar  { height: 100%; border-radius: 4px; transition: width .8s ease; }
 
-.psf-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.psf-head{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid}
-.psf-ev{color:#185FA5;border-color:#378ADD}
-.psf-ice{color:#993C1D;border-color:#D85A30}
+/* SECTION TITLE */
+.section-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--text-muted);
+  margin: 1.75rem 0 .9rem;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-title::after { content:''; flex:1; height:1px; background:var(--border); }
 
-.footer{text-align:center;font-size:11px;color:#bbb;margin-top:2rem;padding-top:1rem;border-top:1px solid #e2e8f0}
+/* GRIDS */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.grid-1 { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 14px; }
 
-@media(max-width:720px){
-  .kpi-grid{grid-template-columns:repeat(2,1fr)}
-  .section-grid{grid-template-columns:1fr}
-  .full-card{grid-column:1}
-  .header{flex-direction:column;align-items:flex-start}
+/* CARD */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
+.card-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 3px; }
+.card-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem; }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; font-size: 11px; color: var(--text-secondary); }
+.leg { display: flex; align-items: center; gap: 5px; }
+.leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+.chart-wrap { position: relative; width: 100%; }
+
+/* STAT MINI */
+.stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 1rem; }
+.stat-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+.stat-box .sl { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; }
+.stat-box .sv { font-size: 18px; font-weight: 700; }
+.stat-box .ss { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+/* PSF */
+.psf-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.psf-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding-bottom: 6px; border-bottom: 2px solid; margin-bottom: 8px; }
+.psf-ev  { color: #1d4ed8; border-color: #3b82f6; }
+.psf-ice { color: #9a3412; border-color: #ea580c; }
+.psf-stat { background: #f8fafc; border: 1px solid var(--border); border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; }
+.psf-stat .pl { font-size: 10px; color: var(--text-muted); }
+.psf-stat .pv { font-size: 16px; font-weight: 700; }
+
+/* TABLE */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; font-size: 12px; border-collapse: collapse; }
+th {
+  text-align: left; padding: 9px 12px;
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .04em; color: var(--text-muted);
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap; background: #fafbfc;
+}
+td { padding: 8px 12px; border-bottom: 1px solid #f3f4f6; white-space: nowrap; }
+tr:last-child td { border-bottom: none; }
+tr.total-row td { font-weight: 700; background: #f8fafc; }
+tr:hover td { background: #fafbff; }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+.badge.g { background: var(--green-light); color: var(--green); }
+.badge.a { background: var(--amber-light); color: var(--amber); }
+.badge.r { background: var(--red-light); color: var(--red); }
+.badge.b { background: var(--blue-light); color: var(--blue); }
+
+.footer { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); font-family: 'DM Mono', monospace; }
+
+@media(max-width:768px){
+  .kpi-strip { grid-template-columns: 1fr 1fr; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .header h1 { font-size: 13px; }
+  .dash { padding: 1rem; }
+  .header { padding: 0 1rem; }
 }
 </style>
 </head>
 <body>
-<div class="dash">
 
-  <div class="header">
+<div class="header">
+  <div class="header-left">
+    <div class="logo-mark">MV</div>
     <h1>CEO Dashboard — MAW Vriddhi Commercial Vehicles (Foton)</h1>
-    <div class="header-right">
-      <span class="date-badge" id="dateBadge"><span class="live-dot"></span>Loading…</span>
-      <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
-    </div>
   </div>
+  <div class="header-right">
+    <span class="date-text" id="dateText">—</span>
+    <div class="live-pill"><div class="live-dot"></div><span>Live</span></div>
+    <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+  </div>
+</div>
 
-  <div class="status-bar" id="statusBar">Loading live data from Google Sheets…</div>
+<div class="dash">
+  <div class="status-bar loading" id="statusBar">⟳ Connecting to Google Sheets…</div>
 
   <!-- KPIs -->
-  <div class="kpi-grid">
-    <div class="kpi warn">
-      <div class="label">MTD Net Sales</div>
-      <div class="value" id="kpi-sales">—</div>
-      <div class="sub" id="kpi-sales-sub">Loading…</div>
+  <div class="kpi-strip">
+    <div class="kpi-card k-blue">
+      <div class="kpi-label">MTD Net Sales</div>
+      <div class="kpi-value" id="kpi-sales">—</div>
+      <div class="kpi-sub" id="kpi-sales-sub">Loading…</div>
+      <div class="prog-wrap"><div class="prog-bar" id="kpi-sales-bar" style="background:#0ea5e9;width:0%"></div></div>
     </div>
-    <div class="kpi good">
-      <div class="label">Collection MTD</div>
-      <div class="value" id="kpi-collection">—</div>
-      <div class="sub" id="kpi-collection-sub">Loading…</div>
+    <div class="kpi-card k-green">
+      <div class="kpi-label">Collection MTD</div>
+      <div class="kpi-value" id="kpi-collection">—</div>
+      <div class="kpi-sub" id="kpi-collection-sub">Loading…</div>
+      <div class="prog-wrap"><div class="prog-bar" id="kpi-collection-bar" style="background:#16a34a;width:0%"></div></div>
     </div>
-    <div class="kpi warn">
-      <div class="label">ISF Satisfaction</div>
-      <div class="value" id="kpi-isf">—</div>
-      <div class="sub" id="kpi-isf-sub">Loading…</div>
+    <div class="kpi-card k-amber">
+      <div class="kpi-label">ISF Satisfaction</div>
+      <div class="kpi-value" id="kpi-isf">—</div>
+      <div class="kpi-sub" id="kpi-isf-sub">Loading…</div>
+      <div class="prog-wrap"><div class="prog-bar" id="kpi-isf-bar" style="background:#f59e0b;width:0%"></div></div>
     </div>
-    <div class="kpi info">
-      <div class="label">Total Leads</div>
-      <div class="value" id="kpi-leads">—</div>
-      <div class="sub" id="kpi-leads-sub">Loading…</div>
-    </div>
-  </div>
-
-  <!-- Section 1: Sales Charts -->
-  <div class="section-grid">
-    <div class="card">
-      <div class="card-label">1. Sales</div>
-      <h3>ABP Target vs MTD Net Sale</h3>
-      <div class="legend">
-        <span><span class="leg-dot" style="background:#378ADD"></span>ABP Target</span>
-        <span><span class="leg-dot" style="background:#1D9E75"></span>MTD Net Sale</span>
-      </div>
-      <div class="chart-wrap" style="height:230px">
-        <canvas id="c1"></canvas>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-label">1. Sales</div>
-      <h3>Achievement % by Segment</h3>
-      <div class="legend">
-        <span><span class="leg-dot" style="background:#1D9E75"></span>&gt;100%</span>
-        <span><span class="leg-dot" style="background:#BA7517"></span>50–100%</span>
-        <span><span class="leg-dot" style="background:#E24B4A"></span>&lt;50%</span>
-      </div>
-      <div class="chart-wrap" style="height:230px">
-        <canvas id="c2"></canvas>
-      </div>
+    <div class="kpi-card k-purple">
+      <div class="kpi-label">Total Leads</div>
+      <div class="kpi-value" id="kpi-leads">—</div>
+      <div class="kpi-sub" id="kpi-leads-sub">Loading…</div>
+      <div class="prog-wrap"><div class="prog-bar" id="kpi-leads-bar" style="background:#6366f1;width:0%"></div></div>
     </div>
   </div>
 
-  <!-- Section 1: Sales Table -->
-  <div class="section-grid">
-    <div class="card full-card">
-      <div class="card-label">1. Sales — Full Detail</div>
-      <h3>MTD Sales Achievement by Segment</h3>
+  <!-- SALES -->
+  <div class="section-title">1 · Sales Performance</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-tag">Sales</div>
+      <div class="card-title">ABP Target vs MTD Net Sale</div>
+      <div class="legend">
+        <div class="leg"><div class="leg-dot" style="background:#3b82f6"></div>ABP Target</div>
+        <div class="leg"><div class="leg-dot" style="background:#16a34a"></div>MTD Net Sale</div>
+      </div>
+      <div class="chart-wrap" style="height:220px"><canvas id="c1"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-tag">Sales</div>
+      <div class="card-title">Achievement % by Segment</div>
+      <div class="legend">
+        <div class="leg"><div class="leg-dot" style="background:#16a34a"></div>&gt;100%</div>
+        <div class="leg"><div class="leg-dot" style="background:#f59e0b"></div>50–100%</div>
+        <div class="leg"><div class="leg-dot" style="background:#ef4444"></div>&lt;50%</div>
+      </div>
+      <div class="chart-wrap" style="height:220px"><canvas id="c2"></canvas></div>
+    </div>
+  </div>
+  <div class="grid-1">
+    <div class="card">
+      <div class="card-tag">Sales — Full Detail</div>
+      <div class="card-title">MTD Sales Achievement by Segment</div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr>
-              <th>Segment</th>
-              <th>ABP Target</th>
-              <th>Actual Target Taken</th>
-              <th>MTD Plan Till Date</th>
-              <th>MTD Bill Till Date</th>
-              <th>MTD Net Sale</th>
-              <th>Achievement %</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="salesTbody"><tr><td colspan="8" style="text-align:center;color:#aaa;padding:20px">Loading…</td></tr></tbody>
+          <thead><tr>
+            <th>Segment</th><th>ABP Target</th><th>Actual Target</th>
+            <th>MTD Plan</th><th>MTD Bill</th><th>MTD Net Sale</th>
+            <th>Achievement %</th><th>Status</th>
+          </tr></thead>
+          <tbody id="salesTbody"><tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-muted)">Loading…</td></tr></tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- Section 2: Service -->
-  <div class="section-grid">
+  <!-- SERVICE -->
+  <div class="section-title">2 · Service</div>
+  <div class="grid-2">
     <div class="card">
-      <div class="card-label">2. Service — ISF (EV)</div>
-      <h3>In-Service Flow Metrics MTD</h3>
-      <div class="mini-grid">
-        <div class="mstat"><div class="ml">Inflow</div><div class="mv" id="isf-inflow">—</div><div class="ms" id="isf-inflow-today">Today: —</div></div>
-        <div class="mstat"><div class="ml">Outflow</div><div class="mv" id="isf-outflow">—</div><div class="ms" id="isf-outflow-today">Today: —</div></div>
-        <div class="mstat"><div class="ml">ISF Taken</div><div class="mv" id="isf-taken">—</div><div class="ms" id="isf-taken-today">Today: —</div></div>
-        <div class="mstat"><div class="ml">Satisfied</div><div class="mv" style="color:#1D9E75" id="isf-satisfied">—</div><div class="ms" id="isf-satisfied-today">Today: —</div></div>
-        <div class="mstat"><div class="ml">Dissatisfied</div><div class="mv" style="color:#E24B4A" id="isf-dissatisfied">—</div><div class="ms" id="isf-dissatisfied-today">Today: —</div></div>
-        <div class="mstat"><div class="ml">Satisfaction %</div><div class="mv" style="color:#BA7517" id="isf-pct">—</div><div class="ms">MTD</div></div>
+      <div class="card-tag">Service — ISF (EV)</div>
+      <div class="card-title">In-Service Flow Metrics MTD</div>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="sl">Inflow</div><div class="sv" id="isf-inflow">—</div><div class="ss" id="isf-inflow-t">Today: —</div></div>
+        <div class="stat-box"><div class="sl">Outflow</div><div class="sv" id="isf-outflow">—</div><div class="ss" id="isf-outflow-t">Today: —</div></div>
+        <div class="stat-box"><div class="sl">ISF Taken</div><div class="sv" id="isf-taken">—</div><div class="ss" id="isf-taken-t">Today: —</div></div>
+        <div class="stat-box"><div class="sl">Satisfied</div><div class="sv" style="color:var(--green)" id="isf-satisfied">—</div><div class="ss" id="isf-satisfied-t">Today: —</div></div>
+        <div class="stat-box"><div class="sl">Dissatisfied</div><div class="sv" style="color:var(--red)" id="isf-dissatisfied">—</div><div class="ss" id="isf-dissatisfied-t">Today: —</div></div>
+        <div class="stat-box"><div class="sl">Satisfaction %</div><div class="sv" style="color:var(--amber)" id="isf-pct">—</div><div class="ss">MTD</div></div>
       </div>
-      <div class="chart-wrap" style="height:140px">
-        <canvas id="c3"></canvas>
-      </div>
+      <div class="chart-wrap" style="height:130px"><canvas id="c3"></canvas></div>
     </div>
     <div class="card">
-      <div class="card-label">2. Service — PSF</div>
-      <h3>PSF EV & PSF ICE Metrics MTD</h3>
-      <div class="psf-grid">
+      <div class="card-tag">Service — PSF</div>
+      <div class="card-title">PSF EV &amp; PSF ICE Metrics MTD</div>
+      <div class="psf-cols">
         <div>
           <div class="psf-head psf-ev">PSF EV</div>
-          <div class="mstat" style="margin-bottom:6px"><div class="ml">PSF Taken</div><div class="mv" id="psfev-taken">—</div></div>
-          <div class="mstat" style="margin-bottom:6px"><div class="ml">Satisfied</div><div class="mv" style="color:#1D9E75" id="psfev-satisfied">—</div></div>
-          <div class="mstat" style="margin-bottom:6px"><div class="ml">Dissatisfied</div><div class="mv" id="psfev-dissatisfied">—</div></div>
-          <div class="mstat"><div class="ml">Satisfaction %</div><div class="mv" style="color:#1D9E75" id="psfev-pct">—</div></div>
+          <div class="psf-stat"><div class="pl">PSF Taken</div><div class="pv" id="psfev-taken">—</div></div>
+          <div class="psf-stat"><div class="pl">Satisfied</div><div class="pv" style="color:var(--green)" id="psfev-satisfied">—</div></div>
+          <div class="psf-stat"><div class="pl">Dissatisfied</div><div class="pv" id="psfev-dissatisfied">—</div></div>
+          <div class="psf-stat"><div class="pl">Satisfaction %</div><div class="pv" style="color:var(--green)" id="psfev-pct">—</div></div>
         </div>
         <div>
           <div class="psf-head psf-ice">PSF ICE</div>
-          <div class="mstat" style="margin-bottom:6px"><div class="ml">Inflow</div><div class="mv" id="psfice-inflow">—</div></div>
-          <div class="mstat" style="margin-bottom:6px"><div class="ml">Outflow</div><div class="mv" id="psfice-outflow">—</div></div>
-          <div class="mstat" style="margin-bottom:6px"><div class="ml">ISF Taken</div><div class="mv" id="psfice-taken">—</div></div>
-          <div class="mstat"><div class="ml">Satisfaction %</div><div class="mv" style="color:#1D9E75" id="psfice-pct">—</div></div>
+          <div class="psf-stat"><div class="pl">Inflow</div><div class="pv" id="psfice-inflow">—</div></div>
+          <div class="psf-stat"><div class="pl">Outflow</div><div class="pv" id="psfice-outflow">—</div></div>
+          <div class="psf-stat"><div class="pl">ISF Taken</div><div class="pv" id="psfice-taken">—</div></div>
+          <div class="psf-stat"><div class="pl">Satisfaction %</div><div class="pv" style="color:var(--green)" id="psfice-pct">—</div></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Section 3: Marketing -->
-  <div class="section-grid">
+  <!-- MARKETING -->
+  <div class="section-title">3 · Marketing &amp; Leads</div>
+  <div class="grid-2">
     <div class="card">
-      <div class="card-label">3. Marketing</div>
-      <h3>Leads Pipeline by Segment</h3>
+      <div class="card-tag">Marketing</div>
+      <div class="card-title">Leads Pipeline by Segment</div>
       <div class="legend">
-        <span><span class="leg-dot" style="background:#7F77DD"></span>Received</span>
-        <span><span class="leg-dot" style="background:#378ADD"></span>Telecalled</span>
-        <span><span class="leg-dot" style="background:#1D9E75"></span>Connected</span>
+        <div class="leg"><div class="leg-dot" style="background:#8b5cf6"></div>Received</div>
+        <div class="leg"><div class="leg-dot" style="background:#3b82f6"></div>Telecalled</div>
+        <div class="leg"><div class="leg-dot" style="background:#16a34a"></div>Connected</div>
       </div>
-      <div class="chart-wrap" style="height:220px">
-        <canvas id="c4"></canvas>
-      </div>
+      <div class="chart-wrap" style="height:210px"><canvas id="c4"></canvas></div>
     </div>
     <div class="card">
-      <div class="card-label">3. Marketing — Customer Segmentation</div>
-      <h3>Connected Lead Status</h3>
-      <div class="chart-wrap" style="height:220px">
-        <canvas id="c5"></canvas>
-      </div>
+      <div class="card-tag">Marketing — Segmentation</div>
+      <div class="card-title">Connected Lead Status</div>
+      <div class="chart-wrap" style="height:210px"><canvas id="c5"></canvas></div>
     </div>
   </div>
 
-  <!-- Section 4: Collection -->
-  <div class="section-grid">
-    <div class="card full-card">
-      <div class="card-label">4. Collection — MAW Daily Report (Rs in Crore)</div>
-      <h3>MTD Collection Summary</h3>
+  <!-- COLLECTION -->
+  <div class="section-title">4 · Collection</div>
+  <div class="grid-1">
+    <div class="card">
+      <div class="card-tag">Collection — MAW Daily Report (Rs in Crore)</div>
+      <div class="card-title">MTD Collection Summary</div>
       <div class="table-wrap">
         <table>
-          <thead>
-            <tr>
-              <th>Category</th>
-              <th>Sales Tgt (ABP)</th>
-              <th>Actual Sales Tgt</th>
-              <th>Collection Tgt</th>
-              <th>MTD Sales Ach</th>
-              <th>MTD Collection</th>
-              <th>Sales Ach %</th>
-              <th>Collection Ach %</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody id="collectionTbody"><tr><td colspan="9" style="text-align:center;color:#aaa;padding:20px">Loading…</td></tr></tbody>
+          <thead><tr>
+            <th>Category</th><th>Sales Tgt (ABP)</th><th>Actual Sales Tgt</th>
+            <th>Collection Tgt</th><th>MTD Sales Ach</th><th>MTD Collection</th>
+            <th>Sales Ach %</th><th>Collection Ach %</th><th>Status</th>
+          </tr></thead>
+          <tbody id="collectionTbody"><tr><td colspan="9" style="text-align:center;padding:20px;color:var(--text-muted)">Loading…</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -252,594 +326,314 @@ td{padding:7px 10px;color:#1a1a2e;border-bottom:1px solid #f0f2f5;white-space:no
 </div>
 
 <script>
-// ============================================================
-// CONFIGURATION — Your Google Sheets published CSV URLs
-// Main sheet (Sales data is on the first/default sheet)
-// If you have multiple tabs, publish each tab separately and add its URL below
-// ============================================================
-const SHEET_URLS = {
-  // This is your main published CSV URL
-  main: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQI-IU-Aah_fVhQgPXlsWnZ4QF0_GF8fVqlKUxjmbYNn_zTZh3qTkGM8gNgLrcdk-jMnf2mjD1FGeU/pub?output=csv'
-  // If you publish other tabs separately, add them like:
-  // service: 'https://docs.google.com/spreadsheets/d/e/YOUR_ID/pub?gid=SHEET_TAB_ID&output=csv',
-};
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQI-IU-Aah_fVhQgPXlsWnZ4QF0_GF8fVqlKUxjmbYNn_zTZh3qTkGM8gNgLrcdk-jMnf2mjD1FGeU/pub?output=csv';
+const PROXY   = 'https://corsproxy.io/?';
+let CH = {};
 
-// Chart instances (kept so we can destroy & redraw on refresh)
-let charts = {};
-
-// ============================================================
-// CSV PARSER
-// ============================================================
 function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  return lines.map(line => {
-    const cells = [];
-    let cur = '', inQ = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
+  return text.trim().split('\n').map(line => {
+    const cells = []; let cur = '', inQ = false;
+    for (const ch of line) {
       if (ch === '"') { inQ = !inQ; }
       else if (ch === ',' && !inQ) { cells.push(cur.trim()); cur = ''; }
-      else { cur += ch; }
+      else cur += ch;
     }
     cells.push(cur.trim());
     return cells;
   });
 }
 
-function n(val) {
-  // Parse number, stripping % signs and commas
-  if (val === undefined || val === null) return 0;
-  const s = String(val).replace(/[,%]/g, '').trim();
-  const f = parseFloat(s);
+function N(v) {
+  if (v===undefined||v===null) return 0;
+  const f = parseFloat(String(v).replace(/[,%$Rs\s]/g,''));
   return isNaN(f) ? 0 : f;
 }
-
-function pct(val) {
-  // Parse percentage value (handles "57.8%" or "0.578")
-  const s = String(val).replace(/[,]/g, '').trim();
+function P(v) {
+  const s = String(v).trim();
   if (s.includes('%')) return parseFloat(s);
   const f = parseFloat(s);
-  if (isNaN(f)) return 0;
-  // If value looks like a decimal fraction (0–1), convert to %
-  return f <= 1.0 && f > 0 ? f * 100 : f;
+  return isNaN(f) ? 0 : (f>0&&f<=1 ? f*100 : f);
+}
+function T(id, v) { const e=document.getElementById(id); if(e) e.textContent=v; }
+function B(id, p) { const e=document.getElementById(id); if(e) e.style.width=Math.min(100,Math.max(0,p))+'%'; }
+
+function findRow(rows, kw, maxC=8) {
+  const k = kw.toLowerCase();
+  for (let i=0;i<rows.length;i++)
+    for (let c=0;c<Math.min(rows[i].length,maxC);c++)
+      if (String(rows[i][c]).toLowerCase().includes(k)) return i;
+  return -1;
 }
 
-// ============================================================
-// MAIN DATA LOADER
-// ============================================================
-async function fetchWithFallback(url) {
-  // Try direct fetch first
-  try {
-    const resp = await fetch(url);
-    if (resp.ok) return await resp.text();
-  } catch(e) { /* try proxy */ }
-  // Fallback: CORS proxy
-  const proxy = 'https://corsproxy.io/?' + encodeURIComponent(url);
-  const resp2 = await fetch(proxy);
-  if (!resp2.ok) throw new Error('Network error: ' + resp2.status);
-  return await resp2.text();
+async function fetchCSV() {
+  try { const r=await fetch(CSV_URL); if(r.ok) return await r.text(); } catch(e){}
+  const r2=await fetch(PROXY+encodeURIComponent(CSV_URL));
+  if(!r2.ok) throw new Error('Status '+r2.status);
+  return await r2.text();
 }
 
 async function loadData() {
-  const status = document.getElementById('statusBar');
-  status.className = 'status-bar loading';
-  status.textContent = '⟳ Loading live data from Google Sheets…';
-
+  const bar = document.getElementById('statusBar');
+  bar.className='status-bar loading'; bar.textContent='⟳ Loading live data from Google Sheets…';
   try {
-    const text = await fetchWithFallback(SHEET_URLS.main);
+    const text = await fetchCSV();
     const rows = parseCSV(text);
-
-    // ---- Parse sections by scanning for known header keywords ----
-    parseSalesSection(rows);
-    parseServiceSection(rows);
-    parseMarketingSection(rows);
-    parseCollectionSection(rows);
-    updateDateBadge(rows);
-
-    status.className = 'status-bar success';
-    status.textContent = '✓ Dashboard updated from Google Sheets — ' + new Date().toLocaleTimeString();
-    setTimeout(() => { status.style.display = 'none'; }, 4000);
-
-  } catch (err) {
-    status.className = 'status-bar error';
-    status.textContent = '✗ Could not load live data: ' + err.message + '. Showing last known data.';
+    updateDate(rows);
+    parseSales(rows);
+    parseService(rows);
+    parseMarketing(rows);
+    parseCollection(rows);
+    bar.className='status-bar success';
+    bar.textContent='✓ Dashboard updated — '+new Date().toLocaleTimeString();
+    setTimeout(()=>bar.style.display='none', 4000);
+  } catch(err) {
+    bar.className='status-bar error';
+    bar.textContent='✗ Could not load data: '+err.message;
     console.error(err);
   }
 }
 
-// ============================================================
-// FIND ROW INDEX containing a keyword
-// ============================================================
-function findRow(rows, keyword, colIndex = 0) {
-  const kw = keyword.toLowerCase();
-  for (let i = 0; i < rows.length; i++) {
-    for (let c = colIndex; c < Math.min(rows[i].length, colIndex + 5); c++) {
-      if (String(rows[i][c]).toLowerCase().includes(kw)) return i;
-    }
-  }
-  return -1;
-}
-
-// ============================================================
-// DATE BADGE
-// ============================================================
-function updateDateBadge(rows) {
-  // Date is typically in row 0 col 1 (B1)
-  let dateVal = '';
-  for (let i = 0; i < Math.min(5, rows.length); i++) {
-    for (let c = 0; c < rows[i].length; c++) {
-      const v = String(rows[i][c]).trim();
-      if (v.match(/\d{4}-\d{2}-\d{2}/) || v.match(/\d{4}\/\d{2}\/\d{2}/)) {
-        dateVal = v; break;
+function updateDate(rows) {
+  for (let i=0;i<Math.min(6,rows.length);i++)
+    for (const c of rows[i]) {
+      const v=String(c).trim();
+      if (v.match(/\d{4}-\d{2}-\d{2}/)) {
+        document.getElementById('dateText').textContent=v;
+        document.getElementById('footer').innerHTML='MAW Vriddhi Commercial Vehicles Pvt. Ltd. &nbsp;·&nbsp; CEO Dashboard &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; '+v;
+        return;
       }
     }
-    if (dateVal) break;
-  }
-  const badge = document.getElementById('dateBadge');
-  badge.innerHTML = `<span class="live-dot"></span>Live · ${dateVal || new Date().toLocaleDateString()}`;
-  document.getElementById('footer').innerHTML =
-    `MAW Vriddhi Commercial Vehicles Pvt. Ltd. &nbsp;·&nbsp; CEO Dashboard &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; ${dateVal || ''}`;
 }
 
-// ============================================================
-// 1. SALES SECTION
-// Row structure (based on your screenshot):
-// Header row: Segment | ABP Target | Actual Target Taken | MTD Plan Till | MTD Bill Till date | MTD Cancel | MTD Net Sale | Achi(ABP)%
-// ============================================================
-function parseSalesSection(rows) {
-  const headerRow = findRow(rows, 'Segment');
-  if (headerRow < 0) { console.warn('Sales header not found'); return; }
+const GC='rgba(0,0,0,0.05)', TC='#9ca3af';
+function mkChart(id, type, data, opts={}) {
+  if (CH[id]) CH[id].destroy();
+  CH[id]=new Chart(document.getElementById(id),{type,data,options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:GC},ticks:{color:TC,font:{size:10,family:'DM Sans'}}},
+      y:{grid:{color:GC},ticks:{color:TC,font:{size:10,family:'DM Sans'}}}
+    }, ...opts
+  }});
+}
 
-  // Find column indices from header
-  // Your sheet: Segment | ABP Target | Actual Target Taken | MTD Plan Till | MTD Bill Till date | MTD Cancel | MTD Net Sale | Achi(ABP)%
-  const hdr = rows[headerRow].map(c => String(c).toLowerCase().trim());
-  const iSeg  = hdr.findIndex(h => h.includes('segment'));
-  const iAbp  = hdr.findIndex(h => h.includes('abp'));
-  const iAct  = hdr.findIndex(h => h.includes('actual'));
-  const iPlan = hdr.findIndex(h => h.includes('plan'));
-  const iBill = hdr.findIndex(h => h.includes('bill'));
-  // Net Sale column comes after Cancel — find it explicitly
-  let iNet = hdr.findIndex(h => h.includes('net sale'));
-  // Fallback: if header says 'net sale' not found, it's bill+2 (skipping cancel col)
-  if (iNet < 0 && iBill >= 0) iNet = iBill + 2;
-  const iPct  = hdr.findIndex(h => h.includes('achi') || h.includes('ach(') || h.includes('ach %'));
+// ── SALES ──
+function parseSales(rows) {
+  const hi = findRow(rows,'segment');
+  if (hi<0) return;
+  const hdr = rows[hi].map(c=>String(c).toLowerCase().trim());
 
-  const salesData = [];
-  for (let i = headerRow + 1; i < rows.length; i++) {
-    const row = rows[i];
-    const seg = row[iSeg] ? String(row[iSeg]).trim() : '';
-    if (!seg || seg === '') continue;
-    // Stop if we hit next section header
-    if (seg.toLowerCase().includes('service') || seg.toLowerCase().includes('marketing') || seg.toLowerCase().includes('collection')) break;
+  const iSeg  = hdr.findIndex(h=>h.includes('segment'));
+  const iAbp  = hdr.findIndex(h=>h.includes('abp'));
+  const iAct  = hdr.findIndex(h=>h.includes('actual'));
+  const iPlan = hdr.findIndex(h=>h.includes('plan'));
+  const iBill = hdr.findIndex(h=>h.includes('bill'));
+  // Net Sale: explicit or bill+2 to skip Cancel column
+  let iNet = hdr.findIndex(h=>h.includes('net sale'));
+  if (iNet<0 && iBill>=0) iNet = iBill+2;
+  // Ach%: last column or explicit
+  let iPct = hdr.findIndex(h=>h.includes('achi')||h.includes('ach('));
+  if (iPct<0) iPct = hdr.length-1;
 
-    const abp  = n(row[iAbp]);
-    const act  = iAct >= 0 ? n(row[iAct]) : 0;
-    const plan = iPlan >= 0 ? n(row[iPlan]) : 0;
-    const bill = iBill >= 0 ? n(row[iBill]) : 0;
-    const net  = iNet >= 0 ? n(row[iNet]) : 0;
-    const achVal = iPct >= 0 ? row[iPct] : null;
-    const achievement = achVal ? pct(achVal) : (abp > 0 ? (net / abp * 100) : 0);
-
-    salesData.push({ seg, abp, act, plan, bill, net, pct: achievement });
+  const rows2 = [];
+  for (let i=hi+1;i<rows.length;i++) {
+    const row=rows[i];
+    const seg=String(row[iSeg]||'').trim();
+    if (!seg) continue;
+    if (['service','marketing','collection','psf','isf'].some(k=>seg.toLowerCase().startsWith(k))) break;
+    const abp=N(row[iAbp]), act=iAct>=0?N(row[iAct]):0, plan=iPlan>=0?N(row[iPlan]):0;
+    const bill=iBill>=0?N(row[iBill]):0, net=iNet>=0?N(row[iNet]):0;
+    const rawP=iPct>=0?row[iPct]:null;
+    const ach=rawP?P(rawP):(abp>0?net/abp*100:0);
+    rows2.push({seg,abp,act,plan,bill,net,ach});
   }
+  if (!rows2.length) return;
 
-  if (salesData.length === 0) { console.warn('No sales rows parsed'); return; }
+  const total=rows2.find(r=>r.seg.toLowerCase()==='total');
+  const segs=rows2.filter(r=>r.seg.toLowerCase()!=='total');
 
-  // Separate total row
-  const totalRow = salesData.find(r => r.seg.toLowerCase().includes('total'));
-  const segRows  = salesData.filter(r => !r.seg.toLowerCase().includes('total'));
+  const kNet=total?total.net:segs.reduce((s,r)=>s+r.net,0);
+  const kAbp=total?total.abp:segs.reduce((s,r)=>s+r.abp,0);
+  const kPct=total?total.ach:(kAbp>0?kNet/kAbp*100:0);
+  T('kpi-sales',`${kNet} / ${kAbp}`);
+  T('kpi-sales-sub',`${kPct.toFixed(1)}% of ABP target`);
+  B('kpi-sales-bar',kPct);
 
-  // Update KPI — fallback to summing segments if total row not found
-  const kpiNet = totalRow ? totalRow.net : segRows.reduce((s,r)=>s+r.net,0);
-  const kpiAbp = totalRow ? totalRow.abp : segRows.reduce((s,r)=>s+r.abp,0);
-  const kpiPct = totalRow ? totalRow.pct : (kpiAbp > 0 ? kpiNet/kpiAbp*100 : 0);
-  document.getElementById('kpi-sales').textContent = `${kpiNet} / ${kpiAbp}`;
-  document.getElementById('kpi-sales-sub').textContent = `${kpiPct.toFixed(1)}% of ABP target`;
+  const labels=segs.map(r=>r.seg.length>13?r.seg.slice(0,13)+'…':r.seg);
+  mkChart('c1','bar',{labels,datasets:[
+    {label:'ABP Target',data:segs.map(r=>r.abp),backgroundColor:'#3b82f6',borderRadius:4},
+    {label:'MTD Net Sale',data:segs.map(r=>r.net),backgroundColor:'#16a34a',borderRadius:4}
+  ]},{scales:{x:{grid:{color:GC},ticks:{color:TC,font:{size:10},maxRotation:35}},y:{grid:{color:GC},ticks:{color:TC,font:{size:10}}}}});
 
-  // Render charts
-  renderSalesCharts(segRows);
+  const pcts=segs.map(r=>r.ach);
+  mkChart('c2','bar',{labels,datasets:[{label:'Ach %',data:pcts,borderRadius:4,
+    backgroundColor:pcts.map(v=>v>100?'#16a34a':v>=50?'#f59e0b':'#ef4444')}]},
+    {indexAxis:'y',scales:{x:{grid:{color:GC},ticks:{color:TC,font:{size:10},callback:v=>v+'%'}},y:{grid:{color:GC},ticks:{color:TC,font:{size:10}}}}});
 
-  // Render table
-  const tbody = document.getElementById('salesTbody');
-  tbody.innerHTML = salesData.map(r => {
-    const isTotal = r.seg.toLowerCase().includes('total');
-    const bc = r.pct > 100 ? 'green' : r.pct >= 50 ? 'amber' : 'red';
-    const bt = r.pct > 100 ? 'Above' : r.pct >= 50 ? 'Partial' : 'Below';
-    return `<tr${isTotal ? ' class="trow-total"' : ''}>
-      <td>${r.seg}</td>
-      <td>${r.abp}</td>
-      <td>${r.act}</td>
-      <td>${r.plan}</td>
-      <td>${r.bill}</td>
-      <td><strong>${r.net}</strong></td>
-      <td>${r.pct.toFixed(1)}%</td>
-      <td>${isTotal ? '<span class="badge blue">Overall</span>' : `<span class="badge ${bc}">${bt}</span>`}</td>
+  document.getElementById('salesTbody').innerHTML=rows2.map(r=>{
+    const isT=r.seg.toLowerCase()==='total';
+    const bc=r.ach>100?'g':r.ach>=50?'a':'r';
+    const bt=r.ach>100?'Above':r.ach>=50?'Partial':'Below';
+    return `<tr${isT?' class="total-row"':''}>
+      <td>${r.seg}</td><td>${r.abp}</td><td>${r.act}</td><td>${r.plan}</td>
+      <td>${r.bill}</td><td><strong>${r.net}</strong></td>
+      <td>${r.ach.toFixed(1)}%</td>
+      <td>${isT?'<span class="badge b">Overall</span>':`<span class="badge ${bc}">${bt}</span>`}</td>
     </tr>`;
   }).join('');
 }
 
-function renderSalesCharts(segRows) {
-  const segs = segRows.map(r => r.seg.length > 14 ? r.seg.substring(0, 14) + '…' : r.seg);
-  const gc = 'rgba(0,0,0,0.06)', tc = '#888';
-  const base = {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { grid: { color: gc }, ticks: { color: tc, font: { size: 11 } } },
-      y: { grid: { color: gc }, ticks: { color: tc, font: { size: 11 } } }
-    }
-  };
+// ── SERVICE ──
+function parseService(rows) {
+  const si = findRow(rows,'inflow vehicle');
+  if (si<0) return;
 
-  if (charts.c1) charts.c1.destroy();
-  charts.c1 = new Chart(document.getElementById('c1'), {
-    type: 'bar',
-    data: {
-      labels: segs,
-      datasets: [
-        { label: 'ABP Target', data: segRows.map(r => r.abp), backgroundColor: '#378ADD' },
-        { label: 'MTD Net Sale', data: segRows.map(r => r.net), backgroundColor: '#1D9E75' }
-      ]
-    },
-    options: { ...base, scales: { ...base.scales, x: { ...base.scales.x, ticks: { ...base.scales.x.ticks, maxRotation: 35 } } } }
-  });
-
-  const pcts = segRows.map(r => r.pct);
-  if (charts.c2) charts.c2.destroy();
-  charts.c2 = new Chart(document.getElementById('c2'), {
-    type: 'bar',
-    data: {
-      labels: segs,
-      datasets: [{
-        label: 'Ach %', data: pcts,
-        backgroundColor: pcts.map(v => v > 100 ? '#1D9E75' : v >= 50 ? '#BA7517' : '#E24B4A')
-      }]
-    },
-    options: {
-      ...base, indexAxis: 'y',
-      scales: {
-        x: { ...base.scales.x, ticks: { ...base.scales.x.ticks, callback: v => v + '%' } },
-        y: { ...base.scales.y }
-      }
-    }
-  });
-}
-
-// ============================================================
-// 2. SERVICE SECTION
-// ISF block: Metrics | Today | MTD columns
-// PSF EV and PSF ICE blocks
-// ============================================================
-function parseServiceSection(rows) {
-  // Find ISF section
-  const isfRow = findRow(rows, 'Inflow vehicle');
-  if (isfRow >= 0) {
-    // Rows: Inflow, Outflow, ISF taken, Satisfied Customer, Dissatisfied Customers, Satisfied customer (%)
-    // Columns: label(B), Today(C), MTD(D) — adjust if different
-    const getISF = (keyword) => {
-      const r = findRow(rows, keyword);
-      if (r < 0) return [0, 0];
-      // Find numeric columns
-      const today = rows[r].find((c, i) => i > 0 && c !== '' && !isNaN(parseFloat(c)) && !String(rows[isfRow-1]?.[i]||'').toLowerCase().includes('mtd'));
-      const mtd   = rows[r].slice(1).reverse().find(c => c !== '' && !isNaN(parseFloat(c)));
-      return [n(today), n(mtd)];
-    };
-
-    // Parse ISF rows directly by position relative to isfRow
-    const parseISFRows = (startRow) => {
-      const labels = ['Inflow vehicle','Outflow vehicle','ISF taken','Satisfied Customer','Dissatisfied Customers','Satisfied customer (%)'];
-      const result = {};
-      for (let li = 0; li < labels.length; li++) {
-        const ri = startRow + li;
-        if (ri >= rows.length) break;
-        const row = rows[ri];
-        // Get Today (first non-label numeric) and MTD (last numeric)
-        const nums = row.slice(1).map(c => String(c).replace('%','').trim()).filter(c => c !== '' && !isNaN(parseFloat(c))).map(Number);
-        result[labels[li]] = { today: nums[0] || 0, mtd: nums[nums.length - 1] || 0 };
-      }
-      return result;
-    };
-
-    const isf = parseISFRows(isfRow);
-
-    setText('isf-inflow',     isf['Inflow vehicle']?.mtd ?? '—');
-    setText('isf-inflow-today', 'Today: ' + (isf['Inflow vehicle']?.today ?? '—'));
-    setText('isf-outflow',    isf['Outflow vehicle']?.mtd ?? '—');
-    setText('isf-outflow-today','Today: ' + (isf['Outflow vehicle']?.today ?? '—'));
-    setText('isf-taken',      isf['ISF taken']?.mtd ?? '—');
-    setText('isf-taken-today','Today: ' + (isf['ISF taken']?.today ?? '—'));
-    setText('isf-satisfied',  isf['Satisfied Customer']?.mtd ?? '—');
-    setText('isf-satisfied-today','Today: ' + (isf['Satisfied Customer']?.today ?? '—'));
-    setText('isf-dissatisfied', isf['Dissatisfied Customers']?.mtd ?? '—');
-    setText('isf-dissatisfied-today','Today: ' + (isf['Dissatisfied Customers']?.today ?? '—'));
-    const isfPctVal = isf['Satisfied customer (%)']?.mtd ?? 0;
-    setText('isf-pct', isfPctVal > 1 ? isfPctVal.toFixed(1) + '%' : (isfPctVal * 100).toFixed(1) + '%');
-
-    // KPI ISF
-    const satisfied = isf['Satisfied Customer']?.mtd ?? 0;
-    const taken = isf['ISF taken']?.mtd ?? 0;
-    const satisfiedPct = taken > 0 ? (satisfied / taken * 100) : isfPctVal;
-    document.getElementById('kpi-isf').textContent = satisfiedPct.toFixed(1) + '%';
-    document.getElementById('kpi-isf-sub').textContent = `${satisfied} satisfied / ${taken} ISF taken`;
-
-    // ISF chart
-    if (charts.c3) charts.c3.destroy();
-    charts.c3 = new Chart(document.getElementById('c3'), {
-      type: 'bar',
-      data: {
-        labels: ['Inflow','Outflow','ISF Taken','Satisfied','Dissatisfied'],
-        datasets: [{
-          data: [
-            isf['Inflow vehicle']?.mtd,
-            isf['Outflow vehicle']?.mtd,
-            isf['ISF taken']?.mtd,
-            isf['Satisfied Customer']?.mtd,
-            isf['Dissatisfied Customers']?.mtd
-          ],
-          backgroundColor: ['#378ADD','#0096C7','#7F77DD','#1D9E75','#E24B4A']
-        }]
-      },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: {
-          x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#888', font: { size: 11 } } },
-          y: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#888', font: { size: 11 } } }
-        }
-      }
-    });
+  const keys=['Inflow','Outflow','ISF Taken','Satisfied','Dissatisfied','Satisfaction %'];
+  const data={};
+  for (let k=0;k<6;k++) {
+    const row=rows[si+k]||[];
+    const nums=row.slice(1).map(c=>String(c).replace(/[%,]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);
+    data[keys[k]]={today:nums[0]??0, mtd:nums[nums.length-1]??0};
   }
 
-  // PSF EV — find "PSF taken" row
-  const psfEvRow = findRow(rows, 'PSF taken');
-  if (psfEvRow >= 0) {
-    const parseBlock = (startRow, numRows) => {
-      const result = {};
-      for (let i = 0; i < numRows; i++) {
-        const row = rows[startRow + i] || [];
-        const label = String(row[0] || row[1] || '').trim();
-        const nums = row.slice(1).map(c => String(c).replace('%','').trim()).filter(c => c !== '' && !isNaN(parseFloat(c))).map(Number);
-        if (label) result[label.toLowerCase()] = { today: nums[0] || 0, mtd: nums[nums.length - 1] || 0 };
-      }
-      return result;
-    };
+  T('isf-inflow',        data['Inflow']?.mtd??'—');
+  T('isf-inflow-t',      'Today: '+(data['Inflow']?.today??'—'));
+  T('isf-outflow',       data['Outflow']?.mtd??'—');
+  T('isf-outflow-t',     'Today: '+(data['Outflow']?.today??'—'));
+  T('isf-taken',         data['ISF Taken']?.mtd??'—');
+  T('isf-taken-t',       'Today: '+(data['ISF Taken']?.today??'—'));
+  T('isf-satisfied',     data['Satisfied']?.mtd??'—');
+  T('isf-satisfied-t',   'Today: '+(data['Satisfied']?.today??'—'));
+  T('isf-dissatisfied',  data['Dissatisfied']?.mtd??'—');
+  T('isf-dissatisfied-t','Today: '+(data['Dissatisfied']?.today??'—'));
 
-    const psfEV = parseBlock(psfEvRow, 4);
-    const keys = Object.keys(psfEV);
+  const sat=data['Satisfied']?.mtd??0, tak=data['ISF Taken']?.mtd??1;
+  const ip=Math.round(sat/tak*100);
+  T('isf-pct',ip+'%'); T('kpi-isf',ip+'%');
+  T('kpi-isf-sub',`${sat} satisfied / ${tak} ISF taken`);
+  B('kpi-isf-bar',ip);
 
-    setText('psfev-taken',      psfEV[keys[0]]?.mtd ?? '—');
-    setText('psfev-satisfied',  psfEV[keys[1]]?.mtd ?? '—');
-    setText('psfev-dissatisfied', psfEV[keys[2]]?.mtd ?? '—');
-    const psfEvPct = psfEV[keys[3]]?.mtd ?? 0;
-    setText('psfev-pct', psfEvPct > 1 ? psfEvPct.toFixed(1) + '%' : (psfEvPct * 100).toFixed(1) + '%');
+  mkChart('c3','bar',{
+    labels:['Inflow','Outflow','ISF Taken','Satisfied','Dissatisfied'],
+    datasets:[{data:[data['Inflow']?.mtd,data['Outflow']?.mtd,data['ISF Taken']?.mtd,data['Satisfied']?.mtd,data['Dissatisfied']?.mtd],
+      backgroundColor:['#3b82f6','#06b6d4','#8b5cf6','#16a34a','#ef4444'],borderRadius:4}]
+  },{});
+
+  const psfEV=findRow(rows,'psf taken');
+  if (psfEV>=0) {
+    const gN=ri=>{const row=rows[ri]||[];const n=row.slice(1).map(c=>String(c).replace(/[%,]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);return n[n.length-1]??0;};
+    T('psfev-taken',gN(psfEV)); T('psfev-satisfied',gN(psfEV+1));
+    T('psfev-dissatisfied',gN(psfEV+2));
+    const ep=gN(psfEV+3); T('psfev-pct',(ep>1?ep.toFixed(1):(ep*100).toFixed(1))+'%');
   }
 
-  // PSF ICE — find second "Inflow vehicle" after ISF one
-  let psfIceRow = -1;
-  for (let i = isfRow + 1; i < rows.length; i++) {
-    if (String(rows[i][0] || rows[i][1] || '').toLowerCase().includes('inflow vehicle')) {
-      psfIceRow = i; break;
-    }
-  }
-  if (psfIceRow >= 0) {
-    const getVal = (offset) => {
-      const row = rows[psfIceRow + offset] || [];
-      const nums = row.slice(1).map(c => String(c).replace('%','').trim()).filter(c => c !== '' && !isNaN(parseFloat(c))).map(Number);
-      return nums[nums.length - 1] ?? 0;
-    };
-    setText('psfice-inflow',  getVal(0));
-    setText('psfice-outflow', getVal(1));
-    setText('psfice-taken',   getVal(2));
-    const psfIcePct = getVal(4); // Satisfaction %
-    setText('psfice-pct', psfIcePct > 1 ? psfIcePct.toFixed(1) + '%' : (psfIcePct * 100).toFixed(1) + '%');
+  let psfICE=-1;
+  for (let i=si+1;i<rows.length;i++)
+    if (String(rows[i][0]||rows[i][1]||'').toLowerCase().includes('inflow vehicle')) {psfICE=i;break;}
+  if (psfICE>=0) {
+    const gN=off=>{const row=rows[psfICE+off]||[];const n=row.slice(1).map(c=>String(c).replace(/[%,]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);return n[n.length-1]??0;};
+    T('psfice-inflow',gN(0)); T('psfice-outflow',gN(1)); T('psfice-taken',gN(2));
+    const ip2=gN(5); T('psfice-pct',(ip2>1?ip2.toFixed(1):(ip2*100).toFixed(1))+'%');
   }
 }
 
-// ============================================================
-// 3. MARKETING SECTION
-// Columns: Segment | Leads Received | No. of Telecalling | Pending | Wrong Number | No Answer | Switch Off | Dropped | Connected | Not Interested | Cold | Lost | Interested | Hot | Warm | ...
-// ============================================================
-function parseMarketingSection(rows) {
-  const mktHeaderRow = findRow(rows, 'Leads Received');
-  if (mktHeaderRow < 0) { console.warn('Marketing header not found'); return; }
+// ── MARKETING ──
+function parseMarketing(rows) {
+  const hi=findRow(rows,'leads received');
+  if (hi<0) return;
+  const hdr=rows[hi].map(c=>String(c).toLowerCase().trim());
+  const iSeg=hdr.findIndex(h=>h.includes('segment'));
+  const iRecv=hdr.findIndex(h=>h.includes('leads received'));
+  const iTc=hdr.findIndex(h=>h.includes('telecall')&&!h.includes('pending'));
+  const iConn=hdr.findIndex(h=>h==='connected');
+  const iHot=hdr.findIndex(h=>h==='hot'), iWarm=hdr.findIndex(h=>h==='warm'), iCold=hdr.findIndex(h=>h==='cold');
+  const iNI=hdr.findIndex(h=>h.includes('not interested'));
+  const iNA=hdr.findIndex(h=>h.includes('no answer'));
+  const iSO=hdr.findIndex(h=>h.includes('switch off'));
 
-  const hdr = rows[mktHeaderRow].map(c => String(c).toLowerCase());
-  const iSeg   = hdr.findIndex(h => h.includes('segment'));
-  const iRecv  = hdr.findIndex(h => h.includes('leads received') || h.includes('lead received'));
-  const iTc    = hdr.findIndex(h => h.includes('telecall') && !h.includes('pending'));
-  const iConn  = hdr.findIndex(h => h.includes('connected'));
-  const iHot   = hdr.findIndex(h => h === 'hot');
-  const iWarm  = hdr.findIndex(h => h === 'warm');
-  const iCold  = hdr.findIndex(h => h === 'cold');
-  const iNI    = hdr.findIndex(h => h.includes('not interested'));
-  const iNA    = hdr.findIndex(h => h.includes('no answer'));
-  const iSO    = hdr.findIndex(h => h.includes('switch off'));
-
-  const mktData = [];
-  let totalLeads = 0, totalTc = 0, totalConn = 0;
-
-  for (let i = mktHeaderRow + 1; i < rows.length; i++) {
-    const row = rows[i];
-    const seg = String(row[iSeg] || '').trim();
+  const mkt=[]; let tR=0,tT=0,tC=0;
+  for (let i=hi+1;i<rows.length;i++) {
+    const row=rows[i], seg=String(row[iSeg]||'').trim();
     if (!seg) continue;
-    if (seg.toLowerCase().includes('total')) {
-      totalLeads = iRecv >= 0 ? n(row[iRecv]) : 0;
-      totalTc    = iTc >= 0 ? n(row[iTc]) : 0;
-      totalConn  = iConn >= 0 ? n(row[iConn]) : 0;
-      break;
-    }
-    if (seg.toLowerCase().includes('collection') || seg.toLowerCase().includes('service')) break;
-    mktData.push({
-      seg,
-      recv: iRecv >= 0 ? n(row[iRecv]) : 0,
-      tc:   iTc >= 0 ? n(row[iTc]) : 0,
-      conn: iConn >= 0 ? n(row[iConn]) : 0,
-      hot:  iHot >= 0 ? n(row[iHot]) : 0,
-      warm: iWarm >= 0 ? n(row[iWarm]) : 0,
-      cold: iCold >= 0 ? n(row[iCold]) : 0,
-      ni:   iNI >= 0 ? n(row[iNI]) : 0,
-      na:   iNA >= 0 ? n(row[iNA]) : 0,
-      so:   iSO >= 0 ? n(row[iSO]) : 0,
-    });
+    if (seg.toLowerCase()==='total') {tR=iRecv>=0?N(row[iRecv]):0;tT=iTc>=0?N(row[iTc]):0;tC=iConn>=0?N(row[iConn]):0;break;}
+    if (['collection','service'].some(k=>seg.toLowerCase().includes(k))) break;
+    mkt.push({seg,recv:iRecv>=0?N(row[iRecv]):0,tc:iTc>=0?N(row[iTc]):0,conn:iConn>=0?N(row[iConn]):0,
+      hot:iHot>=0?N(row[iHot]):0,warm:iWarm>=0?N(row[iWarm]):0,cold:iCold>=0?N(row[iCold]):0,
+      ni:iNI>=0?N(row[iNI]):0,na:iNA>=0?N(row[iNA]):0,so:iSO>=0?N(row[iSO]):0});
   }
 
-  // KPI Leads
-  document.getElementById('kpi-leads').textContent = totalLeads || mktData.reduce((s,r)=>s+r.recv,0);
-  document.getElementById('kpi-leads-sub').textContent =
-    `${totalTc || mktData.reduce((s,r)=>s+r.tc,0)} telecalled · ${totalConn || mktData.reduce((s,r)=>s+r.conn,0)} connected`;
+  const fR=tR||mkt.reduce((s,r)=>s+r.recv,0);
+  const fT=tT||mkt.reduce((s,r)=>s+r.tc,0);
+  const fC=tC||mkt.reduce((s,r)=>s+r.conn,0);
+  T('kpi-leads',fR); T('kpi-leads-sub',`${fT} telecalled · ${fC} connected`);
+  B('kpi-leads-bar',fC>0?fC/fR*100:0);
 
-  // Marketing bar chart
-  if (charts.c4) charts.c4.destroy();
-  charts.c4 = new Chart(document.getElementById('c4'), {
-    type: 'bar',
-    data: {
-      labels: mktData.map(r => r.seg),
-      datasets: [
-        { label: 'Received',  data: mktData.map(r => r.recv), backgroundColor: '#7F77DD' },
-        { label: 'Telecalled',data: mktData.map(r => r.tc),   backgroundColor: '#378ADD' },
-        { label: 'Connected', data: mktData.map(r => r.conn), backgroundColor: '#1D9E75' }
-      ]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#888', font: { size: 11 }, maxRotation: 30 } },
-        y: { grid: { color: 'rgba(0,0,0,0.06)' }, ticks: { color: '#888', font: { size: 11 } } }
-      }
-    }
-  });
+  mkChart('c4','bar',{labels:mkt.map(r=>r.seg),datasets:[
+    {label:'Received',data:mkt.map(r=>r.recv),backgroundColor:'#8b5cf6',borderRadius:4},
+    {label:'Telecalled',data:mkt.map(r=>r.tc),backgroundColor:'#3b82f6',borderRadius:4},
+    {label:'Connected',data:mkt.map(r=>r.conn),backgroundColor:'#16a34a',borderRadius:4}
+  ]},{});
 
-  // Doughnut — aggregate segmentation
-  const totNI   = mktData.reduce((s,r)=>s+r.ni,0);
-  const totNA   = mktData.reduce((s,r)=>s+r.na,0);
-  const totSO   = mktData.reduce((s,r)=>s+r.so,0);
-  const totHot  = mktData.reduce((s,r)=>s+r.hot,0);
-  const totWarm = mktData.reduce((s,r)=>s+r.warm,0);
-  const totCold = mktData.reduce((s,r)=>s+r.cold,0);
-
-  if (charts.c5) charts.c5.destroy();
-  charts.c5 = new Chart(document.getElementById('c5'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Not Interested','No Answer','Switch Off','Hot','Warm','Cold'],
-      datasets: [{
-        data: [totNI, totNA, totSO, totHot, totWarm, totCold],
-        backgroundColor: ['#E24B4A','#BA7517','#888','#1D9E75','#0096C7','#378ADD'],
-        borderWidth: 2, borderColor: '#fff'
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: true, position: 'right', labels: { font: { size: 10 }, color: '#666', boxWidth: 10, padding: 6 } } }
-    }
-  });
+  const totNI=mkt.reduce((s,r)=>s+r.ni,0),totNA=mkt.reduce((s,r)=>s+r.na,0),
+        totSO=mkt.reduce((s,r)=>s+r.so,0),totH=mkt.reduce((s,r)=>s+r.hot,0),
+        totW=mkt.reduce((s,r)=>s+r.warm,0),totC=mkt.reduce((s,r)=>s+r.cold,0);
+  if (CH.c5) CH.c5.destroy();
+  CH.c5=new Chart(document.getElementById('c5'),{type:'doughnut',data:{
+    labels:['Not Interested','No Answer','Switch Off','Hot','Warm','Cold'],
+    datasets:[{data:[totNI,totNA,totSO,totH,totW,totC],
+      backgroundColor:['#ef4444','#f59e0b','#6b7280','#16a34a','#06b6d4','#3b82f6'],
+      borderWidth:2,borderColor:'#fff'}]
+  },options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:true,position:'right',labels:{font:{size:10,family:'DM Sans'},color:'#6b7280',boxWidth:10,padding:8}}}}});
 }
 
-// ============================================================
-// 4. COLLECTION SECTION
-// ============================================================
-function parseCollectionSection(rows) {
-  // Find collection rows by looking for known category names
-  const categories = [
-    'Retail Sales Collection',
-    'DO/DP Dealer',
-    'Difficult',
-    'Spares',
-    'Total'
-  ];
-
-  const collRows = [];
-  for (const cat of categories) {
-    const ri = findRow(rows, cat);
-    if (ri >= 0) {
-      const row = rows[ri];
-      const nums = row.filter((c,i) => i > 0 && c !== '' && !isNaN(parseFloat(String(c).replace(/[,%]/g,'')))).map(c => n(c));
-      collRows.push({ label: String(row.find(c => String(c).trim().length > 2 && isNaN(parseFloat(String(c).replace(/[,%]/g,''))))).trim(), nums });
-    }
+// ── COLLECTION ──
+function parseCollection(rows) {
+  const cats=['Retail Sales Collection','DO DP','Difficult','Spares'];
+  const cRows=[];
+  for (const cat of cats) {
+    const ri=findRow(rows,cat);
+    if (ri<0) continue;
+    const row=rows[ri];
+    const label=row.find(c=>String(c).trim().length>3&&isNaN(N(c)))||cat;
+    const nums=row.map(c=>String(c).replace(/[,%Rs\s]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);
+    cRows.push({label:String(label).trim(),nums});
   }
 
-  // Find total MTD collection for KPI
-  const totalRowIdx = findRow(rows, 'Total — Foton') >= 0 ? findRow(rows, 'Total — Foton') : findRow(rows, 'Total');
-  if (totalRowIdx >= 0) {
-    const row = rows[totalRowIdx];
-    const nums = row.filter((c,i) => i > 0 && c !== '' && !isNaN(parseFloat(String(c).replace(/[,%]/g,'')))).map(c => n(c));
-    // MTD Collection is typically one of the later numeric values
-    const mtdColl = nums[nums.length - 3] || nums[3] || 0;
-    document.getElementById('kpi-collection').textContent = `Rs ${mtdColl} Cr`;
-    const collTgt = nums[1] || 0;
-    const collPct = collTgt > 0 ? (mtdColl / collTgt * 100).toFixed(1) : '—';
-    document.getElementById('kpi-collection-sub').textContent = `${collPct}% of Rs ${collTgt} Cr target`;
+  let totRi=findRow(rows,'total — foton');
+  if (totRi<0) totRi=findRow(rows,'total');
+  let totData=null;
+  if (totRi>=0) {
+    const row=rows[totRi];
+    const nums=row.map(c=>String(c).replace(/[,%Rs\s]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);
+    totData={label:'Total — Foton',nums};
+    const collTgt=nums[2]??0, mtdColl=nums[4]??0;
+    const collPct=collTgt>0?mtdColl/collTgt*100:0;
+    T('kpi-collection',`Rs ${mtdColl} Cr`);
+    T('kpi-collection-sub',`${collPct.toFixed(1)}% of Rs ${collTgt} Cr target`);
+    B('kpi-collection-bar',collPct);
   }
 
-  // Render collection table
-  // Since collection layout in your sheet is complex, we render what we parsed
-  // For a clean table, we use fixed known rows from your screenshot
-  const knownRows = [
-    { label: 'Retail Sales Collection', salesTgt: '—', actSalesTgt: '—' },
-    { label: 'DO/DP Dealer & Tender',   salesTgt: '—', actSalesTgt: '—' },
-    { label: 'Difficult Collection',    salesTgt: '—', actSalesTgt: '—' },
-    { label: 'Spares & Service',        salesTgt: '—', actSalesTgt: '—' },
-  ];
-
-  // Try to find collection table rows directly
-  const rcRow = findRow(rows, 'Retail Sales Collection');
-  const ddRow = findRow(rows, 'DO DP') >= 0 ? findRow(rows, 'DO DP') : findRow(rows, 'Dealer');
-  const difRow = findRow(rows, 'Difficult');
-  const ssRow  = findRow(rows, 'Spares');
-  const totRow = findRow(rows, 'Total — Foton') >= 0 ? findRow(rows, 'Total — Foton') : findRow(rows, 'Total');
-
-  const extractCollRow = (ri) => {
-    if (ri < 0) return null;
-    const row = rows[ri];
-    const label = row.find(c => String(c).trim().length > 3 && isNaN(n(c))) || '';
-    const nums = row.map(c => String(c).replace(/[,%]/g,'').trim()).filter(c => c !== '' && !isNaN(parseFloat(c))).map(Number);
-    return { label: String(label).trim(), nums };
-  };
-
-  const cRows = [rcRow, ddRow, difRow, ssRow].map(extractCollRow).filter(Boolean);
-  const totData = extractCollRow(totRow);
-
-  const tbody = document.getElementById('collectionTbody');
-  if (cRows.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:#aaa;padding:20px">Collection data not found in sheet</td></tr>';
-    return;
-  }
-
-  const renderColl = (r, isTotal) => {
-    const ns = r.nums;
-    const collPct = ns[ns.length-2] !== undefined ? ns[ns.length-2] : 0;
-    const bc = collPct > 100 ? 'green' : collPct >= 50 ? 'amber' : 'red';
-    const bt = collPct > 100 ? 'Above target' : collPct >= 50 ? 'In progress' : 'Below target';
-    return `<tr${isTotal?' class="trow-total"':''}>
-      <td>${r.label || '—'}</td>
-      <td>${ns[0] || '—'}</td>
-      <td>${ns[1] || '—'}</td>
-      <td>${ns[2] || '—'}</td>
-      <td>${ns[3] || '—'}</td>
-      <td>${ns[4] || '—'}</td>
-      <td>${ns[5] ? ns[5].toFixed(1)+'%' : '—'}</td>
-      <td>${ns[6] ? ns[6].toFixed(1)+'%' : '—'}</td>
-      <td><span class="badge ${isTotal?'blue':bc}">${isTotal?'Overall':bt}</span></td>
+  const tbody=document.getElementById('collectionTbody');
+  const renderRow=(r,isT)=>{
+    const ns=r.nums;
+    const cap=ns[6]??ns[ns.length-2]??0;
+    const bc=cap>100?'g':cap>=50?'a':'r';
+    const bt=cap>100?'Above target':cap>=50?'In progress':'Below target';
+    return `<tr${isT?' class="total-row"':''}>
+      <td>${r.label}</td><td>${ns[0]??'—'}</td><td>${ns[1]??'—'}</td><td>${ns[2]??'—'}</td>
+      <td>${ns[3]??'—'}</td><td>${ns[4]??'—'}</td>
+      <td>${ns[5]!==undefined?ns[5].toFixed(1)+'%':'—'}</td>
+      <td>${ns[6]!==undefined?ns[6].toFixed(1)+'%':'—'}</td>
+      <td><span class="badge ${isT?'b':bc}">${isT?'Overall':bt}</span></td>
     </tr>`;
   };
-
-  tbody.innerHTML = cRows.map(r => renderColl(r, false)).join('') +
-    (totData ? renderColl(totData, true) : '');
+  tbody.innerHTML=cRows.map(r=>renderRow(r,false)).join('')+(totData?renderRow(totData,true):'');
 }
 
-// ============================================================
-// HELPER
-// ============================================================
-function setText(id, val) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = val;
-}
-
-// ============================================================
-// AUTO REFRESH every 5 minutes
-// ============================================================
 loadData();
-setInterval(loadData, 5 * 60 * 1000);
+setInterval(loadData, 5*60*1000);
 </script>
 </body>
 </html>
