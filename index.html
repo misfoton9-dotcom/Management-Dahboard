@@ -391,20 +391,24 @@ function parseSalesSection(rows) {
   if (headerRow < 0) { console.warn('Sales header not found'); return; }
 
   // Find column indices from header
-  const hdr = rows[headerRow].map(c => c.toLowerCase());
-  const iSeg   = hdr.findIndex(h => h.includes('segment'));
-  const iAbp   = hdr.findIndex(h => h.includes('abp'));
-  const iAct   = hdr.findIndex(h => h.includes('actual target'));
-  const iPlan  = hdr.findIndex(h => h.includes('plan'));
-  const iBill  = hdr.findIndex(h => h.includes('bill'));
-  const iNet   = hdr.findIndex(h => h.includes('net sale'));
-  const iPct   = hdr.findIndex(h => h.includes('achi'));
+  // Your sheet: Segment | ABP Target | Actual Target Taken | MTD Plan Till | MTD Bill Till date | MTD Cancel | MTD Net Sale | Achi(ABP)%
+  const hdr = rows[headerRow].map(c => String(c).toLowerCase().trim());
+  const iSeg  = hdr.findIndex(h => h.includes('segment'));
+  const iAbp  = hdr.findIndex(h => h.includes('abp'));
+  const iAct  = hdr.findIndex(h => h.includes('actual'));
+  const iPlan = hdr.findIndex(h => h.includes('plan'));
+  const iBill = hdr.findIndex(h => h.includes('bill'));
+  // Net Sale column comes after Cancel — find it explicitly
+  let iNet = hdr.findIndex(h => h.includes('net sale'));
+  // Fallback: if header says 'net sale' not found, it's bill+2 (skipping cancel col)
+  if (iNet < 0 && iBill >= 0) iNet = iBill + 2;
+  const iPct  = hdr.findIndex(h => h.includes('achi') || h.includes('ach(') || h.includes('ach %'));
 
   const salesData = [];
   for (let i = headerRow + 1; i < rows.length; i++) {
     const row = rows[i];
     const seg = row[iSeg] ? String(row[iSeg]).trim() : '';
-    if (!seg || seg === '') break; // end of section
+    if (!seg || seg === '') continue;
     // Stop if we hit next section header
     if (seg.toLowerCase().includes('service') || seg.toLowerCase().includes('marketing') || seg.toLowerCase().includes('collection')) break;
 
@@ -425,11 +429,12 @@ function parseSalesSection(rows) {
   const totalRow = salesData.find(r => r.seg.toLowerCase().includes('total'));
   const segRows  = salesData.filter(r => !r.seg.toLowerCase().includes('total'));
 
-  // Update KPI
-  if (totalRow) {
-    document.getElementById('kpi-sales').textContent = `${totalRow.net} / ${totalRow.abp}`;
-    document.getElementById('kpi-sales-sub').textContent = `${totalRow.pct.toFixed(1)}% of ABP target`;
-  }
+  // Update KPI — fallback to summing segments if total row not found
+  const kpiNet = totalRow ? totalRow.net : segRows.reduce((s,r)=>s+r.net,0);
+  const kpiAbp = totalRow ? totalRow.abp : segRows.reduce((s,r)=>s+r.abp,0);
+  const kpiPct = totalRow ? totalRow.pct : (kpiAbp > 0 ? kpiNet/kpiAbp*100 : 0);
+  document.getElementById('kpi-sales').textContent = `${kpiNet} / ${kpiAbp}`;
+  document.getElementById('kpi-sales-sub').textContent = `${kpiPct.toFixed(1)}% of ABP target`;
 
   // Render charts
   renderSalesCharts(segRows);
