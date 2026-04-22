@@ -3,12 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>CEO Dashboard — MAW Vriddhi Commercial Vehicles</title
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans..." rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/..."></script>
-<style>
+<title>CEO Dashboard — MAW Vriddhi Commercial Vehicles</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js" onerror="this.onerror=null;this.src='https://unpkg.com/chart.js@4.4.1/dist/chart.umd.js'"></script>
 <style>
 :root {
   --bg: #f0f2f5;
@@ -30,7 +27,6 @@
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; font-size: 14px; }
-
 /* HEADER */
 .header {
   background: var(--surface); border-bottom: 1px solid var(--border);
@@ -62,16 +58,13 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   background: var(--surface); color: var(--blue); cursor: pointer; transition: background .15s;
 }
 .refresh-btn:hover { background: var(--blue-light); }
-
 /* STATUS */
 .status-bar { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 500; display: none; margin-bottom: 14px; }
 .status-bar.loading { background: #eff6ff; color: #2563eb; display: block; }
 .status-bar.error   { background: var(--red-light); color: var(--red); display: block; }
 .status-bar.success { background: var(--green-light); color: var(--green); display: block; }
-
 /* LAYOUT */
 .dash { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
-
 /* KPI STRIP */
 .kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 1.5rem; }
 .kpi-card {
@@ -93,7 +86,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .kpi-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
 .prog-wrap { background: #f3f4f6; border-radius: 4px; height: 4px; overflow: hidden; }
 .prog-bar  { height: 100%; border-radius: 4px; transition: width .8s ease; }
-
 /* SECTION TITLE */
 .section-title {
   font-size: 11px; font-weight: 700; text-transform: uppercase;
@@ -102,11 +94,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
   display: flex; align-items: center; gap: 10px;
 }
 .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
-
 /* GRIDS */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
 .grid-1 { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 14px; }
-
 /* CARD */
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
 .card-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 3px; }
@@ -115,14 +105,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .leg { display: flex; align-items: center; gap: 5px; }
 .leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
 .chart-wrap { position: relative; width: 100%; }
-
 /* STAT MINI */
 .stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 1rem; }
 .stat-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
 .stat-box .sl { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; }
 .stat-box .sv { font-size: 18px; font-weight: 700; }
 .stat-box .ss { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-
 /* PSF */
 .psf-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .psf-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding-bottom: 6px; border-bottom: 2px solid; margin-bottom: 8px; }
@@ -131,7 +119,6 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .psf-stat { background: #f8fafc; border: 1px solid var(--border); border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; }
 .psf-stat .pl { font-size: 10px; color: var(--text-muted); }
 .psf-stat .pv { font-size: 16px; font-weight: 700; }
-
 /* TABLE */
 .table-wrap { overflow-x: auto; }
 table { width: 100%; font-size: 12px; border-collapse: collapse; }
@@ -145,15 +132,14 @@ th {
 td { padding: 8px 12px; border-bottom: 1px solid #f3f4f6; white-space: nowrap; }
 tr:last-child td { border-bottom: none; }
 tr.total-row td { font-weight: 700; background: #f8fafc; }
+tr.subhead-row td { background: #f1f5f9; font-weight: 600; font-size: 10px; text-transform: uppercase; color: var(--text-muted); letter-spacing: .05em; }
 tr:hover td { background: #fafbff; }
 .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; }
 .badge.g { background: var(--green-light); color: var(--green); }
 .badge.a { background: var(--amber-light); color: var(--amber); }
 .badge.r { background: var(--red-light); color: var(--red); }
 .badge.b { background: var(--blue-light); color: var(--blue); }
-
 .footer { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); font-family: 'DM Mono', monospace; }
-
 @media(max-width:768px){
   .kpi-strip { grid-template-columns: 1fr 1fr; }
   .grid-2 { grid-template-columns: 1fr; }
@@ -164,7 +150,6 @@ tr:hover td { background: #fafbff; }
 </style>
 </head>
 <body>
-
 <div class="header">
   <div class="header-left">
     <div class="logo-mark">MV</div>
@@ -176,10 +161,8 @@ tr:hover td { background: #fafbff; }
     <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
   </div>
 </div>
-
 <div class="dash">
   <div class="status-bar loading" id="statusBar">⟳ Connecting to Google Sheets…</div>
-
   <!-- KPIs -->
   <div class="kpi-strip">
     <div class="kpi-card k-blue">
@@ -207,7 +190,6 @@ tr:hover td { background: #fafbff; }
       <div class="prog-wrap"><div class="prog-bar" id="kpi-leads-bar" style="background:#6366f1;width:0%"></div></div>
     </div>
   </div>
-
   <!-- SALES -->
   <div class="section-title">1 · Sales Performance</div>
   <div class="grid-2">
@@ -247,7 +229,6 @@ tr:hover td { background: #fafbff; }
       </div>
     </div>
   </div>
-
   <!-- SERVICE -->
   <div class="section-title">2 · Service</div>
   <div class="grid-2">
@@ -272,20 +253,19 @@ tr:hover td { background: #fafbff; }
           <div class="psf-head psf-ev">PSF EV</div>
           <div class="psf-stat"><div class="pl">PSF Taken</div><div class="pv" id="psfev-taken">—</div></div>
           <div class="psf-stat"><div class="pl">Satisfied</div><div class="pv" style="color:var(--green)" id="psfev-satisfied">—</div></div>
-          <div class="psf-stat"><div class="pl">Dissatisfied</div><div class="pv" id="psfev-dissatisfied">—</div></div>
+          <div class="psf-stat"><div class="pl">Dissatisfied</div><div class="pv" style="color:var(--red)" id="psfev-dissatisfied">—</div></div>
           <div class="psf-stat"><div class="pl">Satisfaction %</div><div class="pv" style="color:var(--green)" id="psfev-pct">—</div></div>
         </div>
         <div>
           <div class="psf-head psf-ice">PSF ICE</div>
-          <div class="psf-stat"><div class="pl">Inflow</div><div class="pv" id="psfice-inflow">—</div></div>
-          <div class="psf-stat"><div class="pl">Outflow</div><div class="pv" id="psfice-outflow">—</div></div>
           <div class="psf-stat"><div class="pl">ISF Taken</div><div class="pv" id="psfice-taken">—</div></div>
+          <div class="psf-stat"><div class="pl">Satisfied</div><div class="pv" style="color:var(--green)" id="psfice-satisfied">—</div></div>
+          <div class="psf-stat"><div class="pl">Dissatisfied</div><div class="pv" style="color:var(--red)" id="psfice-dissatisfied">—</div></div>
           <div class="psf-stat"><div class="pl">Satisfaction %</div><div class="pv" style="color:var(--green)" id="psfice-pct">—</div></div>
         </div>
       </div>
     </div>
   </div>
-
   <!-- MARKETING -->
   <div class="section-title">3 · Marketing &amp; Leads</div>
   <div class="grid-2">
@@ -305,7 +285,6 @@ tr:hover td { background: #fafbff; }
       <div class="chart-wrap" style="height:210px"><canvas id="c5"></canvas></div>
     </div>
   </div>
-
   <!-- COLLECTION -->
   <div class="section-title">4 · Collection</div>
   <div class="grid-1">
@@ -324,60 +303,103 @@ tr:hover td { background: #fafbff; }
       </div>
     </div>
   </div>
-
   <div class="footer" id="footer">MAW Vriddhi Commercial Vehicles Pvt. Ltd. &nbsp;·&nbsp; CEO Dashboard &nbsp;·&nbsp; Confidential</div>
 </div>
-
 <script>
+/* ════════════════════════════════════════════════════════════════════════════
+   CEO DASHBOARD — MAW Vriddhi Commercial Vehicles (Foton)
+   Reads by COLUMN INDEX (never "last number in row"), handles the
+   side-by-side ISF / PSF EV / PSF ICE layout, and auto-picks up new
+   rows inside existing sections.
+   ──────────────────────────────────────────────────────────────────────────
+   WHAT AUTO-REFLECTS if you add data to the sheet later:
+     • New Sales segments (new rows between existing segments and "Total")
+     • New Marketing segments (new rows between existing segments and "Total")
+     • New Collection sub-categories (new rows under Company Name header)
+     • Additional Collection sub-tables with their own Company Name header
+       (e.g., "Spares & Service" block, or any future sub-table that uses
+       the same Company Name / Collection Tgt / S / C header shape)
+     • New ISF/PSF metric rows (they'll be read if you extend readMetric calls)
+   WHAT DOES NOT AUTO-REFLECT (needs code + HTML changes):
+     • A brand-new top-level section (e.g., "5. Inventory") — needs its own
+       card/chart markup and its own parse function
+     • New KPI tiles
+     • New columns in the Collection table (th/td need adding)
+   ════════════════════════════════════════════════════════════════════════════ */
+
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQI-IU-Aah_fVhQgPXlsWnZ4QF0_GF8fVqlKUxjmbYNn_zTZh3qTkGM8gNgLrcdk-jMnf2mjD1FGeU/pub?output=csv';
 const PROXY   = 'https://corsproxy.io/?';
 let CH = {};
 
+/* ── CSV parser (handles quoted fields and embedded newlines) ─────────────── */
 function parseCSV(text) {
-  return text.trim().split('\n').map(line => {
-    const cells = []; let cur = '', inQ = false;
-    for (const ch of line) {
-      if (ch === '"') { inQ = !inQ; }
-      else if (ch === ',' && !inQ) { cells.push(cur.trim()); cur = ''; }
-      else cur += ch;
+  const rows = [];
+  let row = [], cur = '', inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (ch === '"') {
+      if (inQ && text[i+1] === '"') { cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if (ch === ',' && !inQ) {
+      row.push(cur.trim()); cur = '';
+    } else if ((ch === '\n' || ch === '\r') && !inQ) {
+      if (ch === '\r' && text[i+1] === '\n') i++;
+      row.push(cur.trim()); cur = '';
+      rows.push(row); row = [];
+    } else {
+      cur += ch;
     }
-    cells.push(cur.trim());
-    return cells;
-  });
+  }
+  if (cur.length || row.length) { row.push(cur.trim()); rows.push(row); }
+  return rows;
 }
 
+/* ── Helpers ──────────────────────────────────────────────────────────────── */
 function N(v) {
-  if (v===undefined||v===null) return 0;
-  const f = parseFloat(String(v).replace(/[,%$Rs\s]/g,''));
+  if (v === undefined || v === null || v === '') return 0;
+  const f = parseFloat(String(v).replace(/[,%$Rs\s]/g, ''));
   return isNaN(f) ? 0 : f;
 }
 function P(v) {
+  if (v === undefined || v === null || v === '') return 0;
   const s = String(v).trim();
-  if (s.includes('%')) return parseFloat(s);
+  if (s.includes('%')) { const f = parseFloat(s.replace(/[,%\s]/g, '')); return isNaN(f) ? 0 : f; }
   const f = parseFloat(s);
-  return isNaN(f) ? 0 : (f>0&&f<=1 ? f*100 : f);
+  return isNaN(f) ? 0 : (f > 0 && f <= 1 ? f * 100 : f);
 }
-function T(id, v) { const e=document.getElementById(id); if(e) e.textContent=v; }
-function B(id, p) { const e=document.getElementById(id); if(e) e.style.width=Math.min(100,Math.max(0,p))+'%'; }
-
-function findRow(rows, kw, maxC=8) {
+function T(id, v) { const e = document.getElementById(id); if (e) e.textContent = v; }
+function B(id, p) { const e = document.getElementById(id); if (e) e.style.width = Math.min(100, Math.max(0, p)) + '%'; }
+function fmt(v) { return (v === '' || v === undefined || v === null) ? '—' : v; }
+function isSectionBreak(row) {
+  for (let c = 0; c < Math.min(3, row.length); c++) {
+    const v = String(row[c] || '').trim();
+    if (/^\d+\.\s+\S/.test(v)) return true;
+  }
+  return false;
+}
+function findRow(rows, kw, maxC = 10) {
   const k = kw.toLowerCase();
-  for (let i=0;i<rows.length;i++)
-    for (let c=0;c<Math.min(rows[i].length,maxC);c++)
+  for (let i = 0; i < rows.length; i++)
+    for (let c = 0; c < Math.min(rows[i].length, maxC); c++)
       if (String(rows[i][c]).toLowerCase().includes(k)) return i;
   return -1;
 }
 
+/* ── Fetch ────────────────────────────────────────────────────────────────── */
 async function fetchCSV() {
-  try { const r=await fetch(CSV_URL); if(r.ok) return await r.text(); } catch(e){}
-  const r2=await fetch(PROXY+encodeURIComponent(CSV_URL));
-  if(!r2.ok) throw new Error('Status '+r2.status);
+  const bust = '&_=' + Date.now();
+  try { const r = await fetch(CSV_URL + bust); if (r.ok) return await r.text(); } catch (e) {}
+  const r2 = await fetch(PROXY + encodeURIComponent(CSV_URL + bust));
+  if (!r2.ok) throw new Error('Status ' + r2.status);
   return await r2.text();
 }
 
+/* ── Main loader ─────────────────────────────────────────────────────────── */
 async function loadData() {
   const bar = document.getElementById('statusBar');
-  bar.className='status-bar loading'; bar.textContent='⟳ Loading live data from Google Sheets…';
+  bar.style.display = 'block';
+  bar.className = 'status-bar loading';
+  bar.textContent = '⟳ Loading live data from Google Sheets…';
   try {
     const text = await fetchCSV();
     const rows = parseCSV(text);
@@ -386,257 +408,523 @@ async function loadData() {
     parseService(rows);
     parseMarketing(rows);
     parseCollection(rows);
-    bar.className='status-bar success';
-    bar.textContent='✓ Dashboard updated — '+new Date().toLocaleTimeString();
-    setTimeout(()=>bar.style.display='none', 4000);
-  } catch(err) {
-    bar.className='status-bar error';
-    bar.textContent='✗ Could not load data: '+err.message;
+    bar.className = 'status-bar success';
+    bar.textContent = '✓ Dashboard updated — ' + new Date().toLocaleTimeString();
+    setTimeout(() => bar.style.display = 'none', 4000);
+  } catch (err) {
+    bar.className = 'status-bar error';
+    bar.textContent = '✗ Could not load data: ' + err.message;
     console.error(err);
   }
 }
 
 function updateDate(rows) {
-  for (let i=0;i<Math.min(6,rows.length);i++)
+  for (let i = 0; i < Math.min(8, rows.length); i++)
     for (const c of rows[i]) {
-      const v=String(c).trim();
+      const v = String(c).trim();
       if (v.match(/\d{4}-\d{2}-\d{2}/)) {
-        document.getElementById('dateText').textContent=v;
-        document.getElementById('footer').innerHTML='MAW Vriddhi Commercial Vehicles Pvt. Ltd. &nbsp;·&nbsp; CEO Dashboard &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; '+v;
+        document.getElementById('dateText').textContent = v;
+        document.getElementById('footer').innerHTML = 'MAW Vriddhi Commercial Vehicles Pvt. Ltd. &nbsp;·&nbsp; CEO Dashboard &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; ' + v;
         return;
       }
     }
 }
 
-const GC='rgba(0,0,0,0.05)', TC='#9ca3af';
-function mkChart(id, type, data, opts={}) {
+/* ── Chart helper ────────────────────────────────────────────────────────── */
+const GC = 'rgba(0,0,0,0.05)', TC = '#9ca3af';
+function mkChart(id, type, data, opts = {}) {
   if (CH[id]) CH[id].destroy();
-  CH[id]=new Chart(document.getElementById(id),{type,data,options:{
-    responsive:true, maintainAspectRatio:false,
-    plugins:{legend:{display:false}},
-    scales:{
-      x:{grid:{color:GC},ticks:{color:TC,font:{size:10,family:'DM Sans'}}},
-      y:{grid:{color:GC},ticks:{color:TC,font:{size:10,family:'DM Sans'}}}
-    }, ...opts
-  }});
+  CH[id] = new Chart(document.getElementById(id), {
+    type, data,
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: GC }, ticks: { color: TC, font: { size: 10, family: 'DM Sans' } } },
+        y: { grid: { color: GC }, ticks: { color: TC, font: { size: 10, family: 'DM Sans' } } }
+      },
+      ...opts
+    }
+  });
 }
 
-// ── SALES ──
+/* ═══════════════════════════════════════════════════════════════════════════
+   SALES — reads by HEADER NAME → resilient to added segments or reordered
+   columns. Auto-picks up new rows between existing segments and "Total".
+   ═══════════════════════════════════════════════════════════════════════════ */
 function parseSales(rows) {
-  const hi = findRow(rows,'segment');
-  if (hi<0) return;
-  const hdr = rows[hi].map(c=>String(c).toLowerCase().trim());
+  const hi = findRow(rows, 'segment');
+  if (hi < 0) return;
+  const hdr = rows[hi].map(c => String(c).toLowerCase().trim());
 
-  const iSeg  = hdr.findIndex(h=>h.includes('segment'));
-  const iAbp  = hdr.findIndex(h=>h.includes('abp'));
-  const iAct  = hdr.findIndex(h=>h.includes('actual'));
-  const iPlan = hdr.findIndex(h=>h.includes('plan'));
-  const iBill = hdr.findIndex(h=>h.includes('bill'));
-  // Net Sale: explicit or bill+2 to skip Cancel column
-  let iNet = hdr.findIndex(h=>h.includes('net sale'));
-  if (iNet<0 && iBill>=0) iNet = iBill+2;
-  // Ach%: last column or explicit
-  let iPct = hdr.findIndex(h=>h.includes('achi')||h.includes('ach('));
-  if (iPct<0) iPct = hdr.length-1;
+  const iSeg  = hdr.findIndex(h => h.includes('segment'));
+  const iAbp  = hdr.findIndex(h => h.includes('abp') && h.includes('target'));
+  const iAct  = hdr.findIndex(h => h.includes('actual') && h.includes('target'));
+  const iPlan = hdr.findIndex(h => h.includes('plan'));
+  const iBill = hdr.findIndex(h => h.includes('bill') && !h.includes('cancel'));
+  let iNet = hdr.findIndex(h => h.includes('net sale'));
+  if (iNet < 0 && iBill >= 0) iNet = iBill + 2;
+  let iPct = hdr.findIndex(h => h.includes('achi') || h.includes('ach('));
+  if (iPct < 0) iPct = hdr.length - 1;
 
-  const rows2 = [];
-  for (let i=hi+1;i<rows.length;i++) {
-    const row=rows[i];
-    const seg=String(row[iSeg]||'').trim();
+  const out = [];
+  for (let i = hi + 1; i < rows.length; i++) {
+    const row = rows[i];
+    if (isSectionBreak(row)) break;
+    const seg = String(row[iSeg] || '').replace(/\s+/g, ' ').trim();
     if (!seg) continue;
-    if (['service','marketing','collection','psf','isf'].some(k=>seg.toLowerCase().startsWith(k))) break;
-    const abp=N(row[iAbp]), act=iAct>=0?N(row[iAct]):0, plan=iPlan>=0?N(row[iPlan]):0;
-    const bill=iBill>=0?N(row[iBill]):0, net=iNet>=0?N(row[iNet]):0;
-    const rawP=iPct>=0?row[iPct]:null;
-    const ach=rawP?P(rawP):(abp>0?net/abp*100:0);
-    rows2.push({seg,abp,act,plan,bill,net,ach});
+    if (['service', 'marketing', 'collection', 'psf', 'isf'].some(k => seg.toLowerCase().startsWith(k))) break;
+    const abp  = N(row[iAbp]);
+    const act  = iAct  >= 0 ? N(row[iAct])  : 0;
+    const plan = iPlan >= 0 ? N(row[iPlan]) : 0;
+    const bill = iBill >= 0 ? N(row[iBill]) : 0;
+    const net  = iNet  >= 0 ? N(row[iNet])  : 0;
+    const rawP = iPct  >= 0 ? row[iPct] : null;
+    const ach  = rawP ? P(rawP) : (abp > 0 ? net / abp * 100 : 0);
+    out.push({ seg, abp, act, plan, bill, net, ach });
   }
-  if (!rows2.length) return;
+  if (!out.length) return;
 
-  const total=rows2.find(r=>r.seg.toLowerCase()==='total');
-  const segs=rows2.filter(r=>r.seg.toLowerCase()!=='total');
+  const total = out.find(r => r.seg.toLowerCase() === 'total');
+  const segs  = out.filter(r => r.seg.toLowerCase() !== 'total');
+  const kNet = total ? total.net : segs.reduce((s, r) => s + r.net, 0);
+  const kAbp = total ? total.abp : segs.reduce((s, r) => s + r.abp, 0);
+  const kPct = total ? total.ach : (kAbp > 0 ? kNet / kAbp * 100 : 0);
 
-  const kNet=total?total.net:segs.reduce((s,r)=>s+r.net,0);
-  const kAbp=total?total.abp:segs.reduce((s,r)=>s+r.abp,0);
-  const kPct=total?total.ach:(kAbp>0?kNet/kAbp*100:0);
-  T('kpi-sales',`${kNet} / ${kAbp}`);
-  T('kpi-sales-sub',`${kPct.toFixed(1)}% of ABP target`);
-  B('kpi-sales-bar',kPct);
+  T('kpi-sales', `${kNet} / ${kAbp}`);
+  T('kpi-sales-sub', `${kPct.toFixed(1)}% of ABP target`);
+  B('kpi-sales-bar', kPct);
 
-  const labels=segs.map(r=>r.seg.length>13?r.seg.slice(0,13)+'…':r.seg);
-  mkChart('c1','bar',{labels,datasets:[
-    {label:'ABP Target',data:segs.map(r=>r.abp),backgroundColor:'#3b82f6',borderRadius:4},
-    {label:'MTD Net Sale',data:segs.map(r=>r.net),backgroundColor:'#16a34a',borderRadius:4}
-  ]},{scales:{x:{grid:{color:GC},ticks:{color:TC,font:{size:10},maxRotation:35}},y:{grid:{color:GC},ticks:{color:TC,font:{size:10}}}}});
+  const labels = segs.map(r => r.seg.length > 13 ? r.seg.slice(0, 13) + '…' : r.seg);
+  mkChart('c1', 'bar', {
+    labels,
+    datasets: [
+      { label: 'ABP Target',   data: segs.map(r => r.abp), backgroundColor: '#3b82f6', borderRadius: 4 },
+      { label: 'MTD Net Sale', data: segs.map(r => r.net), backgroundColor: '#16a34a', borderRadius: 4 }
+    ]
+  }, { scales: { x: { grid: { color: GC }, ticks: { color: TC, font: { size: 10 }, maxRotation: 35 } }, y: { grid: { color: GC }, ticks: { color: TC, font: { size: 10 } } } } });
 
-  const pcts=segs.map(r=>r.ach);
-  mkChart('c2','bar',{labels,datasets:[{label:'Ach %',data:pcts,borderRadius:4,
-    backgroundColor:pcts.map(v=>v>100?'#16a34a':v>=50?'#f59e0b':'#ef4444')}]},
-    {indexAxis:'y',scales:{x:{grid:{color:GC},ticks:{color:TC,font:{size:10},callback:v=>v+'%'}},y:{grid:{color:GC},ticks:{color:TC,font:{size:10}}}}});
+  const pcts = segs.map(r => r.ach);
+  mkChart('c2', 'bar', {
+    labels,
+    datasets: [{ label: 'Ach %', data: pcts, borderRadius: 4, backgroundColor: pcts.map(v => v > 100 ? '#16a34a' : v >= 50 ? '#f59e0b' : '#ef4444') }]
+  }, { indexAxis: 'y', scales: { x: { grid: { color: GC }, ticks: { color: TC, font: { size: 10 }, callback: v => v + '%' } }, y: { grid: { color: GC }, ticks: { color: TC, font: { size: 10 } } } } });
 
-  document.getElementById('salesTbody').innerHTML=rows2.map(r=>{
-    const isT=r.seg.toLowerCase()==='total';
-    const bc=r.ach>100?'g':r.ach>=50?'a':'r';
-    const bt=r.ach>100?'Above':r.ach>=50?'Partial':'Below';
-    return `<tr${isT?' class="total-row"':''}>
-      <td>${r.seg}</td><td>${r.abp}</td><td>${r.act}</td><td>${r.plan}</td>
-      <td>${r.bill}</td><td><strong>${r.net}</strong></td>
+  document.getElementById('salesTbody').innerHTML = out.map(r => {
+    const isT = r.seg.toLowerCase() === 'total';
+    const bc = r.ach > 100 ? 'g' : r.ach >= 50 ? 'a' : 'r';
+    const bt = r.ach > 100 ? 'Above' : r.ach >= 50 ? 'Partial' : 'Below';
+    return `<tr${isT ? ' class="total-row"' : ''}>
+      <td>${r.seg}</td>
+      <td>${r.abp}</td>
+      <td>${r.act}</td>
+      <td>${r.plan}</td>
+      <td>${r.bill}</td>
+      <td><strong>${r.net}</strong></td>
       <td>${r.ach.toFixed(1)}%</td>
-      <td>${isT?'<span class="badge b">Overall</span>':`<span class="badge ${bc}">${bt}</span>`}</td>
+      <td>${isT ? '<span class="badge b">Overall</span>' : `<span class="badge ${bc}">${bt}</span>`}</td>
     </tr>`;
   }).join('');
 }
 
-// ── SERVICE ──
+/* ═══════════════════════════════════════════════════════════════════════════
+   SERVICE — ISF / PSF EV / PSF ICE are laid out SIDE-BY-SIDE in the sheet.
+   Each block is identified by its own (Today, MTD) header pair; metrics are
+   read by column index inside the block (never "last number in row").
+   ═══════════════════════════════════════════════════════════════════════════ */
+function findBlocks(rows) {
+  const blocks = [];
+  for (let r = 0; r < rows.length; r++) {
+    const row = rows[r] || [];
+    for (let c = 0; c + 1 < row.length; c++) {
+      const a = String(row[c]   || '').toLowerCase().trim();
+      const b = String(row[c+1] || '').toLowerCase().trim();
+      if (a === 'today' && b === 'mtd') {
+        blocks.push({ headerRow: r, labelCol: c - 1, todayCol: c, mtdCol: c + 1, dataStartRow: r + 1 });
+      }
+    }
+  }
+  return blocks;
+}
+function blockContains(rows, block, keyword) {
+  if (!block) return false;
+  const k = keyword.toLowerCase();
+  for (let r = block.dataStartRow; r < Math.min(block.dataStartRow + 15, rows.length); r++) {
+    const label = String((rows[r] || [])[block.labelCol] || '').toLowerCase();
+    if (label.includes(k)) return true;
+  }
+  return false;
+}
+function readMetric(rows, block, predicate) {
+  if (!block) return { today: '', mtd: '' };
+  for (let r = block.dataStartRow; r < Math.min(block.dataStartRow + 15, rows.length); r++) {
+    const row = rows[r] || [];
+    const label = String(row[block.labelCol] || '').trim();
+    if (!label) continue;
+    if (/^\d+\.\s/.test(label)) break;
+    if (predicate(label.toLowerCase())) {
+      return { today: row[block.todayCol], mtd: row[block.mtdCol] };
+    }
+  }
+  return { today: '', mtd: '' };
+}
+
 function parseService(rows) {
-  const si = findRow(rows,'inflow vehicle');
-  if (si<0) return;
+  const blocks = findBlocks(rows);
+  if (!blocks.length) return;
 
-  const keys=['Inflow','Outflow','ISF Taken','Satisfied','Dissatisfied','Satisfaction %'];
-  const data={};
-  for (let k=0;k<6;k++) {
-    const row=rows[si+k]||[];
-    const nums=row.slice(1).map(c=>String(c).replace(/[%,]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);
-    data[keys[k]]={today:nums[0]??0, mtd:nums[nums.length-1]??0};
+  /* Classify each block by what it contains:
+       ISF       → has "inflow"
+       PSF EV    → has "psf taken"
+       PSF ICE   → has "isf taken" but no "inflow"                         */
+  let isfBlock = null, psfEvBlock = null, psfIceBlock = null;
+  for (const b of blocks) {
+    const hasInflow   = blockContains(rows, b, 'inflow');
+    const hasPsfTaken = blockContains(rows, b, 'psf taken');
+    const hasIsfTaken = blockContains(rows, b, 'isf taken');
+    if (hasInflow)            isfBlock    = b;
+    else if (hasPsfTaken)     psfEvBlock  = b;
+    else if (hasIsfTaken)     psfIceBlock = b;
   }
 
-  T('isf-inflow',        data['Inflow']?.mtd??'—');
-  T('isf-inflow-t',      'Today: '+(data['Inflow']?.today??'—'));
-  T('isf-outflow',       data['Outflow']?.mtd??'—');
-  T('isf-outflow-t',     'Today: '+(data['Outflow']?.today??'—'));
-  T('isf-taken',         data['ISF Taken']?.mtd??'—');
-  T('isf-taken-t',       'Today: '+(data['ISF Taken']?.today??'—'));
-  T('isf-satisfied',     data['Satisfied']?.mtd??'—');
-  T('isf-satisfied-t',   'Today: '+(data['Satisfied']?.today??'—'));
-  T('isf-dissatisfied',  data['Dissatisfied']?.mtd??'—');
-  T('isf-dissatisfied-t','Today: '+(data['Dissatisfied']?.today??'—'));
+  /* Predicates tolerate the sheet's typos ("Satified", "Cutomers") */
+  const mInflow  = l => l.includes('inflow');
+  const mOutflow = l => l.includes('outflow');
+  const mTaken   = l => l.includes('isf taken') || l.includes('psf taken');
+  const mSat     = l => (l.startsWith('satified') || l.startsWith('satisfied customer')) && !l.includes('(%)');
+  const mDissat  = l => l.startsWith('dissatisfied');
+  const mSatPct  = l => l.includes('(%)') || l.includes('satisfaction');
 
-  const sat=data['Satisfied']?.mtd??0, tak=data['ISF Taken']?.mtd??1;
-  const ip=Math.round(sat/tak*100);
-  T('isf-pct',ip+'%'); T('kpi-isf',ip+'%');
-  T('kpi-isf-sub',`${sat} satisfied / ${tak} ISF taken`);
-  B('kpi-isf-bar',ip);
+  /* ── ISF ─────────────────────────────────────────────────────────────── */
+  if (isfBlock) {
+    const inf  = readMetric(rows, isfBlock, mInflow);
+    const outf = readMetric(rows, isfBlock, mOutflow);
+    const tkn  = readMetric(rows, isfBlock, mTaken);
+    const sat  = readMetric(rows, isfBlock, mSat);
+    const dis  = readMetric(rows, isfBlock, mDissat);
+    const pct  = readMetric(rows, isfBlock, mSatPct);
 
-  mkChart('c3','bar',{
-    labels:['Inflow','Outflow','ISF Taken','Satisfied','Dissatisfied'],
-    datasets:[{data:[data['Inflow']?.mtd,data['Outflow']?.mtd,data['ISF Taken']?.mtd,data['Satisfied']?.mtd,data['Dissatisfied']?.mtd],
-      backgroundColor:['#3b82f6','#06b6d4','#8b5cf6','#16a34a','#ef4444'],borderRadius:4}]
-  },{});
+    T('isf-inflow',         N(inf.mtd));
+    T('isf-inflow-t',       'Today: ' + N(inf.today));
+    T('isf-outflow',        N(outf.mtd));
+    T('isf-outflow-t',      'Today: ' + N(outf.today));
+    T('isf-taken',          N(tkn.mtd));
+    T('isf-taken-t',        'Today: ' + N(tkn.today));
+    T('isf-satisfied',      N(sat.mtd));
+    T('isf-satisfied-t',    'Today: ' + N(sat.today));
+    T('isf-dissatisfied',   N(dis.mtd));
+    T('isf-dissatisfied-t', 'Today: ' + N(dis.today));
 
-  const psfEV=findRow(rows,'psf taken');
-  if (psfEV>=0) {
-    const gN=ri=>{const row=rows[ri]||[];const n=row.slice(1).map(c=>String(c).replace(/[%,]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);return n[n.length-1]??0;};
-    T('psfev-taken',gN(psfEV)); T('psfev-satisfied',gN(psfEV+1));
-    T('psfev-dissatisfied',gN(psfEV+2));
-    const ep=gN(psfEV+3); T('psfev-pct',(ep>1?ep.toFixed(1):(ep*100).toFixed(1))+'%');
+    const ipct = P(pct.mtd) || (N(tkn.mtd) > 0 ? N(sat.mtd) / N(tkn.mtd) * 100 : 0);
+    T('isf-pct',     ipct.toFixed(2) + '%');
+    T('kpi-isf',     ipct.toFixed(1) + '%');
+    T('kpi-isf-sub', `${N(sat.mtd)} satisfied / ${N(tkn.mtd)} ISF taken`);
+    B('kpi-isf-bar', ipct);
+
+    mkChart('c3', 'bar', {
+      labels: ['Inflow', 'Outflow', 'ISF Taken', 'Satisfied', 'Dissatisfied'],
+      datasets: [{
+        data: [N(inf.mtd), N(outf.mtd), N(tkn.mtd), N(sat.mtd), N(dis.mtd)],
+        backgroundColor: ['#3b82f6', '#06b6d4', '#8b5cf6', '#16a34a', '#ef4444'],
+        borderRadius: 4
+      }]
+    }, {});
   }
 
-  let psfICE=-1;
-  for (let i=si+1;i<rows.length;i++)
-    if (String(rows[i][0]||rows[i][1]||'').toLowerCase().includes('inflow vehicle')) {psfICE=i;break;}
-  if (psfICE>=0) {
-    const gN=off=>{const row=rows[psfICE+off]||[];const n=row.slice(1).map(c=>String(c).replace(/[%,]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);return n[n.length-1]??0;};
-    T('psfice-inflow',gN(0)); T('psfice-outflow',gN(1)); T('psfice-taken',gN(2));
-    const ip2=gN(5); T('psfice-pct',(ip2>1?ip2.toFixed(1):(ip2*100).toFixed(1))+'%');
+  /* ── PSF EV ──────────────────────────────────────────────────────────── */
+  if (psfEvBlock) {
+    const tkn = readMetric(rows, psfEvBlock, mTaken);
+    const sat = readMetric(rows, psfEvBlock, mSat);
+    const dis = readMetric(rows, psfEvBlock, mDissat);
+    const pct = readMetric(rows, psfEvBlock, mSatPct);
+    T('psfev-taken',        N(tkn.mtd));
+    T('psfev-satisfied',    N(sat.mtd));
+    T('psfev-dissatisfied', N(dis.mtd));
+    T('psfev-pct',          P(pct.mtd).toFixed(2) + '%');
+  }
+
+  /* ── PSF ICE ─────────────────────────────────────────────────────────── */
+  if (psfIceBlock) {
+    const tkn = readMetric(rows, psfIceBlock, mTaken);
+    const sat = readMetric(rows, psfIceBlock, mSat);
+    const dis = readMetric(rows, psfIceBlock, mDissat);
+    const pct = readMetric(rows, psfIceBlock, mSatPct);
+    T('psfice-taken',        N(tkn.mtd));
+    T('psfice-satisfied',    N(sat.mtd));
+    T('psfice-dissatisfied', N(dis.mtd));
+    T('psfice-pct',          P(pct.mtd).toFixed(2) + '%');
   }
 }
 
-// ── MARKETING ──
+/* ═══════════════════════════════════════════════════════════════════════════
+   MARKETING — reads by HEADER NAME. Auto-picks up new segment rows.
+   ═══════════════════════════════════════════════════════════════════════════ */
 function parseMarketing(rows) {
-  const hi=findRow(rows,'leads received');
-  if (hi<0) return;
-  const hdr=rows[hi].map(c=>String(c).toLowerCase().trim());
-  const iSeg=hdr.findIndex(h=>h.includes('segment'));
-  const iRecv=hdr.findIndex(h=>h.includes('leads received'));
-  const iTc=hdr.findIndex(h=>h.includes('telecall')&&!h.includes('pending'));
-  const iConn=hdr.findIndex(h=>h==='connected');
-  const iHot=hdr.findIndex(h=>h==='hot'), iWarm=hdr.findIndex(h=>h==='warm'), iCold=hdr.findIndex(h=>h==='cold');
-  const iNI=hdr.findIndex(h=>h.includes('not interested'));
-  const iNA=hdr.findIndex(h=>h.includes('no answer'));
-  const iSO=hdr.findIndex(h=>h.includes('switch off'));
+  const hi = findRow(rows, 'leads received');
+  if (hi < 0) return;
+  const hdr = rows[hi].map(c => String(c).toLowerCase().trim());
+  const iSeg  = hdr.findIndex(h => h === 'segment');
+  const iRecv = hdr.findIndex(h => h.includes('leads received'));
+  const iTc   = hdr.findIndex(h => h.includes('telecall') && !h.includes('pending'));
+  const iConn = hdr.findIndex(h => h === 'connected');
+  const iHot  = hdr.findIndex(h => h === 'hot');
+  const iWarm = hdr.findIndex(h => h === 'warm');
+  const iCold = hdr.findIndex(h => h === 'cold');
+  const iNI   = hdr.findIndex(h => h.includes('not interested'));
+  const iNA   = hdr.findIndex(h => h.includes('no answer'));
+  const iSO   = hdr.findIndex(h => h.includes('switch off'));
 
-  const mkt=[]; let tR=0,tT=0,tC=0;
-  for (let i=hi+1;i<rows.length;i++) {
-    const row=rows[i], seg=String(row[iSeg]||'').trim();
+  const mkt = [];
+  let tR = 0, tT = 0, tC = 0;
+  for (let i = hi + 1; i < rows.length; i++) {
+    const row = rows[i];
+    if (isSectionBreak(row)) break;
+    const seg = String(row[iSeg] || '').trim();
     if (!seg) continue;
-    if (seg.toLowerCase()==='total') {tR=iRecv>=0?N(row[iRecv]):0;tT=iTc>=0?N(row[iTc]):0;tC=iConn>=0?N(row[iConn]):0;break;}
-    if (['collection','service'].some(k=>seg.toLowerCase().includes(k))) break;
-    mkt.push({seg,recv:iRecv>=0?N(row[iRecv]):0,tc:iTc>=0?N(row[iTc]):0,conn:iConn>=0?N(row[iConn]):0,
-      hot:iHot>=0?N(row[iHot]):0,warm:iWarm>=0?N(row[iWarm]):0,cold:iCold>=0?N(row[iCold]):0,
-      ni:iNI>=0?N(row[iNI]):0,na:iNA>=0?N(row[iNA]):0,so:iSO>=0?N(row[iSO]):0});
+    if (seg.toLowerCase() === 'total') {
+      tR = iRecv >= 0 ? N(row[iRecv]) : 0;
+      tT = iTc   >= 0 ? N(row[iTc])   : 0;
+      tC = iConn >= 0 ? N(row[iConn]) : 0;
+      break;
+    }
+    if (['collection', 'service'].some(k => seg.toLowerCase().startsWith(k))) break;
+    mkt.push({
+      seg,
+      recv: iRecv >= 0 ? N(row[iRecv]) : 0,
+      tc:   iTc   >= 0 ? N(row[iTc])   : 0,
+      conn: iConn >= 0 ? N(row[iConn]) : 0,
+      hot:  iHot  >= 0 ? N(row[iHot])  : 0,
+      warm: iWarm >= 0 ? N(row[iWarm]) : 0,
+      cold: iCold >= 0 ? N(row[iCold]) : 0,
+      ni:   iNI   >= 0 ? N(row[iNI])   : 0,
+      na:   iNA   >= 0 ? N(row[iNA])   : 0,
+      so:   iSO   >= 0 ? N(row[iSO])   : 0
+    });
   }
 
-  const fR=tR||mkt.reduce((s,r)=>s+r.recv,0);
-  const fT=tT||mkt.reduce((s,r)=>s+r.tc,0);
-  const fC=tC||mkt.reduce((s,r)=>s+r.conn,0);
-  T('kpi-leads',fR); T('kpi-leads-sub',`${fT} telecalled · ${fC} connected`);
-  B('kpi-leads-bar',fC>0?fC/fR*100:0);
+  const fR = tR || mkt.reduce((s, r) => s + r.recv, 0);
+  const fT = tT || mkt.reduce((s, r) => s + r.tc,   0);
+  const fC = tC || mkt.reduce((s, r) => s + r.conn, 0);
+  T('kpi-leads',     fR);
+  T('kpi-leads-sub', `${fT} telecalled · ${fC} connected`);
+  B('kpi-leads-bar', fR > 0 ? fC / fR * 100 : 0);
 
-  mkChart('c4','bar',{labels:mkt.map(r=>r.seg),datasets:[
-    {label:'Received',data:mkt.map(r=>r.recv),backgroundColor:'#8b5cf6',borderRadius:4},
-    {label:'Telecalled',data:mkt.map(r=>r.tc),backgroundColor:'#3b82f6',borderRadius:4},
-    {label:'Connected',data:mkt.map(r=>r.conn),backgroundColor:'#16a34a',borderRadius:4}
-  ]},{});
+  mkChart('c4', 'bar', {
+    labels: mkt.map(r => r.seg),
+    datasets: [
+      { label: 'Received',   data: mkt.map(r => r.recv), backgroundColor: '#8b5cf6', borderRadius: 4 },
+      { label: 'Telecalled', data: mkt.map(r => r.tc),   backgroundColor: '#3b82f6', borderRadius: 4 },
+      { label: 'Connected',  data: mkt.map(r => r.conn), backgroundColor: '#16a34a', borderRadius: 4 }
+    ]
+  }, {});
 
-  const totNI=mkt.reduce((s,r)=>s+r.ni,0),totNA=mkt.reduce((s,r)=>s+r.na,0),
-        totSO=mkt.reduce((s,r)=>s+r.so,0),totH=mkt.reduce((s,r)=>s+r.hot,0),
-        totW=mkt.reduce((s,r)=>s+r.warm,0),totC=mkt.reduce((s,r)=>s+r.cold,0);
+  const totNI = mkt.reduce((s, r) => s + r.ni,   0);
+  const totNA = mkt.reduce((s, r) => s + r.na,   0);
+  const totSO = mkt.reduce((s, r) => s + r.so,   0);
+  const totH  = mkt.reduce((s, r) => s + r.hot,  0);
+  const totW  = mkt.reduce((s, r) => s + r.warm, 0);
+  const totC  = mkt.reduce((s, r) => s + r.cold, 0);
   if (CH.c5) CH.c5.destroy();
-  CH.c5=new Chart(document.getElementById('c5'),{type:'doughnut',data:{
-    labels:['Not Interested','No Answer','Switch Off','Hot','Warm','Cold'],
-    datasets:[{data:[totNI,totNA,totSO,totH,totW,totC],
-      backgroundColor:['#ef4444','#f59e0b','#6b7280','#16a34a','#06b6d4','#3b82f6'],
-      borderWidth:2,borderColor:'#fff'}]
-  },options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:true,position:'right',labels:{font:{size:10,family:'DM Sans'},color:'#6b7280',boxWidth:10,padding:8}}}}});
+  CH.c5 = new Chart(document.getElementById('c5'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Not Interested', 'No Answer', 'Switch Off', 'Hot', 'Warm', 'Cold'],
+      datasets: [{
+        data: [totNI, totNA, totSO, totH, totW, totC],
+        backgroundColor: ['#ef4444', '#f59e0b', '#6b7280', '#16a34a', '#06b6d4', '#3b82f6'],
+        borderWidth: 2, borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: true, position: 'right', labels: { font: { size: 10, family: 'DM Sans' }, color: '#6b7280', boxWidth: 10, padding: 8 } } }
+    }
+  });
 }
 
-// ── COLLECTION ──
-function parseCollection(rows) {
-  const cats=['Retail Sales Collection','DO DP','Difficult','Spares'];
-  const cRows=[];
-  for (const cat of cats) {
-    const ri=findRow(rows,cat);
-    if (ri<0) continue;
-    const row=rows[ri];
-    const label=row.find(c=>String(c).trim().length>3&&isNaN(N(c)))||cat;
-    const nums=row.map(c=>String(c).replace(/[,%Rs\s]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);
-    cRows.push({label:String(label).trim(),nums});
-  }
+/* ═══════════════════════════════════════════════════════════════════════════
+   COLLECTION — reads by COLUMN INDEX from every "Company Name" header row.
+   • Empty cells stay as "—" (no list-compression).
+   • Matches Foton total by literal substring "(Foton)-Total" (plain hyphen).
+   • Handles MULTIPLE sub-tables automatically — e.g., the main Sales block
+     and the "Spares & Service" block. Any future sub-table that uses the
+     same "Company Name / Collection Tgt / S / C" header shape will render
+     automatically without code changes.
+   ═══════════════════════════════════════════════════════════════════════════ */
+function parseCollectionBlock(rows, hi) {
+  const header = rows[hi].map(c => String(c).toLowerCase().trim());
+  const cLabel = header.findIndex(c => c === 'company name');
+  if (cLabel < 0) return null;
 
-  let totRi=findRow(rows,'total — foton');
-  if (totRi<0) totRi=findRow(rows,'total');
-  let totData=null;
-  if (totRi>=0) {
-    const row=rows[totRi];
-    const nums=row.map(c=>String(c).replace(/[,%Rs\s]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);
-    totData={label:'Total — Foton',nums};
-    const collTgt=nums[2]??0, mtdColl=nums[4]??0;
-    const collPct=collTgt>0?mtdColl/collTgt*100:0;
-    T('kpi-collection',`Rs ${mtdColl} Cr`);
-    T('kpi-collection-sub',`${collPct.toFixed(1)}% of Rs ${collTgt} Cr target`);
-    B('kpi-collection-bar',collPct);
-  }
+  /* Find first single "s" after the label — that's where the S/C pairs start */
+  const cSC = header.findIndex((c, i) => i > cLabel && c === 's');
+  if (cSC < 0) return null;
 
-  const tbody=document.getElementById('collectionTbody');
-  const renderRow=(r,isT)=>{
-    const ns=r.nums;
-    const cap=ns[6]??ns[ns.length-2]??0;
-    const bc=cap>100?'g':cap>=50?'a':'r';
-    const bt=cap>100?'Above target':cap>=50?'In progress':'Below target';
-    return `<tr${isT?' class="total-row"':''}>
-      <td>${r.label}</td><td>${ns[0]??'—'}</td><td>${ns[1]??'—'}</td><td>${ns[2]??'—'}</td>
-      <td>${ns[3]??'—'}</td><td>${ns[4]??'—'}</td>
-      <td>${ns[5]!==undefined?ns[5].toFixed(1)+'%':'—'}</td>
-      <td>${ns[6]!==undefined?ns[6].toFixed(1)+'%':'—'}</td>
-      <td><span class="badge ${isT?'b':bc}">${isT?'Overall':bt}</span></td>
-    </tr>`;
+  const cDayS = cSC, cDayC = cSC + 1;
+  const cMtdS = cSC + 2, cMtdC = cSC + 3;
+  const cAchS = cSC + 4, cAchC = cSC + 5;
+
+  /* Target columns = everything between label and the first S.
+     For the Sales block this is [Sales Tgt ABP, Actual Sales Tgt, Collection Tgt].
+     For the Spares block this is [Spares Tgt, Collection Tgt].               */
+  const targetCols = [];
+  for (let c = cLabel + 1; c < cSC; c++) targetCols.push(c);
+  const collTgtCol = targetCols[targetCols.length - 1]; // last target col is always Collection Tgt
+
+  const numeric = v => {
+    const s = String(v || '').replace(/[,%\s]/g, '').trim();
+    return s === '' || /^-?\d+(\.\d+)?$/.test(s);
   };
-  tbody.innerHTML=cRows.map(r=>renderRow(r,false)).join('')+(totData?renderRow(totData,true):'');
+
+  const subRows = [];
+  let totalRow = null;
+
+  for (let i = hi + 1; i < rows.length; i++) {
+    const row = rows[i] || [];
+    if (isSectionBreak(row)) break;
+    const label = String(row[cLabel] || '').trim();
+
+    if (!label) {
+      /* Empty label: peek ahead. If the next non-empty label is "Company Name"
+         (next sub-table) or a new section, stop. Otherwise keep scanning.   */
+      let lookahead = null;
+      for (let k = 1; k <= 3; k++) {
+        const nr = rows[i + k];
+        if (!nr) break;
+        const nl = String(nr[cLabel] || '').trim();
+        if (nl) { lookahead = nl; break; }
+      }
+      if (!lookahead) break;
+      if (lookahead.toLowerCase() === 'company name') break;
+      if (/^\d+\.\s/.test(lookahead)) break;
+      continue;
+    }
+
+    if (label.toLowerCase() === 'company name') break; // next sub-table header
+
+    /* Skip rows that are obviously sub-headers masquerading as data
+       (e.g., "Spares & Service" title row with "2083 Baishak" / "Day" cells) */
+    const targetsOk = targetCols.every(c => numeric(row[c]));
+    if (!targetsOk) continue;
+
+    const ll = label.toLowerCase();
+    const isFotonTotal = ll.includes('(foton)-total') || ll.includes('foton)-total');
+
+    const rec = {
+      rawLabel:    label,
+      label:       isFotonTotal ? 'Total — Foton' : label,
+      salesAbp:    targetCols.length >= 3 ? row[targetCols[0]] : (targetCols.length === 2 ? row[targetCols[0]] : ''),
+      salesActual: targetCols.length >= 3 ? row[targetCols[1]] : '',
+      collTgt:     row[collTgtCol],
+      mtdS:        row[cMtdS],
+      mtdC:        row[cMtdC],
+      achS:        row[cAchS],
+      achC:        row[cAchC],
+      isTotal:     isFotonTotal
+    };
+
+    if (isFotonTotal) totalRow = rec;
+    else subRows.push(rec);
+  }
+
+  return { subRows, totalRow, targetColCount: targetCols.length };
+}
+
+/* Look upward from a header row to find a nearby section title
+   (e.g., "Spares & Service" sits 1 row above its Company Name header). */
+function inferBlockTitle(rows, hi) {
+  for (let i = hi - 1; i >= Math.max(0, hi - 3); i--) {
+    const r = rows[i] || [];
+    for (let c = 0; c < r.length; c++) {
+      const v = String(r[c] || '').trim();
+      if (!v) continue;
+      const lv = v.toLowerCase();
+      if (['sales', 'day', 'mtd', 'mtd ach', 'ach %', 'ach%', 'company name'].includes(lv)) continue;
+      if (/^\d{4}/.test(v)) continue;       // "2083 Baishak"
+      if (!isNaN(parseFloat(v)) && /^\d/.test(v)) continue; // pure numbers
+      return v;
+    }
+  }
+  return null;
+}
+
+function parseCollection(rows) {
+  /* Find EVERY "Company Name" header row — main block + Spares block + any
+     future sub-tables that follow the same shape.                            */
+  const headerRows = [];
+  for (let i = 0; i < rows.length; i++) {
+    if ((rows[i] || []).some(c => String(c).toLowerCase().trim() === 'company name')) {
+      headerRows.push(i);
+    }
+  }
+  if (!headerRows.length) return;
+
+  let kpiTotal = null;
+  const htmlChunks = [];
+
+  headerRows.forEach((hi, idx) => {
+    const block = parseCollectionBlock(rows, hi);
+    if (!block) return;
+    const title = idx === 0 ? null : inferBlockTitle(rows, hi);
+
+    /* For the Spares block (2 targets), the "MAW Vriddhi..." sub-row label
+       is redundant with the block title — show a clean label instead.       */
+    if (title && block.targetColCount < 3) {
+      block.subRows.forEach(r => {
+        if (r.rawLabel.toLowerCase().includes('maw vriddhi')) r.label = title;
+      });
+    }
+
+    /* Sub-header separator for non-first blocks */
+    if (title) {
+      htmlChunks.push(`<tr class="subhead-row"><td colspan="9">${title}</td></tr>`);
+    }
+
+    /* Total line always first within its block */
+    if (block.totalRow) {
+      if (idx === 0) kpiTotal = block.totalRow;
+      htmlChunks.push(renderCollectionRow(block.totalRow));
+    }
+    block.subRows.forEach(r => htmlChunks.push(renderCollectionRow(r)));
+  });
+
+  /* KPI from the first (Foton Sales) total row */
+  if (kpiTotal) {
+    const collTgt = N(kpiTotal.collTgt);
+    const mtdColl = N(kpiTotal.mtdC);
+    const collPct = collTgt > 0 ? mtdColl / collTgt * 100 : 0;
+    T('kpi-collection',     `Rs ${mtdColl} Cr`);
+    T('kpi-collection-sub', `${collPct.toFixed(1)}% of Rs ${collTgt} Cr target`);
+    B('kpi-collection-bar', collPct);
+  } else {
+    T('kpi-collection',     '—');
+    T('kpi-collection-sub', 'Foton total row not found');
+  }
+
+  const tbody = document.getElementById('collectionTbody');
+  tbody.innerHTML = htmlChunks.join('') ||
+    '<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--text-muted)">No rows found</td></tr>';
+}
+
+function renderCollectionRow(r) {
+  const achC = P(r.achC);
+  const bc = achC > 100 ? 'g' : achC >= 50 ? 'a' : 'r';
+  const bt = achC > 100 ? 'Above target' : achC >= 50 ? 'In progress' : 'Below target';
+  return `<tr${r.isTotal ? ' class="total-row"' : ''}>
+    <td>${r.label}</td>
+    <td>${fmt(r.salesAbp)}</td>
+    <td>${fmt(r.salesActual)}</td>
+    <td>${fmt(r.collTgt)}</td>
+    <td>${fmt(r.mtdS)}</td>
+    <td>${fmt(r.mtdC)}</td>
+    <td>${fmt(r.achS)}</td>
+    <td>${fmt(r.achC)}</td>
+    <td><span class="badge ${r.isTotal ? 'b' : bc}">${r.isTotal ? 'Overall' : bt}</span></td>
+  </tr>`;
 }
 
 loadData();
-setInterval(loadData, 5*60*1000);
+setInterval(loadData, 5 * 60 * 1000);
 </script>
 </body>
 </html>
