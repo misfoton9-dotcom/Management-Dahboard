@@ -27,51 +27,24 @@
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; font-size: 14px; }
-/* HEADER */
-.header {
-  background: var(--surface); border-bottom: 1px solid var(--border);
-  padding: 0 2rem; display: flex; align-items: center;
-  justify-content: space-between; height: 58px;
-  position: sticky; top: 0; z-index: 100; gap: 12px;
-}
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 58px; position: sticky; top: 0; z-index: 100; gap: 12px; }
 .header-left { display: flex; align-items: center; gap: 14px; }
-.logo-mark {
-  width: 34px; height: 34px; border-radius: 9px;
-  background: linear-gradient(135deg, #0ea5e9, #6366f1);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0;
-}
+.logo-mark { width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(135deg, #0ea5e9, #6366f1); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; flex-shrink: 0; }
 .header h1 { font-size: 15px; font-weight: 600; }
 .header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-.live-pill {
-  display: flex; align-items: center; gap: 6px;
-  background: #f0fdf4; border: 1px solid #bbf7d0;
-  border-radius: 20px; padding: 4px 12px;
-  font-size: 11px; font-weight: 500; color: var(--green);
-}
+.live-pill { display: flex; align-items: center; gap: 6px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 20px; padding: 4px 12px; font-size: 11px; font-weight: 500; color: var(--green); }
 .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 .date-text { font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
-.refresh-btn {
-  font-size: 12px; font-weight: 600; padding: 5px 14px;
-  border: 1px solid var(--border); border-radius: 20px;
-  background: var(--surface); color: var(--blue); cursor: pointer; transition: background .15s;
-}
+.refresh-btn { font-size: 12px; font-weight: 600; padding: 5px 14px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); color: var(--blue); cursor: pointer; transition: background .15s; }
 .refresh-btn:hover { background: var(--blue-light); }
-/* STATUS */
 .status-bar { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 500; display: none; margin-bottom: 14px; }
 .status-bar.loading { background: #eff6ff; color: #2563eb; display: block; }
 .status-bar.error   { background: var(--red-light); color: var(--red); display: block; }
 .status-bar.success { background: var(--green-light); color: var(--green); display: block; }
-/* LAYOUT */
 .dash { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
-/* KPI STRIP */
 .kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 1.5rem; }
-.kpi-card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 1.2rem 1.4rem;
-  box-shadow: var(--shadow); position: relative; overflow: hidden;
-}
+.kpi-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem 1.4rem; box-shadow: var(--shadow); position: relative; overflow: hidden; }
 .kpi-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
 .kpi-card.k-blue::before  { background: linear-gradient(90deg,#0ea5e9,#6366f1); }
 .kpi-card.k-green::before { background: linear-gradient(90deg,#16a34a,#22d3ee); }
@@ -86,18 +59,10 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .kpi-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
 .prog-wrap { background: #f3f4f6; border-radius: 4px; height: 4px; overflow: hidden; }
 .prog-bar  { height: 100%; border-radius: 4px; transition: width .8s ease; }
-/* SECTION TITLE */
-.section-title {
-  font-size: 11px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .08em; color: var(--text-muted);
-  margin: 1.75rem 0 .9rem;
-  display: flex; align-items: center; gap: 10px;
-}
+.section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin: 1.75rem 0 .9rem; display: flex; align-items: center; gap: 10px; }
 .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
-/* GRIDS */
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
 .grid-1 { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 14px; }
-/* CARD */
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); }
 .card-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 3px; }
 .card-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 1rem; }
@@ -105,13 +70,11 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .leg { display: flex; align-items: center; gap: 5px; }
 .leg-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
 .chart-wrap { position: relative; width: 100%; }
-/* STAT MINI */
 .stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 1rem; }
 .stat-box { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
 .stat-box .sl { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; }
 .stat-box .sv { font-size: 18px; font-weight: 700; }
 .stat-box .ss { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-/* PSF */
 .psf-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .psf-head { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding-bottom: 6px; border-bottom: 2px solid; margin-bottom: 8px; }
 .psf-ev  { color: #1d4ed8; border-color: #3b82f6; }
@@ -119,16 +82,9 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .psf-stat { background: #f8fafc; border: 1px solid var(--border); border-radius: 7px; padding: 8px 10px; margin-bottom: 6px; }
 .psf-stat .pl { font-size: 10px; color: var(--text-muted); }
 .psf-stat .pv { font-size: 16px; font-weight: 700; }
-/* TABLE */
 .table-wrap { overflow-x: auto; }
 table { width: 100%; font-size: 12px; border-collapse: collapse; }
-th {
-  text-align: left; padding: 9px 12px;
-  font-size: 10px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: .04em; color: var(--text-muted);
-  border-bottom: 2px solid var(--border);
-  white-space: nowrap; background: #fafbfc;
-}
+th { text-align: left; padding: 9px 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); border-bottom: 2px solid var(--border); white-space: nowrap; background: #fafbfc; }
 td { padding: 8px 12px; border-bottom: 1px solid #f3f4f6; white-space: nowrap; }
 tr:last-child td { border-bottom: none; }
 tr.total-row td { font-weight: 700; background: #f8fafc; }
@@ -139,15 +95,8 @@ tr:hover td { background: #fafbff; }
 .badge.r { background: var(--red-light); color: var(--red); }
 .badge.b { background: var(--blue-light); color: var(--blue); }
 .footer { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); font-family: 'DM Mono', monospace; }
-/* Vehicle Tracker search */
 .vt-toolbar { display:flex; gap:10px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
-.vt-search {
-  flex: 1; min-width: 180px; max-width: 320px;
-  padding: 7px 12px; font-size: 12px;
-  border: 1px solid var(--border); border-radius: 8px;
-  font-family: 'DM Sans', sans-serif; background: #fafbfc;
-  outline: none; transition: border-color .15s, background .15s;
-}
+.vt-search { flex: 1; min-width: 180px; max-width: 320px; padding: 7px 12px; font-size: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: 'DM Sans', sans-serif; background: #fafbfc; outline: none; transition: border-color .15s, background .15s; }
 .vt-search:focus { border-color: #3b82f6; background: #fff; }
 .vt-meta { font-size: 11px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
 @media(max-width:768px){
@@ -173,7 +122,6 @@ tr:hover td { background: #fafbff; }
 </div>
 <div class="dash">
   <div class="status-bar loading" id="statusBar">⟳ Connecting to Google Sheets…</div>
-  <!-- KPIs -->
   <div class="kpi-strip">
     <div class="kpi-card k-blue">
       <div class="kpi-label">MTD Net Sales</div>
@@ -200,7 +148,7 @@ tr:hover td { background: #fafbff; }
       <div class="prog-wrap"><div class="prog-bar" id="kpi-leads-bar" style="background:#6366f1;width:0%"></div></div>
     </div>
   </div>
-  <!-- SALES -->
+
   <div class="section-title">1 · Sales Performance</div>
   <div class="grid-2">
     <div class="card">
@@ -239,11 +187,11 @@ tr:hover td { background: #fafbff; }
       </div>
     </div>
   </div>
-  <!-- SERVICE -->
+
   <div class="section-title">2 · Service</div>
   <div class="grid-2">
     <div class="card">
-      <div class="card-tag">Service — ISF (EV)</div>
+      <div class="card-tag">Service — ISF</div>
       <div class="card-title">In-Service Flow Metrics MTD</div>
       <div class="stat-grid">
         <div class="stat-box"><div class="sl">Inflow</div><div class="sv" id="isf-inflow">—</div><div class="ss" id="isf-inflow-t">Today: —</div></div>
@@ -268,15 +216,15 @@ tr:hover td { background: #fafbff; }
         </div>
         <div>
           <div class="psf-head psf-ice">PSF ICE</div>
-          <div class="psf-stat"><div class="pl">Inflow</div><div class="pv" id="psfice-inflow">—</div></div>
-          <div class="psf-stat"><div class="pl">Outflow</div><div class="pv" id="psfice-outflow">—</div></div>
           <div class="psf-stat"><div class="pl">ISF Taken</div><div class="pv" id="psfice-taken">—</div></div>
+          <div class="psf-stat"><div class="pl">Satisfied</div><div class="pv" style="color:var(--green)" id="psfice-satisfied">—</div></div>
+          <div class="psf-stat"><div class="pl">Dissatisfied</div><div class="pv" id="psfice-dissatisfied">—</div></div>
           <div class="psf-stat"><div class="pl">Satisfaction %</div><div class="pv" style="color:var(--green)" id="psfice-pct">—</div></div>
         </div>
       </div>
     </div>
   </div>
-  <!-- MARKETING -->
+
   <div class="section-title">3 · Marketing &amp; Leads</div>
   <div class="grid-2">
     <div class="card">
@@ -295,7 +243,7 @@ tr:hover td { background: #fafbff; }
       <div class="chart-wrap" style="height:210px"><canvas id="c5"></canvas></div>
     </div>
   </div>
-  <!-- COLLECTION -->
+
   <div class="section-title">4 · Collection</div>
   <div class="grid-1">
     <div class="card">
@@ -313,25 +261,25 @@ tr:hover td { background: #fafbff; }
       </div>
     </div>
   </div>
-  <!-- VEHICLE TRACKER -->
+
   <div class="section-title">5 · Vehicle Tracker</div>
   <div class="grid-1">
     <div class="card">
       <div class="card-tag">Inventory — Live</div>
       <div class="card-title">Vehicle Tracker (Model Name → Remarks)</div>
       <div class="vt-toolbar">
-        <input type="text" id="vtSearch" class="vt-search" placeholder="Search model, chassis, color, location…"/>
+        <input type="text" id="vtSearch" class="vt-search" placeholder="Search model, status, port, remarks…"/>
         <span class="vt-meta" id="vtMeta">—</span>
       </div>
       <div class="table-wrap">
         <table>
           <thead><tr>
             <th>Model Name</th>
-            <th>Chassis No.</th>
-            <th>Color</th>
-            <th>Stock Status</th>
-            <th>Location</th>
-            <th>Date Received</th>
+            <th>Batch Qty</th>
+            <th>Dispatch Status</th>
+            <th>ETA Nepal</th>
+            <th>Nepal Port</th>
+            <th>Batch Status</th>
             <th>Remarks</th>
           </tr></thead>
           <tbody id="vehicleTbody"><tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">Loading…</td></tr></tbody>
@@ -342,53 +290,107 @@ tr:hover td { background: #fafbff; }
   <div class="footer" id="footer">MAW Vriddhi Commercial Vehicles Pvt. Ltd. &nbsp;·&nbsp; CEO Dashboard &nbsp;·&nbsp; Confidential</div>
 </div>
 <script>
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQI-IU-Aah_fVhQgPXlsWnZ4QF0_GF8fVqlKUxjmbYNn_zTZh3qTkGM8gNgLrcdk-jMnf2mjD1FGeU/pub?output=csv';
-const PROXY   = 'https://corsproxy.io/?';
-let CH = {};
-let VT_ROWS = []; // cached vehicle tracker rows for client-side search
+/* ==========  CONFIG  ===================================================
+   This dashboard reads from the new "CEO_Dashboard_Enhanced (2)" sheet.
+   For the browser to fetch CSV the sheet must be either:
+     (a) Shared as "Anyone with the link – Viewer", OR
+     (b) Published to web ▸ CSV (more reliable)
+   We try the export URL first, then gviz, then a CORS proxy.
+====================================================================== */
+const SHEET_ID = '1iFdDW_Vc7Q85HIBShobreqr5iWvslIwTj4bgkmcfp10';
+const GID      = '1057603797';
+const URLS = [
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`,
+  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID}`
+];
+const PROXY = 'https://corsproxy.io/?';
 
+let CH = {};
+let VT_ROWS = [];
+
+/* -------- CSV parsing (handles quotes + embedded newlines) ------------ */
 function parseCSV(text) {
-  return text.trim().split('\n').map(line => {
-    const cells = []; let cur = '', inQ = false;
-    for (const ch of line) {
-      if (ch === '"') { inQ = !inQ; }
-      else if (ch === ',' && !inQ) { cells.push(cur.trim()); cur = ''; }
+  const out = [];
+  let row = [], cur = '', inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQ) {
+      if (ch === '"' && text[i+1] === '"') { cur += '"'; i++; }
+      else if (ch === '"') inQ = false;
       else cur += ch;
+    } else {
+      if (ch === '"') inQ = true;
+      else if (ch === ',') { row.push(cur.trim()); cur = ''; }
+      else if (ch === '\n' || ch === '\r') {
+        if (ch === '\r' && text[i+1] === '\n') i++;
+        row.push(cur.trim()); out.push(row); row = []; cur = '';
+      } else cur += ch;
     }
-    cells.push(cur.trim());
-    return cells;
-  });
+  }
+  if (cur !== '' || row.length) { row.push(cur.trim()); out.push(row); }
+  return out;
 }
-function N(v) {
-  if (v===undefined||v===null) return 0;
-  const f = parseFloat(String(v).replace(/[,%$Rs\s]/g,''));
+
+/* -------- helpers ----------------------------------------------------- */
+function num(v) {
+  if (v === undefined || v === null) return 0;
+  const s = String(v).replace(/[,%$Rs\s]/g,'').trim();
+  if (s === '' || s.startsWith('#')) return 0;
+  const f = parseFloat(s);
   return isNaN(f) ? 0 : f;
 }
-function P(v) {
-  const s = String(v).trim();
-  if (s.includes('%')) return parseFloat(s);
-  const f = parseFloat(s);
-  return isNaN(f) ? 0 : (f>0&&f<=1 ? f*100 : f);
+function pct(v) {
+  // returns percentage as a number 0–100. handles "48.65%" and "0.4865".
+  if (v === undefined || v === null) return 0;
+  const raw = String(v).trim();
+  if (raw === '' || raw.startsWith('#')) return 0;
+  const hasPercent = raw.includes('%');
+  const f = parseFloat(raw.replace(/[,%\s]/g,''));
+  if (isNaN(f)) return 0;
+  if (hasPercent) return f;
+  return f > 0 && f <= 1 ? f * 100 : f;
 }
-function T(id, v) { const e=document.getElementById(id); if(e) e.textContent=v; }
-function B(id, p) { const e=document.getElementById(id); if(e) e.style.width=Math.min(100,Math.max(0,p))+'%'; }
-function esc(s) { return String(s==null?'':s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-function findRow(rows, kw, maxC=8) {
+function T(id, v) { const e = document.getElementById(id); if (e) e.textContent = v; }
+function B(id, p) { const e = document.getElementById(id); if (e) e.style.width = Math.min(100, Math.max(0, p)) + '%'; }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function findRow(rows, kw, maxC = 12) {
   const k = kw.toLowerCase();
-  for (let i=0;i<rows.length;i++)
-    for (let c=0;c<Math.min(rows[i].length,maxC);c++)
+  for (let i = 0; i < rows.length; i++)
+    for (let c = 0; c < Math.min(rows[i].length, maxC); c++)
       if (String(rows[i][c]).toLowerCase().includes(k)) return i;
   return -1;
 }
+
+/* -------- fetch ------------------------------------------------------- */
 async function fetchCSV() {
-  try { const r=await fetch(CSV_URL); if(r.ok) return await r.text(); } catch(e){}
-  const r2=await fetch(PROXY+encodeURIComponent(CSV_URL));
-  if(!r2.ok) throw new Error('Status '+r2.status);
-  return await r2.text();
+  let lastErr = null;
+  for (const u of URLS) {
+    try {
+      const r = await fetch(u, { redirect: 'follow' });
+      if (r.ok) {
+        const txt = await r.text();
+        if (txt && !txt.startsWith('<')) return txt;
+      }
+      lastErr = new Error('HTTP ' + r.status);
+    } catch (e) { lastErr = e; }
+  }
+  for (const u of URLS) {
+    try {
+      const r = await fetch(PROXY + encodeURIComponent(u));
+      if (r.ok) {
+        const txt = await r.text();
+        if (txt && !txt.startsWith('<')) return txt;
+      }
+    } catch (e) { lastErr = e; }
+  }
+  throw lastErr || new Error('Unable to reach sheet');
 }
+
 async function loadData() {
   const bar = document.getElementById('statusBar');
-  bar.className='status-bar loading'; bar.textContent='⟳ Loading live data from Google Sheets…';
+  bar.className = 'status-bar loading';
+  bar.textContent = '⟳ Loading live data from Google Sheets…';
   try {
     const text = await fetchCSV();
     const rows = parseCSV(text);
@@ -398,257 +400,393 @@ async function loadData() {
     parseMarketing(rows);
     parseCollection(rows);
     parseVehicleTracker(rows);
-    bar.className='status-bar success';
-    bar.textContent='✓ Dashboard updated — '+new Date().toLocaleTimeString();
-    setTimeout(()=>bar.style.display='none', 4000);
-  } catch(err) {
-    bar.className='status-bar error';
-    bar.textContent='✗ Could not load data: '+err.message;
+    bar.className = 'status-bar success';
+    bar.textContent = '✓ Dashboard updated — ' + new Date().toLocaleTimeString();
+    setTimeout(() => bar.style.display = 'none', 4000);
+  } catch (err) {
+    bar.className = 'status-bar error';
+    bar.textContent = '✗ Could not load data: ' + err.message + ' — make sure the sheet is shared as "Anyone with the link" or Published to web.';
     console.error(err);
   }
 }
+
 function updateDate(rows) {
-  for (let i=0;i<Math.min(6,rows.length);i++)
+  for (let i = 0; i < Math.min(6, rows.length); i++)
     for (const c of rows[i]) {
-      const v=String(c).trim();
-      if (v.match(/\d{4}-\d{2}-\d{2}/)) {
-        document.getElementById('dateText').textContent=v;
-        document.getElementById('footer').innerHTML='MAW Vriddhi Commercial Vehicles Pvt. Ltd. &nbsp;·&nbsp; CEO Dashboard &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; '+v;
+      const v = String(c).trim();
+      if (v.match(/^\d{4}-\d{2}-\d{2}$/) || v.match(/^\d{1,2}[-\/]\d{1,2}[-\/]\d{2,4}$/)) {
+        document.getElementById('dateText').textContent = v;
+        document.getElementById('footer').innerHTML = 'MAW Vriddhi Commercial Vehicles Pvt. Ltd. &nbsp;·&nbsp; CEO Dashboard &nbsp;·&nbsp; Confidential &nbsp;·&nbsp; ' + v;
         return;
       }
     }
 }
-const GC='rgba(0,0,0,0.05)', TC='#9ca3af';
-function mkChart(id, type, data, opts={}) {
+
+const GC = 'rgba(0,0,0,0.05)', TC = '#9ca3af';
+function mkChart(id, type, data, opts = {}) {
   if (CH[id]) CH[id].destroy();
-  CH[id]=new Chart(document.getElementById(id),{type,data,options:{
-    responsive:true, maintainAspectRatio:false,
-    plugins:{legend:{display:false}},
-    scales:{
-      x:{grid:{color:GC},ticks:{color:TC,font:{size:10,family:'DM Sans'}}},
-      y:{grid:{color:GC},ticks:{color:TC,font:{size:10,family:'DM Sans'}}}
+  CH[id] = new Chart(document.getElementById(id), { type, data, options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: GC }, ticks: { color: TC, font: { size: 10, family: 'DM Sans' } } },
+      y: { grid: { color: GC }, ticks: { color: TC, font: { size: 10, family: 'DM Sans' } } }
     }, ...opts
   }});
 }
-// ── SALES ──
+
+/* ==========  1 · SALES  ============================================== */
 function parseSales(rows) {
-  const hi = findRow(rows,'segment');
-  if (hi<0) return;
-  const hdr = rows[hi].map(c=>String(c).toLowerCase().trim());
-  const iSeg  = hdr.findIndex(h=>h.includes('segment'));
-  const iAbp  = hdr.findIndex(h=>h.includes('abp'));
-  const iAct  = hdr.findIndex(h=>h.includes('actual'));
-  const iPlan = hdr.findIndex(h=>h.includes('plan'));
-  const iBill = hdr.findIndex(h=>h.includes('bill'));
-  let iNet = hdr.findIndex(h=>h.includes('net sale'));
-  if (iNet<0 && iBill>=0) iNet = iBill+2;
-  let iPct = hdr.findIndex(h=>h.includes('achi')||h.includes('ach('));
-  if (iPct<0) iPct = hdr.length-1;
-  const rows2 = [];
-  for (let i=hi+1;i<rows.length;i++) {
-    const row=rows[i];
-    const seg=String(row[iSeg]||'').trim();
+  const hi = findRow(rows, 'segment');
+  if (hi < 0) return;
+  const hdr = rows[hi].map(c => String(c).toLowerCase().trim());
+  const iSeg  = hdr.findIndex(h => h.includes('segment'));
+  const iAbp  = hdr.findIndex(h => h.includes('abp'));
+  const iAct  = hdr.findIndex(h => h.includes('actual'));
+  const iPlan = hdr.findIndex(h => h.includes('plan'));
+  const iBill = hdr.findIndex(h => h.includes('bill'));
+  const iNet  = hdr.findIndex(h => h.includes('net sale') || h.includes('net'));
+  const iPct  = hdr.findIndex(h => h.includes('achi') || h.includes('ach('));
+  const data = [];
+  for (let i = hi + 1; i < rows.length; i++) {
+    const row = rows[i];
+    const seg = String(row[iSeg] || '').trim();
     if (!seg) continue;
-    if (['service','marketing','collection','psf','isf'].some(k=>seg.toLowerCase().startsWith(k))) break;
-    const abp=N(row[iAbp]), act=iAct>=0?N(row[iAct]):0, plan=iPlan>=0?N(row[iPlan]):0;
-    const bill=iBill>=0?N(row[iBill]):0, net=iNet>=0?N(row[iNet]):0;
-    const rawP=iPct>=0?row[iPct]:null;
-    const ach=rawP?P(rawP):(abp>0?net/abp*100:0);
-    rows2.push({seg,abp,act,plan,bill,net,ach});
+    const segL = seg.toLowerCase();
+    if (['service','marketing','collection','psf','isf','inflow','outflow','vehicle','retail','model'].some(k => segL.startsWith(k)) || segL.startsWith('2.') || segL.startsWith('3.') || segL.startsWith('4.') || segL.startsWith('5.')) break;
+    data.push({
+      seg,
+      abp:  num(row[iAbp]),
+      act:  iAct  >= 0 ? num(row[iAct])  : 0,
+      plan: iPlan >= 0 ? num(row[iPlan]) : 0,
+      bill: iBill >= 0 ? num(row[iBill]) : 0,
+      net:  num(row[iNet]),
+      ach:  pct(row[iPct])
+    });
   }
-  if (!rows2.length) return;
-  const total=rows2.find(r=>r.seg.toLowerCase()==='total');
-  const segs=rows2.filter(r=>r.seg.toLowerCase()!=='total');
-  const kNet=total?total.net:segs.reduce((s,r)=>s+r.net,0);
-  const kAbp=total?total.abp:segs.reduce((s,r)=>s+r.abp,0);
-  const kPct=total?total.ach:(kAbp>0?kNet/kAbp*100:0);
-  T('kpi-sales',`${kNet} / ${kAbp}`);
-  T('kpi-sales-sub',`${kPct.toFixed(1)}% of ABP target`);
-  B('kpi-sales-bar',kPct);
-  const labels=segs.map(r=>r.seg.length>13?r.seg.slice(0,13)+'…':r.seg);
-  mkChart('c1','bar',{labels,datasets:[
-    {label:'ABP Target',data:segs.map(r=>r.abp),backgroundColor:'#3b82f6',borderRadius:4},
-    {label:'MTD Net Sale',data:segs.map(r=>r.net),backgroundColor:'#16a34a',borderRadius:4}
-  ]},{scales:{x:{grid:{color:GC},ticks:{color:TC,font:{size:10},maxRotation:35}},y:{grid:{color:GC},ticks:{color:TC,font:{size:10}}}}});
-  const pcts=segs.map(r=>r.ach);
-  mkChart('c2','bar',{labels,datasets:[{label:'Ach %',data:pcts,borderRadius:4,
-    backgroundColor:pcts.map(v=>v>100?'#16a34a':v>=50?'#f59e0b':'#ef4444')}]},
-    {indexAxis:'y',scales:{x:{grid:{color:GC},ticks:{color:TC,font:{size:10},callback:v=>v+'%'}},y:{grid:{color:GC},ticks:{color:TC,font:{size:10}}}}});
-  document.getElementById('salesTbody').innerHTML=rows2.map(r=>{
-    const isT=r.seg.toLowerCase()==='total';
-    const bc=r.ach>100?'g':r.ach>=50?'a':'r';
-    const bt=r.ach>100?'Above':r.ach>=50?'Partial':'Below';
-    return `<tr${isT?' class="total-row"':''}>
-      <td>${r.seg}</td><td>${r.abp}</td><td>${r.act}</td><td>${r.plan}</td>
+  if (!data.length) return;
+  const total = data.find(r => r.seg.toLowerCase() === 'total');
+  const segs  = data.filter(r => r.seg.toLowerCase() !== 'total');
+  const kNet = total ? total.net : segs.reduce((s, r) => s + r.net, 0);
+  const kAbp = total ? total.abp : segs.reduce((s, r) => s + r.abp, 0);
+  const kPct = total ? total.ach : (kAbp > 0 ? kNet/kAbp*100 : 0);
+  T('kpi-sales', `${kNet} / ${kAbp}`);
+  T('kpi-sales-sub', `${kPct.toFixed(1)}% of ABP target`);
+  B('kpi-sales-bar', kPct);
+
+  const labels = segs.map(r => r.seg.length > 13 ? r.seg.slice(0, 13) + '…' : r.seg);
+  mkChart('c1', 'bar', { labels, datasets: [
+    { label: 'ABP Target',   data: segs.map(r => r.abp), backgroundColor: '#3b82f6', borderRadius: 4 },
+    { label: 'MTD Net Sale', data: segs.map(r => r.net), backgroundColor: '#16a34a', borderRadius: 4 }
+  ]}, { scales: {
+      x: { grid: { color: GC }, ticks: { color: TC, font: { size: 10 }, maxRotation: 35 } },
+      y: { grid: { color: GC }, ticks: { color: TC, font: { size: 10 } } }
+  }});
+  const pcts = segs.map(r => r.ach);
+  mkChart('c2', 'bar', { labels, datasets: [{ label: 'Ach %', data: pcts, borderRadius: 4,
+    backgroundColor: pcts.map(v => v > 100 ? '#16a34a' : v >= 50 ? '#f59e0b' : '#ef4444')
+  }]}, { indexAxis: 'y', scales: {
+      x: { grid: { color: GC }, ticks: { color: TC, font: { size: 10 }, callback: v => v + '%' } },
+      y: { grid: { color: GC }, ticks: { color: TC, font: { size: 10 } } }
+  }});
+
+  document.getElementById('salesTbody').innerHTML = data.map(r => {
+    const isT = r.seg.toLowerCase() === 'total';
+    const bc  = r.ach > 100 ? 'g' : r.ach >= 50 ? 'a' : 'r';
+    const bt  = r.ach > 100 ? 'Above' : r.ach >= 50 ? 'Partial' : 'Below';
+    return `<tr${isT ? ' class="total-row"' : ''}>
+      <td>${esc(r.seg)}</td><td>${r.abp}</td><td>${r.act}</td><td>${r.plan}</td>
       <td>${r.bill}</td><td><strong>${r.net}</strong></td>
       <td>${r.ach.toFixed(1)}%</td>
-      <td>${isT?'<span class="badge b">Overall</span>':`<span class="badge ${bc}">${bt}</span>`}</td>
+      <td>${isT ? '<span class="badge b">Overall</span>' : `<span class="badge ${bc}">${bt}</span>`}</td>
     </tr>`;
   }).join('');
 }
-// ── SERVICE ──
+
+/* ==========  2 · SERVICE  ============================================
+   ISF, PSF EV, PSF ICE sit SIDE-BY-SIDE in the same rows of the sheet.
+   We detect the column positions of each block from the section header
+   row, then read each metric by (metric-col, today-col, mtd-col).
+==================================================================== */
 function parseService(rows) {
-  const si = findRow(rows,'inflow vehicle');
-  if (si<0) return;
-  const keys=['Inflow','Outflow','ISF Taken','Satisfied','Dissatisfied','Satisfaction %'];
-  const data={};
-  for (let k=0;k<6;k++) {
-    const row=rows[si+k]||[];
-    const nums=row.slice(1).map(c=>String(c).replace(/[%,]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);
-    data[keys[k]]={today:nums[0]??0, mtd:nums[nums.length-1]??0};
-  }
-  T('isf-inflow',        data['Inflow']?.mtd??'—');
-  T('isf-inflow-t',      'Today: '+(data['Inflow']?.today??'—'));
-  T('isf-outflow',       data['Outflow']?.mtd??'—');
-  T('isf-outflow-t',     'Today: '+(data['Outflow']?.today??'—'));
-  T('isf-taken',         data['ISF Taken']?.mtd??'—');
-  T('isf-taken-t',       'Today: '+(data['ISF Taken']?.today??'—'));
-  T('isf-satisfied',     data['Satisfied']?.mtd??'—');
-  T('isf-satisfied-t',   'Today: '+(data['Satisfied']?.today??'—'));
-  T('isf-dissatisfied',  data['Dissatisfied']?.mtd??'—');
-  T('isf-dissatisfied-t','Today: '+(data['Dissatisfied']?.today??'—'));
-  const sat=data['Satisfied']?.mtd??0, tak=data['ISF Taken']?.mtd??1;
-  const ip=Math.round(sat/tak*100);
-  T('isf-pct',ip+'%'); T('kpi-isf',ip+'%');
-  T('kpi-isf-sub',`${sat} satisfied / ${tak} ISF taken`);
-  B('kpi-isf-bar',ip);
-  mkChart('c3','bar',{
-    labels:['Inflow','Outflow','ISF Taken','Satisfied','Dissatisfied'],
-    datasets:[{data:[data['Inflow']?.mtd,data['Outflow']?.mtd,data['ISF Taken']?.mtd,data['Satisfied']?.mtd,data['Dissatisfied']?.mtd],
-      backgroundColor:['#3b82f6','#06b6d4','#8b5cf6','#16a34a','#ef4444'],borderRadius:4}]
-  },{});
-  const psfEV=findRow(rows,'psf taken');
-  if (psfEV>=0) {
-    const gN=ri=>{const row=rows[ri]||[];const n=row.slice(1).map(c=>String(c).replace(/[%,]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);return n[n.length-1]??0;};
-    T('psfev-taken',gN(psfEV)); T('psfev-satisfied',gN(psfEV+1));
-    T('psfev-dissatisfied',gN(psfEV+2));
-    const ep=gN(psfEV+3); T('psfev-pct',(ep>1?ep.toFixed(1):(ep*100).toFixed(1))+'%');
-  }
-  let psfICE=-1;
-  for (let i=si+1;i<rows.length;i++)
-    if (String(rows[i][0]||rows[i][1]||'').toLowerCase().includes('inflow vehicle')) {psfICE=i;break;}
-  if (psfICE>=0) {
-    const gN=off=>{const row=rows[psfICE+off]||[];const n=row.slice(1).map(c=>String(c).replace(/[%,]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);return n[n.length-1]??0;};
-    T('psfice-inflow',gN(0)); T('psfice-outflow',gN(1)); T('psfice-taken',gN(2));
-    const ip2=gN(5); T('psfice-pct',(ip2>1?ip2.toFixed(1):(ip2*100).toFixed(1))+'%');
-  }
-}
-// ── MARKETING ──
-function parseMarketing(rows) {
-  const hi=findRow(rows,'leads received');
-  if (hi<0) return;
-  const hdr=rows[hi].map(c=>String(c).toLowerCase().trim());
-  const iSeg=hdr.findIndex(h=>h.includes('segment'));
-  const iRecv=hdr.findIndex(h=>h.includes('leads received'));
-  const iTc=hdr.findIndex(h=>h.includes('telecall')&&!h.includes('pending'));
-  const iConn=hdr.findIndex(h=>h==='connected');
-  const iHot=hdr.findIndex(h=>h==='hot'), iWarm=hdr.findIndex(h=>h==='warm'), iCold=hdr.findIndex(h=>h==='cold');
-  const iNI=hdr.findIndex(h=>h.includes('not interested'));
-  const iNA=hdr.findIndex(h=>h.includes('no answer'));
-  const iSO=hdr.findIndex(h=>h.includes('switch off'));
-  const mkt=[]; let tR=0,tT=0,tC=0;
-  for (let i=hi+1;i<rows.length;i++) {
-    const row=rows[i], seg=String(row[iSeg]||'').trim();
-    if (!seg) continue;
-    if (seg.toLowerCase()==='total') {tR=iRecv>=0?N(row[iRecv]):0;tT=iTc>=0?N(row[iTc]):0;tC=iConn>=0?N(row[iConn]):0;break;}
-    if (['collection','service'].some(k=>seg.toLowerCase().includes(k))) break;
-    mkt.push({seg,recv:iRecv>=0?N(row[iRecv]):0,tc:iTc>=0?N(row[iTc]):0,conn:iConn>=0?N(row[iConn]):0,
-      hot:iHot>=0?N(row[iHot]):0,warm:iWarm>=0?N(row[iWarm]):0,cold:iCold>=0?N(row[iCold]):0,
-      ni:iNI>=0?N(row[iNI]):0,na:iNA>=0?N(row[iNA]):0,so:iSO>=0?N(row[iSO]):0});
-  }
-  const fR=tR||mkt.reduce((s,r)=>s+r.recv,0);
-  const fT=tT||mkt.reduce((s,r)=>s+r.tc,0);
-  const fC=tC||mkt.reduce((s,r)=>s+r.conn,0);
-  T('kpi-leads',fR); T('kpi-leads-sub',`${fT} telecalled · ${fC} connected`);
-  B('kpi-leads-bar',fC>0?fC/fR*100:0);
-  mkChart('c4','bar',{labels:mkt.map(r=>r.seg),datasets:[
-    {label:'Received',data:mkt.map(r=>r.recv),backgroundColor:'#8b5cf6',borderRadius:4},
-    {label:'Telecalled',data:mkt.map(r=>r.tc),backgroundColor:'#3b82f6',borderRadius:4},
-    {label:'Connected',data:mkt.map(r=>r.conn),backgroundColor:'#16a34a',borderRadius:4}
-  ]},{});
-  const totNI=mkt.reduce((s,r)=>s+r.ni,0),totNA=mkt.reduce((s,r)=>s+r.na,0),
-        totSO=mkt.reduce((s,r)=>s+r.so,0),totH=mkt.reduce((s,r)=>s+r.hot,0),
-        totW=mkt.reduce((s,r)=>s+r.warm,0),totC=mkt.reduce((s,r)=>s+r.cold,0);
-  if (CH.c5) CH.c5.destroy();
-  CH.c5=new Chart(document.getElementById('c5'),{type:'doughnut',data:{
-    labels:['Not Interested','No Answer','Switch Off','Hot','Warm','Cold'],
-    datasets:[{data:[totNI,totNA,totSO,totH,totW,totC],
-      backgroundColor:['#ef4444','#f59e0b','#6b7280','#16a34a','#06b6d4','#3b82f6'],
-      borderWidth:2,borderColor:'#fff'}]
-  },options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:true,position:'right',labels:{font:{size:10,family:'DM Sans'},color:'#6b7280',boxWidth:10,padding:8}}}}});
-}
-// ── COLLECTION ──
-function parseCollection(rows) {
-  const cats=['Retail Sales Collection','DO DP','Difficult','Spares'];
-  const cRows=[];
-  for (const cat of cats) {
-    const ri=findRow(rows,cat);
-    if (ri<0) continue;
-    const row=rows[ri];
-    const label=row.find(c=>String(c).trim().length>3&&isNaN(N(c)))||cat;
-    const nums=row.map(c=>String(c).replace(/[,%Rs\s]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);
-    cRows.push({label:String(label).trim(),nums});
-  }
-  let totRi=findRow(rows,'total — foton');
-  if (totRi<0) totRi=findRow(rows,'total');
-  let totData=null;
-  if (totRi>=0) {
-    const row=rows[totRi];
-    const nums=row.map(c=>String(c).replace(/[,%Rs\s]/g,'').trim()).filter(c=>c!==''&&!isNaN(parseFloat(c))).map(Number);
-    totData={label:'Total — Foton',nums};
-    const collTgt=nums[2]??0, mtdColl=nums[4]??0;
-    const collPct=collTgt>0?mtdColl/collTgt*100:0;
-    T('kpi-collection',`Rs ${mtdColl} Cr`);
-    T('kpi-collection-sub',`${collPct.toFixed(1)}% of Rs ${collTgt} Cr target`);
-    B('kpi-collection-bar',collPct);
-  }
-  const tbody=document.getElementById('collectionTbody');
-  const renderRow=(r,isT)=>{
-    const ns=r.nums;
-    const cap=ns[6]??ns[ns.length-2]??0;
-    const bc=cap>100?'g':cap>=50?'a':'r';
-    const bt=cap>100?'Above target':cap>=50?'In progress':'Below target';
-    return `<tr${isT?' class="total-row"':''}>
-      <td>${r.label}</td><td>${ns[0]??'—'}</td><td>${ns[1]??'—'}</td><td>${ns[2]??'—'}</td>
-      <td>${ns[3]??'—'}</td><td>${ns[4]??'—'}</td>
-      <td>${ns[5]!==undefined?ns[5].toFixed(1)+'%':'—'}</td>
-      <td>${ns[6]!==undefined?ns[6].toFixed(1)+'%':'—'}</td>
-      <td><span class="badge ${isT?'b':bc}">${isT?'Overall':bt}</span></td>
-    </tr>`;
-  };
-  tbody.innerHTML=cRows.map(r=>renderRow(r,false)).join('')+(totData?renderRow(totData,true):'');
-}
-// ── VEHICLE TRACKER ──
-function parseVehicleTracker(rows) {
-  // Find header row that contains "Model Name" and "Remarks"
-  let hi = -1, iModel=-1, iChassis=-1, iColor=-1, iStatus=-1, iLoc=-1, iDate=-1, iRemarks=-1;
+  // Locate section header row that has the three block labels
+  let secRow = -1, isfCol = -1, evCol = -1, iceCol = -1;
   for (let i = 0; i < rows.length; i++) {
     const lower = rows[i].map(c => String(c).toLowerCase().trim());
-    const hasModel = lower.findIndex(h => h.includes('model') && (h.includes('name') || h.length < 12));
-    const hasRemarks = lower.findIndex(h => h.includes('remark'));
-    if (hasModel >= 0 && hasRemarks >= 0) {
-      hi = i;
-      iModel = hasModel;
-      iRemarks = hasRemarks;
-      iChassis = lower.findIndex(h => h.includes('chassis') || h.includes('vin'));
-      iColor   = lower.findIndex(h => h.includes('colour') || h.includes('color'));
-      iStatus  = lower.findIndex(h => h.includes('stock') && h.includes('status'));
-      if (iStatus < 0) iStatus = lower.findIndex(h => h === 'status' || h.includes('stock status'));
-      iLoc     = lower.findIndex(h => h.includes('location') || h.includes('branch') || h.includes('yard'));
-      iDate    = lower.findIndex(h => h.includes('date') && (h.includes('receive') || h.includes('arrival') || h.includes('received')));
-      if (iDate < 0) iDate = lower.findIndex(h => h.includes('date received') || h.includes('received date'));
+    const a = lower.findIndex(h => h === 'isf');
+    const b = lower.findIndex(h => h === 'psf ev');
+    const c = lower.findIndex(h => h === 'psf ice');
+    if (a >= 0 && b >= 0 && c >= 0) { secRow = i; isfCol = a; evCol = b; iceCol = c; break; }
+  }
+  if (secRow < 0) return;
+
+  // Search range: from section row down to next blank row or new section
+  let endRow = rows.length;
+  for (let i = secRow + 1; i < rows.length; i++) {
+    const allEmpty = rows[i].every(c => String(c).trim() === '');
+    const firstCell = String(rows[i][0] || '').trim();
+    if (allEmpty || /^\d+\./.test(firstCell)) { endRow = i; break; }
+  }
+
+  const findInBlock = (metricCol, matchers) => {
+    for (let i = secRow + 1; i < endRow; i++) {
+      const cell = String(rows[i]?.[metricCol] || '').toLowerCase();
+      if (matchers.some(m => cell.includes(m))) return i;
+    }
+    return -1;
+  };
+  const valAt = (rowIdx, col) => rowIdx >= 0 ? num(rows[rowIdx][col]) : 0;
+  const pctAt = (rowIdx, col) => rowIdx >= 0 ? pct(rows[rowIdx][col]) : 0;
+
+  // ── ISF block ──
+  const isfMap = {
+    inflow:  findInBlock(isfCol, ['inflow vehicle', 'inflow']),
+    outflow: findInBlock(isfCol, ['outflow vehicle', 'outflow']),
+    taken:   findInBlock(isfCol, ['isf taken']),
+    sat:     findInBlock(isfCol, ['satified cu', 'satisfied cu']),
+    dis:     findInBlock(isfCol, ['dissatisfied']),
+    pctR:    findInBlock(isfCol, ['satisfied customer (%)', '(%)'])
+  };
+  const isf = {
+    inflow:  { today: valAt(isfMap.inflow,  isfCol+1), mtd: valAt(isfMap.inflow,  isfCol+2) },
+    outflow: { today: valAt(isfMap.outflow, isfCol+1), mtd: valAt(isfMap.outflow, isfCol+2) },
+    taken:   { today: valAt(isfMap.taken,   isfCol+1), mtd: valAt(isfMap.taken,   isfCol+2) },
+    sat:     { today: valAt(isfMap.sat,     isfCol+1), mtd: valAt(isfMap.sat,     isfCol+2) },
+    dis:     { today: valAt(isfMap.dis,     isfCol+1), mtd: valAt(isfMap.dis,     isfCol+2) },
+    pct:     { today: pctAt(isfMap.pctR,    isfCol+1), mtd: pctAt(isfMap.pctR,    isfCol+2) }
+  };
+  T('isf-inflow',         isf.inflow.mtd  || '—');
+  T('isf-inflow-t',       'Today: ' + isf.inflow.today);
+  T('isf-outflow',        isf.outflow.mtd || '—');
+  T('isf-outflow-t',      'Today: ' + isf.outflow.today);
+  T('isf-taken',          isf.taken.mtd   || '—');
+  T('isf-taken-t',        'Today: ' + isf.taken.today);
+  T('isf-satisfied',      isf.sat.mtd     || '—');
+  T('isf-satisfied-t',    'Today: ' + isf.sat.today);
+  T('isf-dissatisfied',   isf.dis.mtd     || '—');
+  T('isf-dissatisfied-t', 'Today: ' + isf.dis.today);
+  let satPct = isf.pct.mtd;
+  if (!satPct && isf.taken.mtd > 0) satPct = isf.sat.mtd / isf.taken.mtd * 100;
+  const ipTxt = satPct.toFixed(1) + '%';
+  T('isf-pct', ipTxt); T('kpi-isf', ipTxt);
+  T('kpi-isf-sub', `${isf.sat.mtd} satisfied / ${isf.taken.mtd} ISF taken`);
+  B('kpi-isf-bar', satPct);
+
+  mkChart('c3', 'bar', {
+    labels: ['Inflow', 'Outflow', 'ISF Taken', 'Satisfied', 'Dissatisfied'],
+    datasets: [{
+      data: [isf.inflow.mtd, isf.outflow.mtd, isf.taken.mtd, isf.sat.mtd, isf.dis.mtd],
+      backgroundColor: ['#3b82f6','#06b6d4','#8b5cf6','#16a34a','#ef4444'], borderRadius: 4
+    }]
+  }, {});
+
+  // ── PSF EV block ──
+  const evMap = {
+    taken: findInBlock(evCol, ['psf taken']),
+    sat:   findInBlock(evCol, ['satified cu', 'satisfied cu']),
+    dis:   findInBlock(evCol, ['dissatisfied']),
+    pctR:  findInBlock(evCol, ['satisfied customer (%)', '(%)'])
+  };
+  const evTaken = valAt(evMap.taken, evCol+2);
+  const evSat   = valAt(evMap.sat,   evCol+2);
+  const evDis   = valAt(evMap.dis,   evCol+2);
+  let evPct = pctAt(evMap.pctR, evCol+2);
+  if (!evPct && evTaken > 0) evPct = evSat / evTaken * 100;
+  T('psfev-taken',        evTaken || '—');
+  T('psfev-satisfied',    evSat   || '—');
+  T('psfev-dissatisfied', evDis   || '—');
+  T('psfev-pct',          evPct.toFixed(1) + '%');
+
+  // ── PSF ICE block ──
+  const iceMap = {
+    taken: findInBlock(iceCol, ['isf taken', 'taken']),
+    sat:   findInBlock(iceCol, ['satified cu', 'satisfied cu']),
+    dis:   findInBlock(iceCol, ['dissatisfied']),
+    pctR:  findInBlock(iceCol, ['satisfied customer (%)', '(%)'])
+  };
+  const iceTaken = valAt(iceMap.taken, iceCol+2);
+  const iceSat   = valAt(iceMap.sat,   iceCol+2);
+  const iceDis   = valAt(iceMap.dis,   iceCol+2);
+  let icePct = pctAt(iceMap.pctR, iceCol+2);
+  if (!icePct && iceTaken > 0) icePct = iceSat / iceTaken * 100;
+  T('psfice-taken',        iceTaken || '—');
+  T('psfice-satisfied',    iceSat   || '—');
+  T('psfice-dissatisfied', iceDis   || '—');
+  T('psfice-pct',          icePct.toFixed(1) + '%');
+}
+
+/* ==========  3 · MARKETING  ========================================== */
+function parseMarketing(rows) {
+  const hi = findRow(rows, 'leads received');
+  if (hi < 0) return;
+  const hdr = rows[hi].map(c => String(c).toLowerCase().trim());
+  const iSeg  = hdr.findIndex(h => h.includes('segment'));
+  const iRecv = hdr.findIndex(h => h.includes('leads received'));
+  const iTc   = hdr.findIndex(h => h.includes('telecall') && !h.includes('pending'));
+  const iConn = hdr.findIndex(h => h === 'connected' || h.includes('connected'));
+  const iHot = hdr.findIndex(h => h === 'hot');
+  const iWarm = hdr.findIndex(h => h === 'warm');
+  const iCold = hdr.findIndex(h => h === 'cold');
+  const iNI   = hdr.findIndex(h => h.includes('not interested'));
+  const iNA   = hdr.findIndex(h => h.includes('no answer'));
+  const iSO   = hdr.findIndex(h => h.includes('switch off'));
+  const mkt = []; let tR = 0, tT = 0, tC = 0;
+  for (let i = hi + 1; i < rows.length; i++) {
+    const row = rows[i], seg = String(row[iSeg] || '').trim();
+    if (!seg) continue;
+    if (seg.toLowerCase() === 'total') {
+      tR = num(row[iRecv]); tT = num(row[iTc]); tC = num(row[iConn]); break;
+    }
+    if (['collection','service','psf','isf','model','retail'].some(k => seg.toLowerCase().includes(k))) break;
+    if (/^\d+\./.test(seg)) break;
+    mkt.push({
+      seg,
+      recv: num(row[iRecv]), tc: num(row[iTc]), conn: num(row[iConn]),
+      hot: num(row[iHot]), warm: num(row[iWarm]), cold: num(row[iCold]),
+      ni: num(row[iNI]), na: num(row[iNA]), so: num(row[iSO])
+    });
+  }
+  const fR = tR || mkt.reduce((s, r) => s + r.recv, 0);
+  const fT = tT || mkt.reduce((s, r) => s + r.tc,   0);
+  const fC = tC || mkt.reduce((s, r) => s + r.conn, 0);
+  T('kpi-leads', fR);
+  T('kpi-leads-sub', `${fT} telecalled · ${fC} connected`);
+  B('kpi-leads-bar', fR > 0 ? fC / fR * 100 : 0);
+
+  mkChart('c4', 'bar', { labels: mkt.map(r => r.seg), datasets: [
+    { label: 'Received',   data: mkt.map(r => r.recv), backgroundColor: '#8b5cf6', borderRadius: 4 },
+    { label: 'Telecalled', data: mkt.map(r => r.tc),   backgroundColor: '#3b82f6', borderRadius: 4 },
+    { label: 'Connected',  data: mkt.map(r => r.conn), backgroundColor: '#16a34a', borderRadius: 4 }
+  ]}, {});
+
+  const totNI = mkt.reduce((s, r) => s + r.ni, 0), totNA = mkt.reduce((s, r) => s + r.na, 0),
+        totSO = mkt.reduce((s, r) => s + r.so, 0), totH  = mkt.reduce((s, r) => s + r.hot, 0),
+        totW  = mkt.reduce((s, r) => s + r.warm, 0), totC = mkt.reduce((s, r) => s + r.cold, 0);
+  if (CH.c5) CH.c5.destroy();
+  CH.c5 = new Chart(document.getElementById('c5'), { type: 'doughnut', data: {
+      labels: ['Not Interested','No Answer','Switch Off','Hot','Warm','Cold'],
+      datasets: [{ data: [totNI, totNA, totSO, totH, totW, totC],
+        backgroundColor: ['#ef4444','#f59e0b','#6b7280','#16a34a','#06b6d4','#3b82f6'],
+        borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: true, position: 'right',
+        labels: { font: { size: 10, family: 'DM Sans' }, color: '#6b7280', boxWidth: 10, padding: 8 }
+      } } } });
+}
+
+/* ==========  4 · COLLECTION  =========================================
+   Sheet column layout (zero-indexed):
+     col 2  Company / Category name
+     col 3  Sales Tgt (ABP)
+     col 4  Actual Sales target
+     col 5  Collection Tgt
+     col 6  Day Sales      (skip)
+     col 7  Day Collection (skip)
+     col 8  MTD Sales
+     col 9  MTD Collection
+     col 10 Sales Ach %
+     col 11 Collection Ach %
+==================================================================== */
+function parseCollection(rows) {
+  const COLS = { label: 2, salesTgt: 3, actSales: 4, collTgt: 5, mtdSales: 8, mtdColl: 9, salesPct: 10, collPct: 11 };
+  const cats = ['Retail Sales Collection', 'DO DP', 'Difficult', 'Charging', 'Retention Collection'];
+  const cRows = [];
+
+  const readRow = (label, row) => ({
+    label: label,
+    salesTgt: num(row[COLS.salesTgt]),
+    actSales: num(row[COLS.actSales]),
+    collTgt:  num(row[COLS.collTgt]),
+    mtdSales: num(row[COLS.mtdSales]),
+    mtdColl:  num(row[COLS.mtdColl]),
+    salesPct: pct(row[COLS.salesPct]),
+    collPct:  pct(row[COLS.collPct]),
+    has: {
+      salesTgt: String(row[COLS.salesTgt] || '').trim() !== '',
+      actSales: String(row[COLS.actSales] || '').trim() !== '',
+      mtdSales: String(row[COLS.mtdSales] || '').trim() !== '',
+      salesPct: String(row[COLS.salesPct] || '').trim() !== ''
+    }
+  });
+
+  // Sub-categories
+  for (const cat of cats) {
+    const ri = findRow(rows, cat, 12);
+    if (ri < 0) continue;
+    const row = rows[ri];
+    const lbl = String(row[COLS.label] || cat).trim();
+    cRows.push(readRow(lbl, row));
+  }
+
+  // Total — Foton row
+  let totRi = -1;
+  for (let i = 0; i < rows.length; i++) {
+    const cell = String(rows[i][COLS.label] || '').toLowerCase();
+    if (cell.includes('foton') && cell.includes('total')) { totRi = i; break; }
+  }
+  let totData = null;
+  if (totRi >= 0) {
+    const t = readRow('Total — Foton', rows[totRi]);
+    totData = t;
+    const collPct = t.collPct || (t.collTgt > 0 ? t.mtdColl / t.collTgt * 100 : 0);
+    T('kpi-collection',     `Rs ${t.mtdColl.toFixed(2)} Cr`);
+    T('kpi-collection-sub', `${collPct.toFixed(1)}% of Rs ${t.collTgt.toFixed(2)} Cr target`);
+    B('kpi-collection-bar', collPct);
+  }
+
+  const renderRow = (r, isT) => {
+    const cap = r.collPct;
+    const bc  = cap > 100 ? 'g' : cap >= 50 ? 'a' : 'r';
+    const bt  = cap > 100 ? 'Above target' : cap >= 50 ? 'In progress' : 'Below target';
+    const fmt = (v, has) => has ? (typeof v === 'number' ? v.toFixed(2) : v) : '—';
+    const fmtPct = (v, has) => has ? v.toFixed(1) + '%' : '—';
+    return `<tr${isT ? ' class="total-row"' : ''}>
+      <td>${esc(r.label)}</td>
+      <td>${fmt(r.salesTgt, r.has.salesTgt)}</td>
+      <td>${fmt(r.actSales, r.has.actSales)}</td>
+      <td>${r.collTgt.toFixed(2)}</td>
+      <td>${fmt(r.mtdSales, r.has.mtdSales)}</td>
+      <td><strong>${r.mtdColl.toFixed(2)}</strong></td>
+      <td>${fmtPct(r.salesPct, r.has.salesPct)}</td>
+      <td>${r.collPct.toFixed(1)}%</td>
+      <td><span class="badge ${isT ? 'b' : bc}">${isT ? 'Overall' : bt}</span></td>
+    </tr>`;
+  };
+  const tbody = document.getElementById('collectionTbody');
+  tbody.innerHTML = cRows.map(r => renderRow(r, false)).join('') + (totData ? renderRow(totData, true) : '');
+}
+
+/* ==========  5 · VEHICLE TRACKER  ====================================
+   Columns in the sheet:
+     LC Ref, Model Name, Batch Qty, Dispatch Status, ETA Nepal,
+     Nepal Port, Batch Status, Remarks
+   We display Model Name → Remarks (per user requirement).
+==================================================================== */
+function parseVehicleTracker(rows) {
+  // Header row: must contain "Model Name" AND ("Remarks" OR "Batch Status")
+  let hi = -1, iModel = -1, iQty = -1, iDispatch = -1, iEta = -1, iPort = -1, iStatus = -1, iRemarks = -1;
+  for (let i = 0; i < rows.length; i++) {
+    const lower = rows[i].map(c => String(c).toLowerCase().trim());
+    const m = lower.findIndex(h => h === 'model name' || (h.includes('model') && h.includes('name')));
+    const r = lower.findIndex(h => h.includes('remark'));
+    if (m >= 0 && r >= 0) {
+      hi = i; iModel = m; iRemarks = r;
+      iQty      = lower.findIndex(h => h.includes('batch qty') || h.includes('qty') || h.includes('quantity'));
+      iDispatch = lower.findIndex(h => h.includes('dispatch') && h.includes('status'));
+      iEta      = lower.findIndex(h => h.includes('eta'));
+      iPort     = lower.findIndex(h => h.includes('port'));
+      iStatus   = lower.findIndex(h => h.includes('batch') && h.includes('status'));
+      if (iStatus < 0) iStatus = lower.findIndex(h => h === 'status');
       break;
     }
   }
-
   const tbody = document.getElementById('vehicleTbody');
   const meta  = document.getElementById('vtMeta');
   if (hi < 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">No Vehicle Tracker section found in the sheet. Add a header row with columns: Model Name, Chassis No., Color, Stock Status, Location, Date Received, Remarks.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">Vehicle Tracker section not found in the sheet.</td></tr>';
     if (meta) meta.textContent = '0 units';
-    VT_ROWS = [];
-    return;
+    VT_ROWS = []; return;
   }
 
   const out = [];
@@ -656,25 +794,23 @@ function parseVehicleTracker(rows) {
     const row = rows[i];
     if (!row || !row.length) continue;
     const model = String(row[iModel] || '').trim();
-    // Stop at a blank row or at a row that looks like a new section header
     if (!model) {
       const any = row.some(c => String(c).trim() !== '');
       if (!any) break;
       continue;
     }
+    if (/^\d+\./.test(model)) break;
     if (['total','segment','category','psf','isf','collection','marketing','service'].some(k => model.toLowerCase().startsWith(k))) break;
-
     out.push({
-      model:   model,
-      chassis: iChassis >= 0 ? String(row[iChassis] || '').trim() : '',
-      color:   iColor   >= 0 ? String(row[iColor]   || '').trim() : '',
-      status:  iStatus  >= 0 ? String(row[iStatus]  || '').trim() : '',
-      loc:     iLoc     >= 0 ? String(row[iLoc]     || '').trim() : '',
-      date:    iDate    >= 0 ? String(row[iDate]    || '').trim() : '',
-      remarks: iRemarks >= 0 ? String(row[iRemarks] || '').trim() : ''
+      model:    model,
+      qty:      iQty      >= 0 ? String(row[iQty]      || '').trim() : '',
+      dispatch: iDispatch >= 0 ? String(row[iDispatch] || '').trim() : '',
+      eta:      iEta      >= 0 ? String(row[iEta]      || '').trim() : '',
+      port:     iPort     >= 0 ? String(row[iPort]     || '').trim() : '',
+      status:   iStatus   >= 0 ? String(row[iStatus]   || '').trim() : '',
+      remarks:  iRemarks  >= 0 ? String(row[iRemarks]  || '').trim() : ''
     });
   }
-
   VT_ROWS = out;
   renderVehicleTracker('');
 }
@@ -682,10 +818,9 @@ function parseVehicleTracker(rows) {
 function statusBadge(s) {
   const v = String(s || '').toLowerCase();
   if (!v) return '<span class="badge b">—</span>';
-  if (v.includes('sold') || v.includes('delivered') || v.includes('invoiced')) return `<span class="badge g">${esc(s)}</span>`;
-  if (v.includes('booked') || v.includes('reserve') || v.includes('transit') || v.includes('pending')) return `<span class="badge a">${esc(s)}</span>`;
-  if (v.includes('hold') || v.includes('damage') || v.includes('cancel')) return `<span class="badge r">${esc(s)}</span>`;
-  if (v.includes('stock') || v.includes('available') || v.includes('ready')) return `<span class="badge b">${esc(s)}</span>`;
+  if (v.includes('cleared') || v.includes('delivered') || v.includes('closed')) return `<span class="badge g">${esc(s)}</span>`;
+  if (v.includes('dispatched') || v.includes('transit') || v.includes('clearance') || v.includes('awaiting')) return `<span class="badge a">${esc(s)}</span>`;
+  if (v.includes('pending') || v.includes('hold') || v.includes('cancel') || v.includes('damage')) return `<span class="badge r">${esc(s)}</span>`;
   return `<span class="badge b">${esc(s)}</span>`;
 }
 
@@ -694,33 +829,32 @@ function renderVehicleTracker(query) {
   const meta  = document.getElementById('vtMeta');
   const q = (query || '').toLowerCase().trim();
   const rows = !q ? VT_ROWS : VT_ROWS.filter(r =>
-    [r.model, r.chassis, r.color, r.status, r.loc, r.date, r.remarks]
+    [r.model, r.qty, r.dispatch, r.eta, r.port, r.status, r.remarks]
       .some(v => String(v).toLowerCase().includes(q))
   );
-  if (meta) meta.textContent = `${rows.length} unit${rows.length===1?'':'s'}${q?` matching "${query}"`:''} · ${VT_ROWS.length} total`;
+  if (meta) meta.textContent = `${rows.length} batch${rows.length === 1 ? '' : 'es'}${q ? ` matching "${query}"` : ''} · ${VT_ROWS.length} total`;
   if (!rows.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">No vehicles match the current filter.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">No batches match the current filter.</td></tr>';
     return;
   }
   tbody.innerHTML = rows.map(r => `<tr>
     <td><strong>${esc(r.model)}</strong></td>
-    <td style="font-family:'DM Mono',monospace;font-size:11px">${esc(r.chassis) || '—'}</td>
-    <td>${esc(r.color) || '—'}</td>
+    <td style="text-align:right">${esc(r.qty) || '—'}</td>
+    <td>${statusBadge(r.dispatch)}</td>
+    <td style="font-family:'DM Mono',monospace;font-size:11px">${esc(r.eta) || '—'}</td>
+    <td>${esc(r.port) || '—'}</td>
     <td>${statusBadge(r.status)}</td>
-    <td>${esc(r.loc) || '—'}</td>
-    <td style="font-family:'DM Mono',monospace;font-size:11px">${esc(r.date) || '—'}</td>
-    <td style="color:var(--text-secondary)">${esc(r.remarks) || '—'}</td>
+    <td style="color:var(--text-secondary);white-space:normal">${esc(r.remarks) || '—'}</td>
   </tr>`).join('');
 }
 
-// wire up search box
 document.addEventListener('DOMContentLoaded', () => {
   const s = document.getElementById('vtSearch');
   if (s) s.addEventListener('input', e => renderVehicleTracker(e.target.value));
 });
 
 loadData();
-setInterval(loadData, 5*60*1000);
+setInterval(loadData, 5 * 60 * 1000);
 </script>
 </body>
 </html>
