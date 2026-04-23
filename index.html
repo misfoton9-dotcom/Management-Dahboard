@@ -266,14 +266,15 @@ tr:hover td { background: #fafbff; }
   <div class="grid-1">
     <div class="card">
       <div class="card-tag">Inventory — Live</div>
-      <div class="card-title">Vehicle Tracker (Model Name → Remarks)</div>
+      <div class="card-title">Vehicle Tracker (LC Ref → Remarks)</div>
       <div class="vt-toolbar">
-        <input type="text" id="vtSearch" class="vt-search" placeholder="Search model, status, port, remarks…"/>
+        <input type="text" id="vtSearch" class="vt-search" placeholder="Search LC ref, model, status, port, remarks…"/>
         <span class="vt-meta" id="vtMeta">—</span>
       </div>
       <div class="table-wrap">
         <table>
           <thead><tr>
+            <th>LC Ref</th>
             <th>Model Name</th>
             <th>Batch Qty</th>
             <th>Dispatch Status</th>
@@ -282,7 +283,7 @@ tr:hover td { background: #fafbff; }
             <th>Batch Status</th>
             <th>Remarks</th>
           </tr></thead>
-          <tbody id="vehicleTbody"><tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">Loading…</td></tr></tbody>
+          <tbody id="vehicleTbody"><tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-muted)">Loading…</td></tr></tbody>
         </table>
       </div>
     </div>
@@ -365,9 +366,10 @@ function findRow(rows, kw, maxC = 12) {
 /* -------- fetch ------------------------------------------------------- */
 async function fetchCSV() {
   let lastErr = null;
+  const cb = '&_cb=' + Date.now(); // cache-buster
   for (const u of URLS) {
     try {
-      const r = await fetch(u, { redirect: 'follow' });
+      const r = await fetch(u + cb, { redirect: 'follow', cache: 'no-store' });
       if (r.ok) {
         const txt = await r.text();
         if (txt && !txt.startsWith('<')) return txt;
@@ -377,7 +379,7 @@ async function fetchCSV() {
   }
   for (const u of URLS) {
     try {
-      const r = await fetch(PROXY + encodeURIComponent(u));
+      const r = await fetch(PROXY + encodeURIComponent(u + cb));
       if (r.ok) {
         const txt = await r.text();
         if (txt && !txt.startsWith('<')) return txt;
@@ -764,14 +766,15 @@ function parseCollection(rows) {
    We display Model Name → Remarks (per user requirement).
 ==================================================================== */
 function parseVehicleTracker(rows) {
-  // Header row: must contain "Model Name" AND ("Remarks" OR "Batch Status")
-  let hi = -1, iModel = -1, iQty = -1, iDispatch = -1, iEta = -1, iPort = -1, iStatus = -1, iRemarks = -1;
+  // Header row: must contain "Model Name" AND "Remarks"
+  let hi = -1, iLC = -1, iModel = -1, iQty = -1, iDispatch = -1, iEta = -1, iPort = -1, iStatus = -1, iRemarks = -1;
   for (let i = 0; i < rows.length; i++) {
     const lower = rows[i].map(c => String(c).toLowerCase().trim());
     const m = lower.findIndex(h => h === 'model name' || (h.includes('model') && h.includes('name')));
     const r = lower.findIndex(h => h.includes('remark'));
     if (m >= 0 && r >= 0) {
       hi = i; iModel = m; iRemarks = r;
+      iLC       = lower.findIndex(h => h.includes('lc ref') || h === 'lc' || h.includes('lc-') || h.includes('lc ') || h.includes('lc.'));
       iQty      = lower.findIndex(h => h.includes('batch qty') || h.includes('qty') || h.includes('quantity'));
       iDispatch = lower.findIndex(h => h.includes('dispatch') && h.includes('status'));
       iEta      = lower.findIndex(h => h.includes('eta'));
@@ -784,7 +787,7 @@ function parseVehicleTracker(rows) {
   const tbody = document.getElementById('vehicleTbody');
   const meta  = document.getElementById('vtMeta');
   if (hi < 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">Vehicle Tracker section not found in the sheet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-muted)">Vehicle Tracker section not found in the sheet.</td></tr>';
     if (meta) meta.textContent = '0 units';
     VT_ROWS = []; return;
   }
@@ -794,14 +797,17 @@ function parseVehicleTracker(rows) {
     const row = rows[i];
     if (!row || !row.length) continue;
     const model = String(row[iModel] || '').trim();
-    if (!model) {
+    const lcRef = iLC >= 0 ? String(row[iLC] || '').trim() : '';
+    // accept rows with EITHER a Model name OR an LC reference
+    if (!model && !lcRef) {
       const any = row.some(c => String(c).trim() !== '');
       if (!any) break;
       continue;
     }
-    if (/^\d+\./.test(model)) break;
-    if (['total','segment','category','psf','isf','collection','marketing','service'].some(k => model.toLowerCase().startsWith(k))) break;
+    if (/^\d+\./.test(model || lcRef)) break;
+    if (model && ['total','segment','category','psf','isf','collection','marketing','service'].some(k => model.toLowerCase().startsWith(k))) break;
     out.push({
+      lc:       lcRef,
       model:    model,
       qty:      iQty      >= 0 ? String(row[iQty]      || '').trim() : '',
       dispatch: iDispatch >= 0 ? String(row[iDispatch] || '').trim() : '',
@@ -829,16 +835,17 @@ function renderVehicleTracker(query) {
   const meta  = document.getElementById('vtMeta');
   const q = (query || '').toLowerCase().trim();
   const rows = !q ? VT_ROWS : VT_ROWS.filter(r =>
-    [r.model, r.qty, r.dispatch, r.eta, r.port, r.status, r.remarks]
+    [r.lc, r.model, r.qty, r.dispatch, r.eta, r.port, r.status, r.remarks]
       .some(v => String(v).toLowerCase().includes(q))
   );
   if (meta) meta.textContent = `${rows.length} batch${rows.length === 1 ? '' : 'es'}${q ? ` matching "${query}"` : ''} · ${VT_ROWS.length} total`;
   if (!rows.length) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">No batches match the current filter.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--text-muted)">No batches match the current filter.</td></tr>';
     return;
   }
   tbody.innerHTML = rows.map(r => `<tr>
-    <td><strong>${esc(r.model)}</strong></td>
+    <td style="font-family:'DM Mono',monospace;font-size:11px;color:var(--blue);font-weight:600">${esc(r.lc) || '—'}</td>
+    <td><strong>${esc(r.model) || '—'}</strong></td>
     <td style="text-align:right">${esc(r.qty) || '—'}</td>
     <td>${statusBadge(r.dispatch)}</td>
     <td style="font-family:'DM Mono',monospace;font-size:11px">${esc(r.eta) || '—'}</td>
