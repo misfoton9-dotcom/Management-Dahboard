@@ -66,7 +66,8 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 /* LAYOUT */
 .dash { max-width: 1200px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
 /* KPI STRIP */
-.kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 1.5rem; }
+.kpi-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 1.5rem; }
+@media (max-width: 1100px) { .kpi-strip { grid-template-columns: repeat(3, 1fr); } }
 .kpi-card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 1.2rem 1.4rem;
@@ -77,12 +78,14 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .kpi-card.k-green::before { background: linear-gradient(90deg,#16a34a,#22d3ee); }
 .kpi-card.k-amber::before { background: linear-gradient(90deg,#f59e0b,#ef4444); }
 .kpi-card.k-purple::before{ background: linear-gradient(90deg,#6366f1,#a855f7); }
+.kpi-card.k-cyan::before  { background: linear-gradient(90deg,#06b6d4,#14b8a6); }
 .kpi-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); margin-bottom: 8px; }
 .kpi-value { font-size: 24px; font-weight: 700; line-height: 1; margin-bottom: 6px; }
 .kpi-card.k-blue   .kpi-value { color: #0284c7; }
 .kpi-card.k-green  .kpi-value { color: var(--green); }
 .kpi-card.k-amber  .kpi-value { color: var(--amber); }
 .kpi-card.k-purple .kpi-value { color: #6366f1; }
+.kpi-card.k-cyan   .kpi-value { color: #0891b2; }
 .kpi-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 8px; }
 .prog-wrap { background: #f3f4f6; border-radius: 4px; height: 4px; overflow: hidden; }
 .prog-bar  { height: 100%; border-radius: 4px; transition: width .8s ease; }
@@ -147,6 +150,16 @@ tr:hover td { background: #fafbff; }
 #stockAgeingTable td.cell-blue  { color: var(--blue);  font-weight: 600; }
 #stockAgeingTable td.cell-amber { color: var(--amber); font-weight: 600; }
 #stockAgeingTable td.cell-red   { color: var(--red);   font-weight: 600; }
+/* VEHICLE TRACKER */
+.vt-status-line { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; font-family: 'DM Mono', monospace; }
+#vehicleTrackerTable th, #vehicleTrackerTable td { font-size: 11px; }
+#vehicleTrackerTable td.vt-bg-green { background: var(--green-light); color: var(--green); font-weight: 600; }
+#vehicleTrackerTable td.vt-bg-amber { background: var(--amber-light); color: var(--amber); font-weight: 600; }
+#vehicleTrackerTable td.vt-bg-red   { background: var(--red-light);   color: var(--red);   font-weight: 600; }
+#vehicleTrackerTable td.vt-bg-blue  { background: var(--blue-light);  color: var(--blue);  font-weight: 600; }
+#vehicleTrackerTable td.vt-red   { color: var(--red);   font-weight: 600; }
+#vehicleTrackerTable td.vt-amber { color: var(--amber); font-weight: 600; }
+#vehicleTrackerTable td.vt-green { color: var(--green); font-weight: 600; }
 .footer { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); font-family: 'DM Mono', monospace; }
 @media(max-width:768px){
   .kpi-strip { grid-template-columns: 1fr 1fr; }
@@ -181,10 +194,16 @@ tr:hover td { background: #fafbff; }
       <div class="prog-wrap"><div class="prog-bar" id="kpi-sales-bar" style="background:#0ea5e9;width:0%"></div></div>
     </div>
     <div class="kpi-card k-green">
-      <div class="kpi-label">Collection MTD</div>
-      <div class="kpi-value" id="kpi-collection">—</div>
-      <div class="kpi-sub" id="kpi-collection-sub">Loading…</div>
-      <div class="prog-wrap"><div class="prog-bar" id="kpi-collection-bar" style="background:#16a34a;width:0%"></div></div>
+      <div class="kpi-label">Retail Sales Collection</div>
+      <div class="kpi-value" id="kpi-retail-mtd">—</div>
+      <div class="kpi-sub" id="kpi-retail-sub">Loading…</div>
+      <div class="prog-wrap"><div class="prog-bar" id="kpi-retail-bar" style="background:#16a34a;width:0%"></div></div>
+    </div>
+    <div class="kpi-card k-cyan">
+      <div class="kpi-label">DO, DP, Dealer &amp; Tender</div>
+      <div class="kpi-value" id="kpi-dodp-mtd">—</div>
+      <div class="kpi-sub" id="kpi-dodp-sub">Loading…</div>
+      <div class="prog-wrap"><div class="prog-bar" id="kpi-dodp-bar" style="background:#06b6d4;width:0%"></div></div>
     </div>
     <div class="kpi-card k-amber">
       <div class="kpi-label">ISF Satisfaction</div>
@@ -352,6 +371,21 @@ tr:hover td { background: #fafbff; }
       </div>
     </div>
   </div>
+  <!-- VEHICLE TRACKER -->
+  <div class="section-title">6 · Vehicle Tracker</div>
+  <div class="grid-1">
+    <div class="card">
+      <div class="card-tag">Vehicle Tracker</div>
+      <div class="card-title">LC Pipeline &amp; Dispatch Status</div>
+      <div class="vt-status-line" id="vt-status-line">Connecting…</div>
+      <div class="table-wrap">
+        <table id="vehicleTrackerTable">
+          <thead id="vehicleTrackerThead"><tr><th colspan="7" style="text-align:center">Loading…</th></tr></thead>
+          <tbody id="vehicleTrackerTbody"><tr><td colspan="7" style="text-align:center;padding:20px;color:var(--text-muted)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
   <div class="footer" id="footer">MAW Vriddhi Commercial Vehicles Pvt. Ltd. &nbsp;·&nbsp; CEO Dashboard &nbsp;·&nbsp; Confidential</div>
 </div>
 <script>
@@ -378,6 +412,7 @@ tr:hover td { background: #fafbff; }
 
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRQI-IU-Aah_fVhQgPXlsWnZ4QF0_GF8fVqlKUxjmbYNn_zTZh3qTkGM8gNgLrcdk-jMnf2mjD1FGeU/pub?output=csv';
 const PROXY   = 'https://corsproxy.io/?';
+
 let CH = {};
 
 /* ── CSV parser (handles quoted fields and embedded newlines) ─────────────── */
@@ -458,6 +493,7 @@ async function loadData() {
     parseMarketing(rows);
     parseCollection(rows);
     parseStockAgeing(rows);
+    parseVehicleTracker(rows);
     bar.className = 'status-bar success';
     bar.textContent = '✓ Dashboard updated — ' + new Date().toLocaleTimeString();
     setTimeout(() => bar.style.display = 'none', 4000);
@@ -912,6 +948,8 @@ function parseCollection(rows) {
   let kpiTotal = null;
   const htmlChunks = [];
 
+  let retailRow = null, dodpRow = null;
+
   headerRows.forEach((hi, idx) => {
     const block = parseCollectionBlock(rows, hi);
     if (!block) return;
@@ -935,21 +973,17 @@ function parseCollection(rows) {
       if (idx === 0) kpiTotal = block.totalRow;
       htmlChunks.push(renderCollectionRow(block.totalRow));
     }
-    block.subRows.forEach(r => htmlChunks.push(renderCollectionRow(r)));
+    block.subRows.forEach(r => {
+      htmlChunks.push(renderCollectionRow(r));
+      const ll = r.rawLabel.toLowerCase();
+      if (!retailRow && ll.includes('retail sales collection')) retailRow = r;
+      if (!dodpRow && (ll.includes('do dp') || ll.includes('dealer and tender'))) dodpRow = r;
+    });
   });
 
-  /* KPI from the first (Foton Sales) total row */
-  if (kpiTotal) {
-    const collTgt = N(kpiTotal.collTgt);
-    const mtdColl = N(kpiTotal.mtdC);
-    const collPct = collTgt > 0 ? mtdColl / collTgt * 100 : 0;
-    T('kpi-collection',     `Rs ${mtdColl} Cr`);
-    T('kpi-collection-sub', `${collPct.toFixed(1)}% of Rs ${collTgt} Cr target`);
-    B('kpi-collection-bar', collPct);
-  } else {
-    T('kpi-collection',     '—');
-    T('kpi-collection-sub', 'Foton total row not found');
-  }
+  /* Populate the two top-strip KPI tiles */
+  fillCollCard('kpi-retail', retailRow);
+  fillCollCard('kpi-dodp',   dodpRow);
 
   const tbody = document.getElementById('collectionTbody');
   tbody.innerHTML = htmlChunks.join('') ||
@@ -1102,6 +1136,156 @@ function parseStockAgeing(rows) {
     T('kpi-stock-1yr-sub',   totalUnits > 0 ? `${(beyond1yr/totalUnits*100).toFixed(1)}% stuck > 1 year` : '—');
     B('kpi-stock-1yr-bar',   totalUnits > 0 ? beyond1yr/totalUnits*100 : 0);
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   COLLECTION SPLIT-CARD HELPER — populates the Retail / DO-DP-Dealer-Tender
+   headline KPI tiles in the top strip.
+   ═══════════════════════════════════════════════════════════════════════════ */
+function fillCollCard(prefix, rec) {
+  if (!rec) {
+    T(prefix + '-mtd', '—');
+    T(prefix + '-sub', 'Row not found in sheet');
+    B(prefix + '-bar', 0);
+    return;
+  }
+  const tgt = N(rec.collTgt);
+  const mtd = N(rec.mtdC);
+  const pct = tgt > 0 ? mtd / tgt * 100 : 0;
+  T(prefix + '-mtd', `Rs ${mtd.toFixed(2)} Cr`);
+  T(prefix + '-sub', tgt > 0 ? `${pct.toFixed(1)}% of Rs ${tgt.toFixed(2)} Cr target` : 'Target not set');
+  B(prefix + '-bar', pct);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VEHICLE TRACKER — reads from the same Dashboard CSV.
+   Auto-detects the section: finds a row whose label column says
+   "Vehicle Tracker" or whose first non-empty cell is "LC Ref". Headers come
+   from that same row; data flows in until the next empty row or new section.
+   New rows added to the sheet appear automatically on the next refresh.
+   ═══════════════════════════════════════════════════════════════════════════ */
+function parseVehicleTracker(rows) {
+  const theadEl  = document.getElementById('vehicleTrackerThead');
+  const tbodyEl  = document.getElementById('vehicleTrackerTbody');
+  const statusEl = document.getElementById('vt-status-line');
+  if (!theadEl || !tbodyEl) return;
+
+  /* 1. Locate the Vehicle Tracker header row */
+  let hi = -1, startCol = 0;
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i] || [];
+    for (let c = 0; c < row.length; c++) {
+      const v = String(row[c] || '').toLowerCase().trim();
+      if (v.includes('vehicle tracker')) {
+        hi = i;
+        // Section title sits in this cell; headers begin in the next non-empty cell to the right
+        for (let cc = c + 1; cc < row.length; cc++) {
+          if (String(row[cc] || '').trim()) { startCol = cc; break; }
+        }
+        if (!startCol) startCol = c + 1;
+        break;
+      }
+      if (v === 'lc ref' || v === 'lc no.' || v === 'lc#') {
+        hi = i; startCol = c; break;
+      }
+    }
+    if (hi >= 0) break;
+  }
+
+  if (hi < 0) {
+    theadEl.innerHTML = '<tr><th>Vehicle Tracker not found</th></tr>';
+    tbodyEl.innerHTML = '<tr><td style="padding:20px;color:var(--text-muted);text-align:center">No "Vehicle Tracker" / "LC Ref" header detected in the published sheet.</td></tr>';
+    if (statusEl) statusEl.textContent = 'Section not found.';
+    return;
+  }
+
+  /* 2. Read headers — every consecutive non-empty cell from startCol */
+  const headerRow = rows[hi];
+  const headers = [];
+  for (let c = startCol; c < headerRow.length; c++) {
+    const h = String(headerRow[c] || '').trim();
+    if (!h) break;
+    headers.push({ col: c, label: h });
+  }
+  if (!headers.length) {
+    theadEl.innerHTML = '<tr><th>Vehicle Tracker</th></tr>';
+    tbodyEl.innerHTML = '<tr><td style="padding:20px;color:var(--text-muted);text-align:center">No column headers found.</td></tr>';
+    return;
+  }
+
+  theadEl.innerHTML = '<tr>' + headers.map(h => `<th>${escapeHtml(h.label)}</th>`).join('') + '</tr>';
+
+  /* 3. Walk data rows until an empty row or new section break */
+  const trs = [];
+  for (let i = hi + 1; i < rows.length; i++) {
+    const row = rows[i] || [];
+    if (isSectionBreak(row)) break;
+    let hasData = false;
+    for (const h of headers) if (String(row[h.col] || '').trim()) { hasData = true; break; }
+    if (!hasData) break;
+
+    const tds = headers.map(h => {
+      const val = String(row[h.col] || '').trim();
+      const cls = classifyVtCell(val, h.label);
+      return `<td${cls ? ` class="${cls}"` : ''}>${escapeHtml(val) || '—'}</td>`;
+    });
+    trs.push(`<tr>${tds.join('')}</tr>`);
+  }
+
+  tbodyEl.innerHTML = trs.join('') ||
+    `<tr><td colspan="${headers.length}" style="text-align:center;padding:20px;color:var(--text-muted)">No vehicle entries</td></tr>`;
+  if (statusEl) statusEl.textContent = `${trs.length} entr${trs.length === 1 ? 'y' : 'ies'} · last refreshed ${new Date().toLocaleTimeString()}`;
+}
+
+function classifyVtCell(value, header) {
+  const v = String(value).toLowerCase().trim();
+  const h = String(header).toLowerCase();
+  if (!v) return '';
+
+  /* Status / outcome keywords */
+  const G = ['delivered','complete','completed','done','arrived','received','sold','closed','ok','yes','y','✓','clear','cleared'];
+  const B = ['in transit','shipped','dispatched','on the way','en route','transit','open','active','ongoing'];
+  const A = ['pending','in progress','processing','wip','planned','review','hold','on hold','awaiting','partial'];
+  const R = ['delayed','overdue','late','rejected','cancelled','canceled','failed','no','n','✗','blocked','stuck'];
+  if (G.includes(v)) return 'vt-bg-green';
+  if (B.includes(v)) return 'vt-bg-blue';
+  if (A.includes(v)) return 'vt-bg-amber';
+  if (R.includes(v)) return 'vt-bg-red';
+
+  /* Date columns: highlight overdue and due-soon */
+  if (h.includes('eta') || h.includes('due') || h.includes('expected') || h.includes('promise') || h.includes('date')) {
+    const d = parseVtDate(value);
+    if (d) {
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      const days = Math.floor((d - today) / (1000 * 60 * 60 * 24));
+      if (days < 0)        return 'vt-red';
+      else if (days <= 3)  return 'vt-amber';
+      else if (days <= 14) return 'vt-green';
+    }
+  }
+
+  return '';
+}
+
+function parseVtDate(s) {
+  if (!s) return null;
+  const str = String(s).trim();
+  let d = new Date(str);
+  if (!isNaN(d.getTime())) return d;
+  /* DD/MM/YYYY or DD-MM-YYYY */
+  const m = str.match(/^(\d{1,2})[\-\/](\d{1,2})[\-\/](\d{2,4})$/);
+  if (m) {
+    let [, dd, mm, yy] = m;
+    if (yy.length === 2) yy = '20' + yy;
+    d = new Date(+yy, +mm - 1, +dd);
+    if (!isNaN(d.getTime())) return d;
+  }
+  return null;
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
 loadData();
